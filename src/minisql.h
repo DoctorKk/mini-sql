@@ -10,6 +10,7 @@
 #include<stdio.h>
 #include<iostream>
 #include<cstring>
+#include<vector>
 
 #define BLOCK_SIZE 4096
 
