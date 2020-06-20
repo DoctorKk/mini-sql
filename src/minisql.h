@@ -15,8 +15,7 @@
 
 using namespace std;
 
-struct File
-{
+struct File {
 
 	char* address; // the address of the file
 	int type; // 0 -> data file; 1 -> index file; 2 -> catalog file
@@ -28,16 +27,16 @@ struct File
 	
 }
 
-struct Block
-{
+struct Block {
 
 	int offset; // the number of the block 
 	bool dirty; // whether it is dirty: 0 -> clean; 1 -> dirty
 	bool pin; // the lock: 0 -> locked; 1 -> unlocked
+	int recordNum; // the number of records the block has
 	int time; // LRU
 	Block* nextBlock; // next block
 	File* file; // the file it belongs to
-	int blockSize; // the size taken of the block
+	int freeSize; // the available size of the block
 	char* data; // the data contained in the block
 	
 }
