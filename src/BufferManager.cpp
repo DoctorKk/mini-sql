@@ -20,18 +20,11 @@ BufferManager::~BufferManager() {
 }
 
 File* BufferManager::getFile(char* fileName) {
-	if (!fileChain) { // if there is no files
-		fileChain = new File();
-		initFile(fileChain);
-		fileChain -> fileName = fileName;
-		return fileChain;
-	} else {
-		File* ftemp = fileChain;
-		while (ftemp) {
-			if (!strcmp(ftemp->fileName, fileName)) {
-				return ftemp;
-			ftemp = ftemp -> nextFile;
-			}
+	File* ftemp = fileChain;
+	while (ftemp) {
+		if (!strcmp(ftemp->fileName, fileName)) {
+			return ftemp;
+		ftemp = ftemp -> nextFile;
 		}
 	}
 	return nullptr;
