@@ -17,21 +17,17 @@ public:
 	BufferManager();
 	~BufferManager();
 	File* getFile(char* fileName); // fetch the file
-	File* createFile(char* fileName); // append a new file at the end of the list
 	Block* getBlock(char* fileName, Block* block); // fetch the block
 	Block* getNextBlock(char* fileName, Block* block); // fetch the next block
-	Block* createBlock(char* fileName); // append a new block at the end of the File
-	void writeOnetoDisk(char* fileName, Block* block); // write the block to the disk 
+	void wrireOnetoDisk(char* fileName, Block* block); // write the block to the disk 
 	void writeAlltoDisk(); // write all the blocks in the memory to the disk 
-	void setDirty(char* fileName, Block* block); // set the block's dirty to 1
+	void setDirty(File* fileName, Block* block); // set the block's dirty to 1
 	size_t LRUfind(); // find the block to be unloaded
-	void initFile(char* fileName);
-	void initBlock(Block* block);
 
 private:
 	int blockNum; // the number of blocks already loaded onto the memory
 	size_t curBlock; // the current block in the memory
-	Block** Memory; // the virtual memory
+	Block* Memory; // the virtual memory
 	File* fileChain; // all the file the system has
 };
 #endif
