@@ -48,7 +48,7 @@ Block* BufferManager::getBlock(char* fileName, Block* block) {
 		blockNum++;
 	} else { // if there is no space in the memory
 		size_t target = LRUfind();
-		writeOnetoDisk(Memory[target]);
+		writeOnetoDisk(Memory[target] -> fileName, Memory[target]);
 		Memory[target] = block;
 	}
 	return btemp;
@@ -62,5 +62,24 @@ Block* BufferManager::getNextBlock(char* fileName, Block* block) {
 void BufferManager::setDirty(char* fileName, Block* block) {
 	Block* btemp = getBlock(fileName, block);
 	btemp -> dirty = 1;
+
+}
+
+void BufferManager::initFile(char* fileName) { // initialize the File
+	File* ftemp = getFile(fileName);
+	ftemp -> nextFile = nullptr;
+	ftemp -> firstBlock = nullptr;
+}
+
+void BufferManager::initBlock(char* fileName, Block* block) {
+	Block* btemp = getBlock(fileName, block);
+	btemp -> dirty = 0;
+	btemp -> pin = 0;
+	btemp -> time = 0;
+	btemp -> nextBlock = nullptr;
+	btemp -> data = new char[BLOCK_SIZE];
+}
+
+File* createFile(char* fileName) {
 
 }

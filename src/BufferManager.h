@@ -26,11 +26,10 @@ public:
 	void setDirty(char* fileName, Block* block); // set the block's dirty to 1
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);
-	void initBlock(Block* block);
+	void initBlock(char* fileName, Block* block);
 
 private:
 	int blockNum; // the number of blocks already loaded onto the memory
-	size_t curBlock; // the current block in the memory
 	Block** Memory; // the virtual memory
 	File* fileChain; // all the file the system has
 };
