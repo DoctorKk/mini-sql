@@ -61,8 +61,20 @@ Block* BufferManager::getNextBlock(char* fileName, Block* block) {
 
 void BufferManager::setDirty(char* fileName, Block* block) {
 	Block* btemp = getBlock(fileName, block);
+	if (!btemp) { // if not found 
+		cerr << "File not found!" << endl;
+		return;
+	}
 	btemp -> dirty = 1;
+}
 
+void BufferManager::setPin(char* fileName, Block* block) {
+	Block* btemp = getBlock(fileName, block);
+	if (!btemp) { // if not found 
+		cerr << "File not found!" << endl;
+		return;
+	}
+	btemp -> pin = 1;
 }
 
 void BufferManager::initFile(char* fileName) { // initialize the File
@@ -80,6 +92,52 @@ void BufferManager::initBlock(char* fileName, Block* block) {
 	btemp -> data = new char[BLOCK_SIZE];
 }
 
-File* createFile(char* fileName) {
-	
+File* BufferManager::createFile(char* fileName) { // create a new file
+	File* ftemp = new File;
+	ftemp -> fileName = fileName;
+	if (!fileChain) { // if there is no file in the list
+		fileChain = ftemp;
+	} else {
+		while(fileChain -> nextFile != nullptr) {
+			fileChain = fileChain -> nextFile;
+		}
+		fileChain -> nextFile = ftemp;
+	}
+	initFile(fileName);
+	return ftemp;
+}
+
+Block* BufferManager::createBlock(char* fileName) { // create a new block
+	File* ftemp = getFile(fileName);
+	if (!ftemp) { // if not found
+		cerr << "File not found!" << endl;
+		return nullptr;
+	}		
+	Block* btemp = new Block;
+	Block* ptr = ftemp -> firstBlock; // the first block of the file
+	while (ptr -> nextBlock != nullptr) {
+		ptr = ptr -> nextBlock;
+	}
+	ptr -> nextBlock = btemp;
+	initBlock(fileName, btemp);
+	return btemp;
+}
+
+void BufferManager::writeOnetoDisk(char* fileName, Block* block) { // write the block to 
+	Block* btemp = getBlock(fileName, block);
+	if (!btemp) { // if not found
+		cerr << "Block not found!" << endl;
+		return;
+	}
+	if (btemp -> dirty == 0) // no need to write back
+		return;
+
+}
+
+
+
+// do not forget to update the LRU
+
+size_t BufferManager::LRUfind() { // notice that you can only find the blocks with pin is 0
+
 }

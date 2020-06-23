@@ -24,6 +24,7 @@ public:
 	void writeOnetoDisk(char* fileName, Block* block); // write the block to the disk 
 	void writeAlltoDisk(); // write all the blocks in the memory to the disk 
 	void setDirty(char* fileName, Block* block); // set the block's dirty to 1
+	void setPin(char* fileName, Block* block); // pin the block in the memory
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);
 	void initBlock(char* fileName, Block* block);
