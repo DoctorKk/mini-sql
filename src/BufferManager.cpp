@@ -9,7 +9,7 @@
 
 using namespace std;
 
-BufferManager::BufferManager(): blockNum(0), curBlock(0) {
+BufferManager::BufferManager(): blockNum(0){
 	Memory = new Block*[BUFFER_SIZE];
 	fileChain = nullptr;
 }
@@ -81,5 +81,5 @@ void BufferManager::initBlock(char* fileName, Block* block) {
 }
 
 File* createFile(char* fileName) {
-
+	
 }
