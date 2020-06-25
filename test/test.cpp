@@ -11,4 +11,8 @@ int main() {
 				cout << temp << endl;
 
 		}
+
+		ofstream tt("./hello.txt", ios::app);
+		char* test = "dslfhsdhlf";
+		tt << test;
 }

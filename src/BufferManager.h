@@ -26,8 +26,9 @@ public:
 	void setPin(Block* block); // pin the block in the memory
 	Block* createBlock(char* fileName); // append a new block at the end of the File
 
-	void writeOnetoDisk(char* fileName, Block* block); // write the block to the disk 
+	void writeBlocktoDisk(Block* block); // write the block to the disk 
 	void writeAlltoDisk(); // write all the blocks in the memory to the disk 
+	void writeFiletoDisk(File* file); // write the file to disk
 	File* loadFile(char* fileName); // load file from the disk
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);

@@ -62,7 +62,7 @@ Block* BufferManager::getBlock(char* fileName, Block* block) {
 		blockNum++;
 	} else { // if there is no space in the memory
 		size_t target = LRUfind();
-		writeOnetoDisk(Memory[target] -> fileName, Memory[target]); // this function actully does nothing
+		//writeOnetoDisk(Memory[target]); // this function actully does nothing
 		Memory[target] = block;
 		for (int j = 0; j < blockNum; j++) {
 			Memory[j] -> time += 1; // increase the time
@@ -131,16 +131,49 @@ void BufferManager::appendFile(File* file) { // append the file at the end of th
 }
 
 
+File* BufferManager::loadFile(char* fileName) { // load the file from the disk
+	File* ftemp = new File();
+	appendFile(ftemp);
+	initFile(fileName);
+
+
+
+	return ftemp;
+}
+
 // do not forget to update the LRU
-
 size_t BufferManager::LRUfind() { // notice that you can only find the blocks with pin is 0
-
+	int i = 0;
+	int maxi = 0;
+	for (; i < blockNum; i++) {
+		if (Memory[i] -> time > Memory[maxi] -> time) {
+			maxi = i;
+		}
+	}
+	return maxi;
 }
 
 void BufferManager::writeAlltoDisk() { // write everything to disk
+	File* ftemp = fileChain;
+	while (ftemp) {
+		writeFiletoDisk(ftemp);
+		ftemp = ftemp -> nextFile;
+	}
+	return;
 
 }
 
-void BufferManager::writeOnetoDisk(char* fileName, Block* block) { // this 
+void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
+	Block* btemp = file -> firstBlock;
+	while (btemp) {
+		if (btemp -> dirty)
+			writeBlocktoDisk(btemp);
+		btemp = btemp -> nextBlock;
+	}
 	return;
+}
+
+void BufferManager::writeBlocktoDisk(Block* block) { // write a block to disk 
+
+
 }
