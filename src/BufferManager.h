@@ -22,8 +22,8 @@ public:
 	Block* getFirstBlock(char* fileName, Block* block); // fetch the first block of the file
 	Block* getNextBlock(char* fileName, Block* block); // fetch the next block
 	Block* getLastBlock(char* fileName); // fetch the last block of the file
-	void setDirty(char* fileName, Block* block); // set the block's dirty to 1
-	void setPin(char* fileName, Block* block); // pin the block in the memory
+	void setDirty(Block* block); // set the block's dirty to 1
+	void setPin(Block* block); // pin the block in the memory
 	Block* createBlock(char* fileName); // append a new block at the end of the File
 
 	void writeOnetoDisk(char* fileName, Block* block); // write the block to the disk 
@@ -31,7 +31,8 @@ public:
 	File* loadFile(char* fileName); // load file from the disk
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);
-	void initBlock(char* fileName, Block* block);
+	void initBlock(Block* block);
+	void appendFile(File* file);
 
 private:
 	Block* getBlock(char* fileName, Block* block); // fetch the block

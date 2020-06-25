@@ -18,11 +18,11 @@ using namespace std;
 
 struct Block {
 
-	size_t offset; // the offset of the block
 	char* fileName; // the file the block belongs to 
 	bool dirty; // whether it is dirty: 0 -> clean; 1 -> dirty
 	bool pin; // the lock: 0 -> locked; 1 -> unlocked
 	int time; // LRU
+	int blockSize; // the size of the block
 	Block* nextBlock; // next block
 	char* data; // the data contained in the block
 	
