@@ -16,20 +16,25 @@ class BufferManager {
 public:
 	BufferManager();
 	~BufferManager();
+
+	// the functions record manager can use	
 	File* getFile(char* fileName); // fetch the file
-	File* createFile(char* fileName); // append a new file at the end of the list
-	Block* getBlock(char* fileName, Block* block); // fetch the block
+	Block* getFirstBlock(char* fileName, Block* block); // fetch the first block of the file
 	Block* getNextBlock(char* fileName, Block* block); // fetch the next block
-	Block* createBlock(char* fileName); // append a new block at the end of the File
-	void writeOnetoDisk(char* fileName, Block* block); // write the block to the disk 
-	void writeAlltoDisk(); // write all the blocks in the memory to the disk 
+	Block* getLastBlock(char* fileName); // fetch the last block of the file
 	void setDirty(char* fileName, Block* block); // set the block's dirty to 1
 	void setPin(char* fileName, Block* block); // pin the block in the memory
+	Block* createBlock(char* fileName); // append a new block at the end of the File
+
+	void writeOnetoDisk(char* fileName, Block* block); // write the block to the disk 
+	void writeAlltoDisk(); // write all the blocks in the memory to the disk 
+	File* loadFile(char* fileName); // load file from the disk
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);
 	void initBlock(char* fileName, Block* block);
 
 private:
+	Block* getBlock(char* fileName, Block* block); // fetch the block
 	int blockNum; // the number of blocks already loaded onto the memory
 	Block** Memory; // the virtual memory
 	File* fileChain; // all the file the system has
