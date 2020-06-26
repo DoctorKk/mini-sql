@@ -8,6 +8,7 @@
 #include"BufferManager.h"
 #include<iostream>
 #include<fstream>
+#include<cstdio>
 
 using namespace std;
 
@@ -130,15 +131,6 @@ void BufferManager::appendFile(File* file) { // append the file at the end of th
 	ftemp -> nextFile = file;
 	return;
 
-}
-
-Block* loadBlock(Block* block) { // load the block from disk
-	Block* btemp;
-
-
-
-
-	return btemp;
 }
 
 File* BufferManager::loadFile(char* fileName) { // load the file from disk
