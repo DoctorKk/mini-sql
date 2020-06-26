@@ -30,7 +30,6 @@ struct Block {
 struct File {
 
 	char* fileName; // the name of the file
-	int recordSize; // the size of one record
 	int type; // 0 -> data file; 1 -> index file; 2 -> catalog file
 	Block* firstBlock; // the file's first block
 	File* nextFile; // next file
