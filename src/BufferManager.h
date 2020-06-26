@@ -27,9 +27,10 @@ public:
 	Block* createBlock(char* fileName); // append a new block at the end of the File
 
 	void writeBlocktoDisk(Block* block); // write the block to the disk 
-	void writeAlltoDisk(); // write all the blocks in the memory to the disk 
 	void writeFiletoDisk(File* file); // write the file to disk
+	void writeAlltoDisk(); // write everything in the memory to the disk 
 	File* loadFile(char* fileName); // load file from the disk
+	Block* loadBlock(Block* block); // load block from the disk
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);
 	void initBlock(Block* block);

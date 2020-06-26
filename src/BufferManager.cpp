@@ -6,6 +6,8 @@
 
 #include"minisql.h"
 #include"BufferManager.h"
+#include<iostream>
+#include<fstream>
 
 using namespace std;
 
@@ -130,8 +132,16 @@ void BufferManager::appendFile(File* file) { // append the file at the end of th
 
 }
 
+Block* loadBlock(Block* block) { // load the block from disk
+	Block* btemp;
 
-File* BufferManager::loadFile(char* fileName) { // load the file from the disk
+
+
+
+	return btemp;
+}
+
+File* BufferManager::loadFile(char* fileName) { // load the file from disk
 	File* ftemp = new File();
 	appendFile(ftemp);
 	initFile(fileName);
@@ -166,7 +176,7 @@ void BufferManager::writeAlltoDisk() { // write everything to disk
 void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
 	Block* btemp = file -> firstBlock;
 	while (btemp) {
-		if (btemp -> dirty)
+		if (btemp -> dirty) // if it is dirty
 			writeBlocktoDisk(btemp);
 		btemp = btemp -> nextBlock;
 	}
@@ -174,6 +184,9 @@ void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
 }
 
 void BufferManager::writeBlocktoDisk(Block* block) { // write a block to disk 
-
-
+	string Path("./data");
+	Path += block -> fileName;
+	ofstream out(Path, ios::app);
+	out << block -> data;
+	out.close();
 }
