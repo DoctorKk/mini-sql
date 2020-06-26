@@ -19,22 +19,23 @@ public:
 
 	// the functions record manager can use	
 	File* getFile(char* fileName); // fetch the file
-	Block* getFirstBlock(char* fileName, Block* block); // fetch the first block of the file
+	Block* getFirstBlock(char* fileName); // fetch the first block of the file
 	Block* getNextBlock(char* fileName, Block* block); // fetch the next block
 	Block* getLastBlock(char* fileName); // fetch the last block of the file
 	void setDirty(Block* block); // set the block's dirty to 1
 	void setPin(Block* block); // pin the block in the memory
 	Block* createBlock(char* fileName); // append a new block at the end of the File
+	void deleteFile(char* fileName); // delete file
 
 	void writeBlocktoDisk(Block* block); // write the block to the disk 
 	void writeFiletoDisk(File* file); // write the file to disk
 	void writeAlltoDisk(); // write everything in the memory to the disk 
 	File* loadFile(char* fileName); // load file from the disk
-	Block* loadBlock(Block* block, int startPoint); // load block from the disk
 	size_t LRUfind(); // find the block to be unloaded
 	void initFile(char* fileName);
-	void initBlock(Block* block);
+	void initBlock(Block* block, char* fileName);
 	void appendFile(File* file);
+	void deleteBlock(char* fileName); // delete all the blocks the file has
 
 private:
 	Block* getBlock(char* fileName, Block* block); // fetch the block

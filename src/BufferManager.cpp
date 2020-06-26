@@ -76,6 +76,16 @@ Block* BufferManager::getBlock(char* fileName, Block* block) {
 	return btemp;
 }
 
+Block* BufferManager::getFirstBlock(char* fileName) {
+	File* ftemp = getFile(fileName);
+	if (!ftemp) { // if not found
+		cerr << "File not found!" << endl;
+		return nullptr;
+	}
+	return ftemp -> firstBlock;
+
+}
+
 Block* BufferManager::getNextBlock(char* fileName, Block* block) {
 	return getBlock(fileName, block->nextBlock);
 }
@@ -96,7 +106,8 @@ void BufferManager::initFile(char* fileName) { // initialize the File
 	ftemp -> firstBlock = nullptr;
 }
 
-void BufferManager::initBlock(Block* block) {
+void BufferManager::initBlock(Block* block, char* fileName) {
+	block -> fileName = fileName;
 	block -> dirty = 0;
 	block -> pin = 0;
 	block -> time = 0;
@@ -117,7 +128,7 @@ Block* BufferManager::createBlock(char* fileName) { // create a new block
 		ptr = ptr -> nextBlock;
 	}
 	ptr -> nextBlock = btemp;
-	initBlock(btemp);
+	initBlock(btemp, fileName);
 	return getBlock(fileName, btemp);
 }
 
@@ -137,7 +148,51 @@ File* BufferManager::loadFile(char* fileName) { // load the file from disk
 	File* ftemp = new File();
 	appendFile(ftemp);
 	initFile(fileName);
+	string Path = "data";
+	string Path2(fileName);
+	Path += Path2;
+	ifstream in(Path);
+	if (!in) { // if fails
+		cerr << "No file named" << fileName << "exists" << endl;
+		return nullptr;
+	}
+	string total;
+	string temp;
+	int blockSize = 0;
+	int recordSize = 0;
+	Block* cur;
+	Block* pre;
+	bool flag = true; // to indicate if it is the first block
 
+	// compute the recordSize
+	getline(in, temp);
+	recordSize = temp.size();
+	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to substract the first one)
+
+	in.seekg(0, ios::beg); // move the pointer back to the beginning
+	while (!in.eof()) {
+			for (int i = 0; i < recordNum; i++) {
+			if (in.eof())
+				break;
+			getline(in, temp);
+			total.append(temp);
+			recordSize += temp.size();
+		}
+		cur = new Block();
+		initBlock(cur, fileName);
+		cur -> fileName = fileName;
+		cur -> data = (char*)total.c_str();
+		cur -> blockSize = recordSize;
+		if (flag) {
+			ftemp -> firstBlock = cur;
+			flag = false;
+		} else
+			pre -> nextBlock = cur;
+		pre = cur;
+		temp.clear();
+		total.clear();
+		recordSize = 0;
+	}
 
 
 	return ftemp;
@@ -176,9 +231,56 @@ void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
 }
 
 void BufferManager::writeBlocktoDisk(Block* block) { // write a block to disk 
-	string Path("./data");
+	string Path("./data/");
 	Path += block -> fileName;
 	ofstream out(Path, ios::app);
 	out << block -> data;
 	out.close();
+}
+
+void BufferManager::deleteFile(char* fileName) { // delete the file
+	string Path("./data/");
+	Path += fileName;
+	if (!remove((char*)Path.c_str())) {
+		cerr << "Deletion Faiure!" << endl;
+		return;
+	}
+
+	// delete the blocks in the memory
+	for (int i = 0; i < blockNum; i++) {
+		if (Memory[i] -> fileName == fileName) { // if found
+			Memory[i] = nullptr;
+		}
+	}
+
+	// delete all the blocks the file has
+	deleteBlock(fileName);
+
+	// delete the file
+	File* pre;
+	File* cur;
+	File* ftemp; // for deletion
+	pre = cur = fileChain;
+	while (cur) {
+		if (cur -> fileName == fileName) { // if it is the file, delete it
+			ftemp = cur;
+			pre -> nextFile = cur -> nextFile;
+			delete ftemp;
+			return;
+		} else {
+			pre = cur;
+		}
+		cur = cur -> nextFile;
+	}
+}
+
+void BufferManager::deleteBlock(char* fileName) {
+	File* ftemp = getFile(fileName);
+	Block* cur = ftemp -> firstBlock;
+	Block* btemp = cur;
+	while (cur) {
+		btemp = cur;
+		cur = cur -> nextBlock;
+		delete btemp;
+	}
 }

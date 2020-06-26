@@ -1,10 +1,11 @@
 #include<iostream>
 #include<fstream>
+#include<string>
 
 using namespace std;
 
 int main() {
-		ifstream shit("~/fuck");
-		if (!shit)
-				cout << "shit!" << endl;
+		char* test = "shjiot";
+		string shit("holu");
+		cout << shit + test << endl;
 }
