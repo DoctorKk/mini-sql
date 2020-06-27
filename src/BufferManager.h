@@ -32,7 +32,7 @@ public:
 	void writeAlltoDisk(); // write everything in the memory to the disk 
 	File* loadFile(char* fileName); // load file from the disk
 	size_t LRUfind(); // find the block to be unloaded
-	void initFile(char* fileName);
+	void initFile(char* fileName, File* file);
 	void initBlock(Block* block, char* fileName);
 	void appendFile(File* file);
 	void deleteBlock(char* fileName); // delete all the blocks the file has

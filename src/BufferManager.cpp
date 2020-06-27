@@ -27,8 +27,8 @@ File* BufferManager::getFile(char* fileName) {
 	while (ftemp) {
 		if (!strcmp(ftemp->fileName, fileName)) {
 			return ftemp;
-		ftemp = ftemp -> nextFile;
 		}
+        ftemp = ftemp -> nextFile;
 	}
 	// when not found
 	ftemp = loadFile(fileName); // load the file to the fileChain
@@ -100,10 +100,11 @@ void BufferManager::setPin(Block* block) {
 	return;
 }
 
-void BufferManager::initFile(char* fileName) { // initialize the File
-	File* ftemp = getFile(fileName);
-	ftemp -> nextFile = nullptr;
-	ftemp -> firstBlock = nullptr;
+void BufferManager::initFile(char* fileName, File* file) { // initialize the File
+	file -> nextFile = nullptr;
+	file -> firstBlock = nullptr;
+	file -> fileName = fileName;
+	return;
 }
 
 void BufferManager::initBlock(Block* block, char* fileName) {
@@ -135,27 +136,29 @@ Block* BufferManager::createBlock(char* fileName) { // create a new block
 void BufferManager::appendFile(File* file) { // append the file at the end of the fileChain
 	if (!fileChain) // the fileChain is empty
 		fileChain = file;
-	File* ftemp = fileChain;
-	while (ftemp -> nextFile) {
-		ftemp = ftemp -> nextFile;
+	else {
+        File* ftemp = fileChain;
+        while (ftemp -> nextFile) {
+            ftemp = ftemp -> nextFile;
+        }
+        ftemp -> nextFile = file;
 	}
-	ftemp -> nextFile = file;
 	return;
 
 }
 
 File* BufferManager::loadFile(char* fileName) { // load the file from disk
+    string Path = "../data/";
+    string Path2(fileName);
+    Path += Path2;
+    ifstream in(Path);
+    if (!in) { // if fails
+        cerr << "No file named " << fileName << " exists" << endl;
+        return nullptr;
+    }
 	File* ftemp = new File();
 	appendFile(ftemp);
-	initFile(fileName);
-	string Path = "data";
-	string Path2(fileName);
-	Path += Path2;
-	ifstream in(Path);
-	if (!in) { // if fails
-		cerr << "No file named" << fileName << "exists" << endl;
-		return nullptr;
-	}
+	initFile(fileName, ftemp);
 	string total;
 	string temp;
 	int blockSize = 0;
