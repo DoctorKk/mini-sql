@@ -15,7 +15,7 @@ class Attribute
 {
 public:
     string name;
-    int type;              //-1为float，0为int，其余整数对应varchar(type)    
+    int type, size;              //-1为float，0为int，其余整数对应varchar(type)    
     bool ifUnique;          //是否唯一
     string index;    
          
