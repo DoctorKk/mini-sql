@@ -6,9 +6,11 @@
 
 #include"minisql.h"
 #include"BufferManager.h"
+#include"catalog.h"
 #include<iostream>
 #include<fstream>
 #include<cstdio>
+
 
 using namespace std;
 
@@ -160,7 +162,7 @@ File* BufferManager::loadFile(char* fileName) { // load the file from disk
 	appendFile(ftemp);
 	initFile(fileName, ftemp);
 	string total;
-	string temp;
+	char* temp;
 	int blockSize = 0;
 	int recordSize = 0;
 	Block* cur;
@@ -168,31 +170,32 @@ File* BufferManager::loadFile(char* fileName) { // load the file from disk
 	bool flag = true; // to indicate if it is the first block
 
 	// compute the recordSize
-	getline(in, temp);
-	recordSize = temp.size();
-	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to substract the first one)
+	Catalog ctemp;
+	recordSize = ctemp.calculateLength(fileName);
+	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to subtract the first one)
 
-	in.seekg(0, ios::beg); // move the pointer back to the beginning
 	while (!in.eof()) {
 			for (int i = 0; i < recordNum; i++) {
 			if (in.eof())
 				break;
-			getline(in, temp);
+			temp = new char[recordSize];
+			in.read(temp, recordSize);
 			total.append(temp);
-			recordSize += temp.size();
+			blockSize += recordSize;
 		}
 		cur = new Block();
 		initBlock(cur, fileName);
 		cur -> fileName = fileName;
 		cur -> data = (char*)total.c_str();
-		cur -> blockSize = recordSize;
+		cur -> blockSize = blockSize;
 		if (flag) {
 			ftemp -> firstBlock = cur;
 			flag = false;
 		} else
 			pre -> nextBlock = cur;
 		pre = cur;
-		temp.clear();
+		delete temp;
+		temp = new char[recordSize];
 		total.clear();
 		recordSize = 0;
 	}
