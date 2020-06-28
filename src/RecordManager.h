@@ -1,7 +1,7 @@
 /*
  * @Author: 小文
  * @Date: 2020-06-21 15:26:20
- * @LastEditTime: 2020-06-26 22:43:35
+ * @LastEditTime: 2020-06-28 12:10:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\RecordManager.h
@@ -10,6 +10,7 @@
 #include"Condition.h"
 #include"minisql.h"
 #include"BufferManager.h"
+#include"catalog.h"
 #include<string>
 #include<vector>
 
@@ -20,10 +21,9 @@ class RecordManager
 public:
     RecordManager() {}
     BufferManager buffer;
-    
-    //obviously
-    int table_create(string tableName);
-    int table_drop(string tableName);
+    Catalog catlog;
+    //int table_create(string tableName);
+    //int table_drop(string tableName);
 
     int index_drop(string indexName);
     int index_create(string indexName);
@@ -42,6 +42,10 @@ public:
 private:
     
     int record_blockshow(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector, Block* block);
-    int record_blockdelete(string tableName, vector<Condition> *conditionVector, int blockOffset);
+    int record_blockdelete(string tableName, vector<Condition> *conditionVector, Block* block);
+    bool record_conditionfit(char *recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<Condition> *conditionVector);
+    bool content_conditionfit(char *content, int type, Condition *condition);
+    void record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<string> *attributeNameVector);
+    void content_print(char *content, int type);
 };
 
