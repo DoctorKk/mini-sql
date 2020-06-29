@@ -3,7 +3,7 @@
  * @Date: 2020-06-29 22:44:49
  * @LastEditTime: 2020-06-30 04:52:43
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @Description: index manage
  * @FilePath: \新建文件夹\mini-sql-master\src\IndexManager.h
  */
 
