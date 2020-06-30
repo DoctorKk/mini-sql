@@ -10,7 +10,7 @@
 #include"Condition.h"
 #include"minisql.h"
 #include"BufferManager.h"
-#include"catalog.h"
+#include"CatalogManager.h"
 #include<string>
 #include<vector>
 
@@ -21,7 +21,7 @@ class RecordManager
 public:
     RecordManager() {}
     BufferManager buffer;
-    Catalog catlog;
+    Catalog catalog;
     //int table_create(string tableName);
     //int table_drop(string tableName);
 

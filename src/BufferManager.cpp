@@ -6,7 +6,7 @@
 
 #include"minisql.h"
 #include"BufferManager.h"
-#include"catalog.h"
+#include"CatalogManager.h"
 #include<iostream>
 #include<fstream>
 #include<cstdio>
@@ -105,12 +105,12 @@ void BufferManager::setPin(Block* block) {
 void BufferManager::initFile(const char* fileName, File* file) { // initialize the File
 	file -> nextFile = nullptr;
 	file -> firstBlock = nullptr;
-	file -> fileName = fileName;
+	file -> fileName = (char*)fileName;
 	return;
 }
 
 void BufferManager::initBlock(Block* block, const char* fileName) {
-	block -> fileName = fileName;
+	block -> fileName = (char*)fileName;
 	block -> dirty = 0;
 	block -> pin = 0;
 	block -> time = 0;
@@ -185,7 +185,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 		}
 		cur = new Block();
 		initBlock(cur, fileName);
-		cur -> fileName = fileName;
+		cur -> fileName = (char*)fileName;
 		cur -> data = (char*)total.c_str();
 		cur -> blockSize = blockSize;
 		if (flag) {

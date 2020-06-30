@@ -8,7 +8,7 @@
  */ 
 
 #include"RecordManager.h"
-#include"Catalog.h"
+#include"CatalogManager.h"
 
 /*
 ************** Already in catalog **************
@@ -120,9 +120,9 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
     char *recordBegin = block->data;
     vector<Attribute> attributeVector;
 
-    catalog->attributeGet(tableName, &attributeVector);
+    catalog.attributeGet(tableName, &attributeVector);
     
-    int recordSize = attributeVector.size;
+    int recordSize = attributeVector.size();
 
     while (recordBegin - block->data < block->blockSize)
     {
@@ -165,11 +165,11 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     vector<Attribute> at;
 
     catalog.attributeGet(tableName, &at);
-    int record_size = at.size;
+    int record_size = at.size();
 
-    char* begin = block.data;
+    char* begin = block -> data;
 
-    while(begin < block.blockSize){
+    while(begin < block -> blockSize){
 
         if (record_conditionfit(begin, record_size, &at, conditionVector)){
             count++;
