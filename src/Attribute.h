@@ -14,6 +14,8 @@ using namespace std;
 class Attribute
 {
 public:
+    int static const TYPE_FLOAT = -1;
+    int static const TYPE_INT = 0;
     string name;
     int type, size;              //-1为float，0为int，其余整数对应varchar(type)    
     bool ifUnique;          //是否唯一
