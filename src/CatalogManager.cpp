@@ -597,6 +597,31 @@ int Catalog::calculateLength2(int type) {
     }
 }
 
+/* 3.get offset */
+/* if attributeName exist,return size */
+/* else return 0 */
+int Catalog::getoffset(string tableName, string attributeName) {
+    
+    vector<Attribute> attributeVector;
+
+    attributeGet(tableName, &attributeVector);
+
+    int size = 0,i;
+    for (i = 0; i < attributeVector.size(); i++) {
+        cout << attributeVector[i].getName() << endl;
+        if (attributeVector[i].getName() == attributeName) {
+            break;
+        }
+        int type = attributeVector[i].getType();
+        size += calculateLength2(type);
+    }
+    
+    if (i == attributeVector.size())
+        return 0;
+    else
+        return size;
+}
+
 /* print the operation result */
 void Catalog::print(int i) {
     switch (i) {
