@@ -1,7 +1,7 @@
 /*
  * @Author: 小文
  * @Date: 2020-06-21 15:26:33
- * @LastEditTime: 2020-06-30 18:49:48
+ * @LastEditTime: 2020-06-30 19:10:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\RecordManger.cpp
@@ -120,11 +120,11 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
     char *recordBegin = block->data;
     vector<Attribute> attributeVector;
 
-    catalog.attributeGet(tableName, &attributeVector);
+    catalog->attributeGet(tableName, &attributeVector);
     
-    int recordSize = attributeVector.size();
+    int recordSize = attributeVector.size;
 
-    while (recordBegin - block->data < block->blockSize)
+    while (recordBegin - block->data < block->data + block->blockSize)
     {
         //if the recordBegin point to a record
 
@@ -165,11 +165,11 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     vector<Attribute> at;
 
     catalog.attributeGet(tableName, &at);
-    int record_size = at.size();
+    int record_size = at.size;
 
-    char* begin = block -> data;
+    char* begin = block->data;
 
-    while(begin < block -> blockSize){
+    while(begin < block->data + block->blockSize){
 
         if (record_conditionfit(begin, record_size, &at, conditionVector)){
             count++;
@@ -287,10 +287,6 @@ void RecordManager::content_print(char * content, int type)
         printf("%s ", tmp.c_str());
     }
 }
-
-
-
-
 
 bool RecordManager::content_conditionfit(char *content, int type, Condition *condition)
 {
