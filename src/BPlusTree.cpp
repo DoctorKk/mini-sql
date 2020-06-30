@@ -74,7 +74,7 @@ CInternalNode<KEY_TYPE>::CInternalNode()
     int i = 0;
     for (i = 0; i < MAXNUM_KEY; i++)
     {
-        m_Keys[i] = INVALID;
+        //m_Keys[i] = INVALID;
     }
 
     for (i = 0; i < MAXNUM_POINTER; i++)
@@ -148,7 +148,7 @@ bool CInternalNode<KEY_TYPE>::Delete(KEY_TYPE key)
     {
         m_Keys[j] = m_Keys[j + 1];
     }
-    m_Keys[j] = INVALID;
+    //m_Keys[j] = INVALID;
 
     for (k = i; k < CNode<KEY_TYPE>::m_Count; k++)
     {
@@ -184,7 +184,7 @@ KEY_TYPE CInternalNode<KEY_TYPE>::Split(CInternalNode* pNode, KEY_TYPE key)  //k
         {
             j++;
             pNode->SetElement(j, this->GetElement(i));
-            this->SetElement(i, INVALID);
+            //this->SetElement(i, INVALID);
         }
 
         // 把第V+2 -- 2V+1个指针移到指定的结点中
@@ -194,7 +194,7 @@ KEY_TYPE CInternalNode<KEY_TYPE>::Split(CInternalNode* pNode, KEY_TYPE key)  //k
             j++;
             this->GetPointer(i)->SetFather(pNode);    // 重新设置子结点的父亲
             pNode->SetPointer(j, this->GetPointer(i));
-            this->SetPointer(i, INVALID);
+            //this->SetPointer(i, INVALID);
         }
 
         // 设置好Count个数
@@ -227,7 +227,7 @@ KEY_TYPE CInternalNode<KEY_TYPE>::Split(CInternalNode* pNode, KEY_TYPE key)  //k
     {
         j++;
         pNode->SetElement(j, this->GetElement(i));
-        this->SetElement(i, INVALID);
+        //this->SetElement(i, INVALID);
     }
 
     // 把第position+1 -- 2V+1个指针移到指定的结点中(注意指针比键多一个)
@@ -237,11 +237,11 @@ KEY_TYPE CInternalNode<KEY_TYPE>::Split(CInternalNode* pNode, KEY_TYPE key)  //k
         j++;
         this->GetPointer(i)->SetFather(pNode);    // 重新设置子结点的父亲
         pNode->SetPointer(j, this->GetPointer(i));
-        this->SetPointer(i, INVALID);
+        //this->SetPointer(i, INVALID);
     }
 
     // 清除提取出的位置
-    this->SetElement(position, INVALID);
+    //this->SetElement(position, INVALID);
 
     // 设置好Count个数
     this->SetCount(position - 1);
@@ -311,8 +311,8 @@ bool CInternalNode<KEY_TYPE>::MoveOneElement(CNode<KEY_TYPE>* pNode)
         m_Pointers[0] = pNode->GetPointer(pNode->GetCount() + 1);
 
         // 修改兄弟结点
-        pNode->SetElement(pNode->GetCount(), INVALID);
-        pNode->SetPointer(pNode->GetCount() + 1, INVALID);
+        //pNode->SetElement(pNode->GetCount(), INVALID);
+        //pNode->SetPointer(pNode->GetCount() + 1, INVALID);
     }
     else    // 兄弟结点在本结点右边
     {
@@ -348,7 +348,7 @@ CLeafNode<KEY_TYPE>::CLeafNode()
 
     for (int i = 0; i < MAXNUM_DATA; i++)
     {
-        m_Datas[i].second = INVALID;
+        //m_Datas[i].second = INVALID;
     }
 
     m_pPrevNode = NULL;
@@ -419,8 +419,8 @@ bool CLeafNode<KEY_TYPE>::Delete(KEY_TYPE value)
         m_Datas[j].first = m_Datas[j + 1].first;
     }
 
-    m_Datas[j].second = INVALID;
-    m_Datas[j].first = INVALID;
+    //m_Datas[j].second = INVALID;
+    m_Datas[j].first = 0;
     CNode<KEY_TYPE>::m_Count--;
 
     // 返回成功
@@ -439,8 +439,8 @@ KEY_TYPE CLeafNode<KEY_TYPE>::Split(CNode<KEY_TYPE>* pNode)
         j++;
         pNode->SetElement(j, this->GetElement(i));
         pNode->SetElementOffset(j, this->GetElementOffset(i));
-        this->SetElement(i, INVALID);
-        this->SetElementOffset(i, INVALID);
+        //this->SetElement(i, INVALID);
+        this->SetElementOffset(i, 0);
     }
     // 设置好Count个数
     this->SetCount(this->GetCount() - j);
@@ -489,7 +489,7 @@ BPlusTree<KEY_TYPE>::~BPlusTree()
 
 // 在树中查找数据
 template <class KEY_TYPE>
-KEY_TYPE BPlusTree<KEY_TYPE>::Search(KEY_TYPE data)
+int BPlusTree<KEY_TYPE>::Search(KEY_TYPE data)
 {
     int i = 0;
 
@@ -512,7 +512,7 @@ KEY_TYPE BPlusTree<KEY_TYPE>::Search(KEY_TYPE data)
         pNode = pNode->GetPointer(i);
     }
 
-    KEY_TYPE answer=INT_MIN;
+    int answer = INT_MIN;
     // 没找到
     if (NULL == pNode)
     {
@@ -545,7 +545,7 @@ template <class KEY_TYPE>
 bool BPlusTree<KEY_TYPE>::Insert(pair<int, KEY_TYPE> data)  //
 {
     // 检查是否重复插入
-    KEY_TYPE found = Search(data.second);
+    int found = Search(data.second);
     if (found != INT_MIN)
     {
         return false;
@@ -937,7 +937,8 @@ void BPlusTree<KEY_TYPE>::PrintNode(CNode<KEY_TYPE>* pNode)
 
     for (int i = 1; i <= MAXNUM_KEY; i++)
     {
-        printf("%3d ", pNode->GetElement(i));
+        //printf("%3d ", pNode->GetElement(i));
+        cout << pNode->GetElement(i) << " " << flush;
         if (i >= MAXNUM_KEY)
         {
             printf(" | ");

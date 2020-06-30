@@ -45,7 +45,7 @@ public:
     virtual KEY_TYPE GetElement(int i) {return 0;}
     virtual int GetElementOffset(int i) {return 0;}
     virtual void SetElement(int i, KEY_TYPE value) { }
-    virtual void SetElementOffset(int i, KEY_TYPE value) {}
+    virtual void SetElementOffset(int i, int value) {}
 
     // 获取和设置某个指针，对中间结点指指针，对叶子结点无意义
     virtual CNode* GetPointer(int i) {return NULL;}
@@ -89,7 +89,8 @@ public:
         }
         else
         {
-            return INVALID;
+            KEY_TYPE nothing;
+            return nothing;
         }
     }
 
@@ -159,7 +160,8 @@ public:
         }
         else
         {
-            return INVALID;
+            KEY_TYPE nothing;
+            return nothing;
         }
     }
 
@@ -182,7 +184,7 @@ public:
         }
     }
 
-    void SetElementOffset(int i, KEY_TYPE data)
+    void SetElementOffset(int i, int data)
     {
         if ((i > 0 ) && (i <= MAXNUM_DATA))
         {
@@ -227,7 +229,7 @@ public:
     virtual ~BPlusTree();
 
     // 查找指定的数据
-    KEY_TYPE Search(KEY_TYPE data);
+    int Search(KEY_TYPE data);
     // 插入指定的数据
     bool Insert(pair<int, KEY_TYPE> data);
     // 删除指定的数据
