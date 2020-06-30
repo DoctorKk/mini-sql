@@ -49,6 +49,7 @@ public:
     //get length
     int calculateLength(string tableName);
     int calculateLength2(int type);
+    int getoffset(string tableName, string attributeName);
 
     //void recordStringGet(string tableName, vector<string>* recordContent, char* recordResult); 
     void print(int i);
