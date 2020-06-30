@@ -529,7 +529,8 @@ int Catalog::indexNameListGet(string tableName, vector<string>* indexNameVector)
 }
 
 /* 7.index type is one-bit positive integers */
-/* return index type */
+/* if exist, return index type (>= 0 )*/
+/* else return -1 */
 int Catalog::getIndexType(string indexName) {
     FILE* fp;
     string table = "Index.txt";
@@ -539,7 +540,7 @@ int Catalog::getIndexType(string indexName) {
 
     char buff[BUF_SIZE] = { 0 };
     int len_buff, len_index = strlen(indexName.c_str());
-    int type = 0;
+    int type = -1;
 
     while (fgets(buff, BUF_SIZE, fp) != NULL)
     {
