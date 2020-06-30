@@ -123,8 +123,9 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
     catalog.attributeGet(tableName, &attributeVector);
     
     int recordSize = attributeVector.size();
-
-    while (recordBegin - block->data < block->data + block->blockSize)
+    int begin = 0;
+    
+    while (begin < block->blockSize)
     {
         //if the recordBegin point to a record
 
@@ -135,7 +136,7 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
             //api->recordIndexDelete(recordBegin, recordSize, &attributeVector, block->offsetNum);
             int i = 0;
             
-            for (i = 0; i + recordSize + recordBegin < block->blockSize + block->data; i++)
+            for (i = 0; i + recordSize + begin < block->blockSize; i++)
             {
                 recordBegin[i] = recordBegin[i + recordSize];
             }
@@ -146,6 +147,7 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
         else
         {
             recordBegin += recordSize;
+            begin += recordSize;
         }
     }
 
@@ -161,22 +163,23 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     }
     
     int count = 0;
-
+    int begin = 0;
     vector<Attribute> at;
 
     catalog.attributeGet(tableName, &at);
     int record_size = at.size();
 
-    char* begin = block->data;
+    char* recordbegin = block->data;
 
-    while(begin < block->data + block->blockSize){
+    while(begin < block->blockSize){
 
-        if (record_conditionfit(begin, record_size, &at, conditionVector)){
+        if (record_conditionfit(recordbegin, record_size, &at, conditionVector)){
             count++;
-            record_print(begin, record_size, &at, attributeNameVector);
+            record_print(recordbegin, record_size, &at, attributeNameVector);
             printf("\n");
         }
-        begin+=record_size;
+        recordbegin+=record_size;
+        begin += record_size;
     }
     return count;
 
