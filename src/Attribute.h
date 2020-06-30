@@ -18,7 +18,7 @@ public:
     int static const TYPE_INT = 0;
     string name;
     int type, size;              //-1为float，0为int，其余整数对应varchar(type)    
-    bool ifUnique;          //是否唯一
+    bool ifUnique;          //1为unique, 0不unique
     string index;    
          
     Attribute(string n, int t, bool i){
