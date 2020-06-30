@@ -120,9 +120,9 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
     char *recordBegin = block->data;
     vector<Attribute> attributeVector;
 
-    catalog->attributeGet(tableName, &attributeVector);
+    catalog.attributeGet(tableName, &attributeVector);
     
-    int recordSize = attributeVector.size;
+    int recordSize = attributeVector.size();
 
     while (recordBegin - block->data < block->data + block->blockSize)
     {
@@ -141,7 +141,7 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
             }
             memset(recordBegin + i, 0, recordSize);
             block->blockSize = block->blockSize-recordSize;
-            buffer.set_dirty(block);
+            buffer.setDirty(block);
         }
         else
         {
@@ -165,7 +165,7 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     vector<Attribute> at;
 
     catalog.attributeGet(tableName, &at);
-    int record_size = at.size;
+    int record_size = at.size();
 
     char* begin = block->data;
 
