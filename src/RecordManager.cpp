@@ -1,14 +1,14 @@
 /*
  * @Author: 小文
  * @Date: 2020-06-21 15:26:33
- * @LastEditTime: 2020-06-28 12:37:37
+ * @LastEditTime: 2020-06-30 18:49:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\RecordManger.cpp
  */ 
 
-#include"RecordManager.h"
-#include"Catalog.h"
+#include "RecordManager.h"
+#include "CatalogManager.h"
 
 /*
 ************** Already in catalog **************
@@ -193,7 +193,15 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
     for(int i = 0; i < attributeVector->size(); i++){
         type = (*attributeVector)[i].type;
         
-        typeSize = api->typeSizeGet(type);
+        if(type==-1){
+            typeSize = sizeof(float);
+        }
+        else if(type==0){
+            typeSize = sizeof(int);
+        }
+        else{
+            typeSize = type + 1;
+        }
 
         memset(content, 0, 255);
 
@@ -223,8 +231,19 @@ bool RecordManager::record_conditionfit(char *recordBegin, int recordSize, vecto
     {
         type = (*attributeVector)[i].type;
         attributeName = (*attributeVector)[i].name;
-        
-        typeSize = api->typeSizeGet(type);
+
+        if (type == -1)
+        {
+            typeSize = sizeof(float);
+        }
+        else if (type == 0)
+        {
+            typeSize = sizeof(int);
+        }
+        else
+        {
+            typeSize = type + 1;
+        }
 
         //init content (when content is string , we can get a string easily)
         memset(content, 0, 255);
@@ -294,10 +313,3 @@ bool RecordManager::content_conditionfit(char *content, int type, Condition *con
     }
     return true;
 }
-
-int recordAllFind(string tableName, vector<Condition> *conditionVector);
-
-int recordAllDelete(string tableName, vector<Condition> *conditionVector);
-int recordBlockDelete(string tableName, vector<Condition> *conditionVector, int blockOffset);
-
-int indexRecordAllAlreadyInsert(string tableName, string indexName);
