@@ -24,7 +24,7 @@ BufferManager::~BufferManager() {
 	delete[] Memory;
 }
 
-File* BufferManager::getFile(char* fileName) {
+File* BufferManager::getFile(const char* fileName) {
 	File* ftemp = fileChain;
 	while (ftemp) {
 		if (!strcmp(ftemp->fileName, fileName)) {
@@ -43,7 +43,7 @@ File* BufferManager::getFile(char* fileName) {
 	return ftemp;
 }
 
-Block* BufferManager::getBlock(char* fileName, Block* block) {
+Block* BufferManager::getBlock(const char* fileName, Block* block) {
 	for (int i = 0; i < blockNum; i++) { // if it is in the memory
 		if (block == Memory[i]) {
 			for (int j = 0; j < blockNum; j++) {
@@ -78,7 +78,7 @@ Block* BufferManager::getBlock(char* fileName, Block* block) {
 	return btemp;
 }
 
-Block* BufferManager::getFirstBlock(char* fileName) {
+Block* BufferManager::getFirstBlock(const char* fileName) {
 	File* ftemp = getFile(fileName);
 	if (!ftemp) { // if not found
 		cerr << "File not found!" << endl;
@@ -88,7 +88,7 @@ Block* BufferManager::getFirstBlock(char* fileName) {
 
 }
 
-Block* BufferManager::getNextBlock(char* fileName, Block* block) {
+Block* BufferManager::getNextBlock(const char* fileName, Block* block) {
 	return getBlock(fileName, block->nextBlock);
 }
 
@@ -102,14 +102,14 @@ void BufferManager::setPin(Block* block) {
 	return;
 }
 
-void BufferManager::initFile(char* fileName, File* file) { // initialize the File
+void BufferManager::initFile(const char* fileName, File* file) { // initialize the File
 	file -> nextFile = nullptr;
 	file -> firstBlock = nullptr;
 	file -> fileName = fileName;
 	return;
 }
 
-void BufferManager::initBlock(Block* block, char* fileName) {
+void BufferManager::initBlock(Block* block, const char* fileName) {
 	block -> fileName = fileName;
 	block -> dirty = 0;
 	block -> pin = 0;
@@ -119,7 +119,7 @@ void BufferManager::initBlock(Block* block, char* fileName) {
 	return;
 }
 
-Block* BufferManager::createBlock(char* fileName) { // create a new block
+Block* BufferManager::createBlock(const char* fileName) { // create a new block
 	File* ftemp = getFile(fileName);
 	if (!ftemp) { // if not found
 		cerr << "File not found!" << endl;
@@ -149,7 +149,7 @@ void BufferManager::appendFile(File* file) { // append the file at the end of th
 
 }
 
-File* BufferManager::loadFile(char* fileName) { // load the file from disk
+File* BufferManager::loadFile(const char* fileName) { // load the file from disk
     string Path = "../data/";
     string Path2(fileName);
     Path += Path2;
@@ -242,7 +242,7 @@ void BufferManager::writeBlocktoDisk(Block* block) { // write a block to disk
 	out.close();
 }
 
-void BufferManager::deleteFile(char* fileName) { // delete the file
+void BufferManager::deleteFile(const char* fileName) { // delete the file
 	string Path("../data/");
 	Path += fileName;
 	if (!remove((char*)Path.c_str())) {
@@ -278,7 +278,7 @@ void BufferManager::deleteFile(char* fileName) { // delete the file
 	}
 }
 
-void BufferManager::deleteBlock(char* fileName) {
+void BufferManager::deleteBlock(const char* fileName) {
 	File* ftemp = getFile(fileName);
 	Block* cur = ftemp -> firstBlock;
 	Block* btemp = cur;
