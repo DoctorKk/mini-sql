@@ -173,12 +173,12 @@ File* BufferManager::loadFile(char* fileName) { // load the file from disk
 	Catalog ctemp;
 	recordSize = ctemp.calculateLength(fileName);
 	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to subtract the first one)
+	temp = new char[recordSize];
 
 	while (!in.eof()) {
 			for (int i = 0; i < recordNum; i++) {
 			if (in.eof())
 				break;
-			temp = new char[recordSize];
 			in.read(temp, recordSize);
 			total.append(temp);
 			blockSize += recordSize;
@@ -194,8 +194,6 @@ File* BufferManager::loadFile(char* fileName) { // load the file from disk
 		} else
 			pre -> nextBlock = cur;
 		pre = cur;
-		delete temp;
-		temp = new char[recordSize];
 		total.clear();
 		recordSize = 0;
 	}
@@ -237,7 +235,7 @@ void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
 }
 
 void BufferManager::writeBlocktoDisk(Block* block) { // write a block to disk 
-	string Path("./data/");
+	string Path("../data/");
 	Path += block -> fileName;
 	ofstream out(Path, ios::app);
 	out << block -> data;
@@ -245,7 +243,7 @@ void BufferManager::writeBlocktoDisk(Block* block) { // write a block to disk
 }
 
 void BufferManager::deleteFile(char* fileName) { // delete the file
-	string Path("./data/");
+	string Path("../data/");
 	Path += fileName;
 	if (!remove((char*)Path.c_str())) {
 		cerr << "Deletion Faiure!" << endl;
