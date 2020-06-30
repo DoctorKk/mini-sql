@@ -16,7 +16,7 @@
 #include <sstream>
 
 #include "Attribute.h"
-#include "BPlusTree.h"
+#include "BPlusTree.cpp"
 #include "BufferManager.h"
 
 class API;
