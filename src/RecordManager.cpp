@@ -50,7 +50,7 @@ int RecordManager::record_insert(string tableName, char *record, int recordSize)
     }
 
     buffer.setDirty(f);
-    memccpy(f->data, record, recordSize);
+    memcpy(f->data, record, recordSize);
     buffer.writeBlocktoDisk(f);
     return 1;
 }
@@ -98,7 +98,7 @@ int RecordManager::record_deleteall(string tableName, vector<Condition> *conditi
             return -1;
         }
 
-        if (f == buffer.getLastBlock(tableName.c_str())){
+        if (block == buffer.getLastBlock(tableName.c_str())){
             count += record_blockdelete(tableName, conditionVector, block);
             return count;
         }
