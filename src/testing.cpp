@@ -7,5 +7,5 @@ using namespace std;
 
 int main() {
     BufferManager bm;
-    RecordManager rm;
+    //RecordManager rm;
 }
