@@ -183,7 +183,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 
 	// compute the recordSize
 	Catalog ctemp;
-	recordSize = ctemp.calculateLength(fileName);
+	recordSize = ctemp.calculateLength_attribute(fileName);
 	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to subtract the first one)
 	temp = new char[recordSize];
 
