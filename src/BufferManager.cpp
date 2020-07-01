@@ -24,6 +24,7 @@ BufferManager::~BufferManager() {
 	delete[] Memory;
 }
 
+//===========need change here=====
 File* BufferManager::getFile(const char* fileName) {
 	File* ftemp = fileChain;
 	while (ftemp) {
@@ -90,6 +91,17 @@ Block* BufferManager::getFirstBlock(const char* fileName) {
 
 Block* BufferManager::getNextBlock(const char* fileName, Block* block) {
 	return getBlock(fileName, block->nextBlock);
+}
+
+Block* BufferManager::getLastBlock(const char* fileName) {
+    Block* btemp = getFirstBlock(fileName);
+    if (!btemp) { // if not found
+        cerr << "Block not found!" << endl;
+    }
+    while (btemp -> nextBlock) {
+        btemp = btemp -> nextBlock;
+    }
+    return btemp;
 }
 
 void BufferManager::setDirty(Block* block) {
