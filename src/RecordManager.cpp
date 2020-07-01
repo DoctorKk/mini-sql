@@ -212,7 +212,23 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         for (int j = 0; j < (*attributeNameVector).size(); j++){
             if ((*attributeNameVector)[j] == (*attributeVector)[i].name){
-                
+                if (type == Attribute::TYPE_INT)
+                {
+                    int tmp = *((int *)content); 
+                    printf("%d ", tmp);
+                }
+                else if (type == Attribute::TYPE_FLOAT)
+                {
+                    float tmp = *((float *)content); 
+                    printf("%f ", tmp);
+                }
+                else
+                {
+                    string tmp = content;
+                    printf("%s ", tmp.c_str());
+                }
+
+                break;
             }
         }
     }
