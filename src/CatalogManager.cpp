@@ -599,7 +599,7 @@ int Catalog::calculateLength_type(int type) {
 
 /* 3.get length of the all attributes */
 /* return size (>=0) */
-int Catalog::calculateLength_table(string tableName) {
+int Catalog::calculateLength_attribute(string tableName) {
     Catalog tem;
     int res = tem.getRecordNum(tableName);
     vector<Attribute>* attributeVector = new vector<Attribute>;
