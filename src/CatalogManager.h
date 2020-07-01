@@ -12,8 +12,8 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include"Attribute.h"
 #include"IndexInfo.h"
+#include"Attribute.h"
 
 using namespace std;
 
@@ -57,4 +57,4 @@ public:
 
 int char2int(char type[], int len);
 
-#endif 
+#endif
