@@ -565,7 +565,7 @@ int Catalog::getIndexType(string indexName) {
 /* get length operation */
 /* 1.get length of the table */
 /* return size (>=0) */
-int Catalog::calculateLength(string tableName) {
+int Catalog::calculateLength_table(string tableName) {
     Catalog tem;
     int res = tem.getRecordNum(tableName);
     vector<Attribute>* attributeVector = new vector<Attribute>;
@@ -574,7 +574,7 @@ int Catalog::calculateLength(string tableName) {
     int size = 0, type;
     for (auto i = (*attributeVector).begin(); i != (*attributeVector).end(); i++) {
         type = (*i).getType();
-        size += tem.calculateLength2(type);
+        size += tem.calculateLength_type(type);
     }
 
     size *= res;
@@ -584,7 +584,7 @@ int Catalog::calculateLength(string tableName) {
 
 /* 2.get length of attribute type */
 /* return size (>=0) */
-int Catalog::calculateLength2(int type) {
+int Catalog::calculateLength_type(int type) {
     if (type == 0) {
         return sizeof(int);
     }
@@ -597,7 +597,25 @@ int Catalog::calculateLength2(int type) {
     }
 }
 
-/* 3.get offset */
+/* 3.get length of the all attributes */
+/* return size (>=0) */
+int Catalog::calculateLength_table(string tableName) {
+    Catalog tem;
+    int res = tem.getRecordNum(tableName);
+    vector<Attribute>* attributeVector = new vector<Attribute>;
+    tem.attributeGet(tableName, attributeVector);
+
+    int size = 0, type;
+    for (auto i = (*attributeVector).begin(); i != (*attributeVector).end(); i++) {
+        type = (*i).getType();
+        size += tem.calculateLength_type(type);
+    }
+
+    return size;
+}
+
+
+/* 4.get offset */
 /* if attributeName exist,return size */
 /* else return 0 */
 int Catalog::getoffset(string tableName, string attributeName) {
@@ -613,7 +631,7 @@ int Catalog::getoffset(string tableName, string attributeName) {
             break;
         }
         int type = attributeVector[i].getType();
-        size += calculateLength2(type);
+        size += calculateLength_type(type);
     }
     
     if (i == attributeVector.size())

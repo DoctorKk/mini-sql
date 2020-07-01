@@ -47,8 +47,9 @@ public:
     int getIndexType(string indexName);
 
     //get length
-    int calculateLength(string tableName);
-    int calculateLength2(int type);
+    int calculateLength_table(string tableName);
+    int calculateLength_type(int type);
+    int calculateLength_attribute(int type);
     int getoffset(string tableName, string attributeName);
 
     //void recordStringGet(string tableName, vector<string>* recordContent, char* recordResult); 
