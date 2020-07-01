@@ -5,8 +5,10 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\Attribute.h
- */ 
+ */
 
+#ifndef ATTRIBUTE_H
+#define ATTRIBUTE_H
 #include <string>
 #include <iostream>
 using namespace std;
@@ -30,3 +32,4 @@ public:
     ~Attribute(){};
 };
 
+#endif
