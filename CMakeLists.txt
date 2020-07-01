@@ -9,9 +9,11 @@ add_executable(mini_sql
         src/Attribute.h
         src/BufferManager.cpp
         src/BufferManager.h
-        src/catalog.h
-        src/catalog.cpp
+        src/CatalogManager.cpp
+        src/CatalogManager.h
         src/Condition.h
         src/minisql.h
         src/RecordManager.h
+        src/RecordManager.cpp
+        src/testing.cpp
         )
