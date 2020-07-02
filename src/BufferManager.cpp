@@ -24,7 +24,6 @@ BufferManager::~BufferManager() {
 	delete[] Memory;
 }
 
-//===========need change here=====
 File* BufferManager::getFile(const char* fileName) {
 	File* ftemp = fileChain;
 	while (ftemp) {
@@ -36,8 +35,11 @@ File* BufferManager::getFile(const char* fileName) {
 	// when not found
 	ftemp = loadFile(fileName); // load the file to the fileChain
 	if (!ftemp) { // file not found on the disk
-		cerr << "File not found on the disk!" << endl;
-		return nullptr;
+	    string Path = "../data/";
+	    Path += fileName;
+	    fstream in(Path, ios::out);
+	    in.close();
+	    ftemp = loadFile(fileName);
 	}
 	appendFile(ftemp); // append the file 
 
@@ -169,7 +171,6 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
     Path += Path2;
     ifstream in(Path);
     if (!in) { // if fails
-        cerr << "No file named " << fileName << " exists" << endl;
         return nullptr;
     }
 	File* ftemp = new File();
@@ -196,7 +197,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	Catalog ctemp;
 	recordSize = ctemp.calculateLength_attribute(fileName);
 	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to subtract the first one)
-	int recordNum2 = length/recordSize - 1; // the record number in the file
+	int recordNum2 = (length - 1)/recordSize; // the record number in the file
 	if (length==0) {
 	    cur = new Block;
 	    initBlock(cur, fileName);

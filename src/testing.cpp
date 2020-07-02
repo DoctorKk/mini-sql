@@ -9,4 +9,5 @@ using namespace std;
 int main() {
     BufferManager bm;
     RecordManager rm;
+    rm.record_insert("teacher", "777shit88", 28);
 }
