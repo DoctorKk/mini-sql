@@ -129,7 +129,7 @@ void BufferManager::initBlock(Block* block, const char* fileName) {
 	block -> time = 0;
 	block -> nextBlock = nullptr;
 	block -> blockSize = 0;
-	block -> data = nullptr;
+	block -> data = new char[BLOCK_SIZE];
 	return;
 }
 
@@ -173,8 +173,8 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
         return nullptr;
     }
 	File* ftemp = new File();
-	appendFile(ftemp);
-	initFile(fileName, ftemp);
+    initFile(fileName, ftemp);
+	//appendFile(ftemp);
 	string total;
 	char* temp;
 	int blockSize = 0;
