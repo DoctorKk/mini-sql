@@ -117,6 +117,7 @@ void BufferManager::setPin(Block* block) {
 void BufferManager::initFile(const char* fileName, File* file) { // initialize the File
 	file -> nextFile = nullptr;
 	file -> firstBlock = nullptr;
+	file -> type = 0;
 	file -> fileName = (char*)fileName;
 	return;
 }
@@ -127,7 +128,8 @@ void BufferManager::initBlock(Block* block, const char* fileName) {
 	block -> pin = 0;
 	block -> time = 0;
 	block -> nextBlock = nullptr;
-	block -> data = new char[BLOCK_SIZE];
+	block -> blockSize = 0;
+	block -> data = nullptr;
 	return;
 }
 
@@ -181,21 +183,37 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	Block* pre;
 	bool flag = true; // to indicate if it is the first block
 
+	// compute the length of the file
+	in.seekg(0, in.end);
+	int length = in.tellg();
+	in.seekg(0, in.beg);
+    //if (length==0) { // if nothing in the file
+
+    //    return ftemp;
+    //}
+
 	// compute the recordSize
 	Catalog ctemp;
 	recordSize = ctemp.calculateLength_attribute(fileName);
 	int recordNum = BLOCK_SIZE/recordSize - 1; // compute the maximum number of records(remember to subtract the first one)
+	int recordNum2 = length/recordSize - 1; // the record number in the file
+	if (length==0) {
+	    cur = new Block;
+	    initBlock(cur, fileName);
+	    ftemp -> firstBlock = cur;
+	    return ftemp;
+	}
 	temp = new char[recordSize];
 
-	while (!in.eof()) {
-			for (int i = 0; i < recordNum; i++) {
-			if (in.eof())
-				break;
+	int totalNum = 0; // the size already taken
+	while (totalNum < recordNum2) {
+	    for (int i = 0; i < recordNum; i++) {
 			in.read(temp, recordSize);
 			total.append(temp);
 			blockSize += recordSize;
-		}
-		cur = new Block();
+			totalNum++;
+	    }
+		cur = new Block;
 		initBlock(cur, fileName);
 		cur -> fileName = (char*)fileName;
 		cur -> data = (char*)total.c_str();
