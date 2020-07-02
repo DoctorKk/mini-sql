@@ -8,8 +8,9 @@ int main() {
 		ifstream in("teacher");
 		if (!in)
 				cout << "shit" << endl;
-		in.seekg(0, in.end);
-		int length = in.tellg();
-		in.seekg(0, in.beg);
-		cout << length << endl;
+		string temp;
+		while (!in.eof()) {
+				getline(in, temp);
+				cout << temp << flush;
+		}
 }
