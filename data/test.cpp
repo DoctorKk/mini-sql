@@ -5,6 +5,7 @@
 using namespace std;
 
 int main() {
+<<<<<<< Updated upstream
 		ifstream in("teacher");
 		if (!in)
 				cout << "shit" << endl;
@@ -13,4 +14,10 @@ int main() {
 				getline(in, temp);
 				cout << temp << flush;
 		}
+=======
+		ofstream out("teacher", ios::out);
+		string place("/", 10);
+		char* temp = (char* )place.c_str();
+		out << temp << endl;		
+>>>>>>> Stashed changes
 }
