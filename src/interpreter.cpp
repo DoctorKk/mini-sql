@@ -57,11 +57,7 @@ int Interpreter::interpreter(string s)
 	    return EXEC_QUIT(s,tmp,word);
 	//execfile
 	else if (strcmp(word.c_str(), "execfile") == 0)
-	{
-		string fileName = getWord(s,tmp);
-		cout<<"try to open "<<fileName<<"..."<<endl;
-		return 2;
-	}
+	    return EXEC_EXECFILE(s,tmp,word);
 	//illegal command
 	else
 	{
@@ -76,7 +72,7 @@ int Interpreter::interpreter(string s)
 //int main()
 //{
 //	string text;
-//  printf("%s",text);
+//  scanf("%s",text);
 //	interpreter(text);
 //}
 
@@ -98,10 +94,9 @@ int Interpreter::EXEC_CREATE_TABLE(string s,int *tmp,string word)
 	string primaryKey = "";
 	string tableName = "";
 	word = getWord(s,tmp);
-	 
+	//无名则退回 
 	if (!word.empty())
 		tableName = word;
-	  //else not able name ->return
 	else
 	{
 		cout<<"Syntax Error for no table name"<<endl;
@@ -233,7 +228,7 @@ int Interpreter::EXEC_CREATE_TABLE(string s,int *tmp,string word)
 			return 0;
 		}
 
-    	//ap->tableCreate(tableName,&attributeVector,primaryKey,primaryKeyLocation);
+    	ap->tableCreate(tableName,&attributeVector,primaryKey,primaryKeyLocation);
 		return 1;
 }
 }
@@ -269,7 +264,7 @@ int Interpreter::EXEC_CREATE_INDEX(string s,int *tmp,string word)
 		word = getWord(s,tmp);
 		if (strcmp(word.c_str(),")") != 0)
 			throw SyntaxException();
-		//ap->indexCreate(indexName,tableName,attributeName);
+		ap->indexCreate(indexName,tableName,attributeName);
 		return 1;
 	}catch(SyntaxException&) {
 		cout<<"Syntax Error!"<<endl;
@@ -280,13 +275,13 @@ int Interpreter::EXEC_CREATE_INDEX(string s,int *tmp,string word)
 int Interpreter::EXEC_DROP(string s,int *tmp,string word)
 {
 	word = getWord(s, tmp);
-	if (strcmp(word.c_str(), "table") == 0) return EXEC_DROP_TABLE(s,tmp,word);
-	else if (strcmp(word.c_str(), "index") == 0) return EXEC_DROP_INDEX(s,tmp,word);
+	if (strcmp(word.c_str(), "table") == 0) 
+	    return EXEC_DROP_TABLE(s,tmp,word);
+	else if (strcmp(word.c_str(), "index") == 0) 
+	    return EXEC_DROP_INDEX(s,tmp,word);
 	else 
-	{
 		cout<<"ERROR! CAN ONLY DROP TABLE/INDEX!"<<endl;
-		return 0;
-	}
+	return 0;
 } 
 //Drop table
 int Interpreter::EXEC_DROP_TABLE(string s,int *tmp,string word)
@@ -296,13 +291,14 @@ int Interpreter::EXEC_DROP_TABLE(string s,int *tmp,string word)
 	if (!word.empty())
 	{
 		tableName = word;
-	    //ap->tableDrop(tableName);
+	    ap->tableDrop(tableName);
 	}
 	else 
 	{
 		cout<<"ERROR!CAN NOT DROP TABLE WITHOUT NAME!"<<endl;
 		return 0;
 	}
+
 	return 1;
 }
 //Drop Index
@@ -313,7 +309,7 @@ int Interpreter::EXEC_DROP_INDEX(string s,int *tmp,string word)
 	if (!word.empty())
 	{
 		indexName = word;
-	    //ap->indexDrop(indexName);
+	    ap->indexDrop(indexName);
 	}
 	else 
 	{
@@ -358,10 +354,10 @@ int  Interpreter::EXEC_SELECT(string s,int *tmp,string word)
 	if (word.empty())	// without condition
 	{
 		if(attrSelected.size()==0){
-			//ap->recordShow(tableName);
+			ap->recordShow(tableName);
 		}
 		else
-			//ap->recordShow(tableName,&attrSelected);
+			ap->recordShow(tableName,&attrSelected);
 		return 1;
 	}
 	else if (strcmp(word.c_str(),"where") == 0)		
@@ -410,10 +406,10 @@ int  Interpreter::EXEC_SELECT(string s,int *tmp,string word)
 			}
 		if(attrSelected.size()==0)
 		   cout<<tableName<<endl;
-			//ap->recordShow(tableName,NULL,&conditionVector);
+			ap->recordShow(tableName,NULL,&conditionVector);
 		else
 		   cout<<tableName<<endl;
-			//ap->recordShow(tableName, &attrSelected,&conditionVector);
+			ap->recordShow(tableName, &attrSelected,&conditionVector);
 		return 1;
 	}
 }
@@ -450,7 +446,7 @@ int Interpreter::EXEC_INSERT(string s,int *tmp,string word)
 			cout<<"Syntax Error!"<<endl;
 			return 0;
 		}
-	//ap->recordInsert(tableName,&valueVector);
+	ap->recordInsert(tableName,&valueVector);
 	return 1;
 }
 //Quit
@@ -461,7 +457,7 @@ int Interpreter::EXEC_QUIT(string s,int *tmp,string word)
 //Execfile 
 int Interpreter::EXEC_EXECFILE(string s, int *tmp,string word)
 {
-	string fileName = getWord(s,tmp);
+	fileName = getWord(s,tmp);
 	cout<<"try to open "<<fileName<<"..."<<endl;
 	return 2;
 }
