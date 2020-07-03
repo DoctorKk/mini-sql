@@ -185,7 +185,6 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	int length = in.tellg();
 	in.seekg(0, in.beg);
 
-
 	if (length==0) { // nothing in the file
 	    cur = new Block;
 	    initBlock(cur, fileName);

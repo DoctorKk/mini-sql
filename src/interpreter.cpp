@@ -455,10 +455,11 @@ int Interpreter::EXEC_QUIT(string s,int *tmp,string word)
 	return 587;
 }
 //Execfile 
-int Interpreter::EXEC_EXECFILE(string s, int *tmp,string word)
+int Interpreter::EXEC_EXECFILE(string s)
 {
 	fileName = getWord(s,tmp);
 	cout<<"try to open "<<fileName<<"..."<<endl;
+
 	return 2;
 }
 string Interpreter::getWord(string s, int *tmp)
