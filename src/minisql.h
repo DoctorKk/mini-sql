@@ -12,7 +12,7 @@
 #include<cstring>
 #include<vector>
 
-#define BLOCK_SIZE 240
+#define BLOCK_SIZE 4096
 
 using namespace std;
 

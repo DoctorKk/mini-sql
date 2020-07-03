@@ -47,8 +47,7 @@ int Interpreter::interpreter(string s)
 		return EXEC_DROP(s, tmp, word);
 	//select
 	else if (strcmp(word.c_str(), "select") == 0)
-		cout << "select" << endl;
-	//return EXEC_SELECT(s,tmp,word);
+	    return EXEC_SELECT(s,tmp,word);
 //insert
 	else if (strcmp(word.c_str(), "insert") == 0)
 	return EXEC_INSERT(s,tmp,word);
