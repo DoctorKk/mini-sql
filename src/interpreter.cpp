@@ -510,7 +510,7 @@ string Interpreter::getWord(string s, int *tmp)
 	}
 	else
 	{
-		while (s[*tmp] != ' ' &&s[*tmp] != '(' && s[*tmp] != 10 && s[*tmp] != 0 && s[*tmp] != ')' && s[*tmp] != ',')
+		while (s[*tmp] != ' '&&s[*tmp] != '(' && s[*tmp] != 10 && s[*tmp] != 0 && s[*tmp] != ')' && s[*tmp] != ',')
 			(*tmp)++;
 		idx2 = *tmp;
 		if (idx1 != idx2)
