@@ -3,7 +3,7 @@
 //  MiniSQL
 //  Created by ly on 27/6/2020.
 
-#include "Interpreter.h"
+#include "interpreter.h"
 #include "Condition.h"
 #include "Attribute.h"
 #include <string>
@@ -400,12 +400,15 @@ int  Interpreter::EXEC_SELECT(string s,int *tmp,string word)
 					return 0;
 				}
 			}
-		if(attrSelected.size()==0)
-		   cout<<tableName<<endl;
-			ap->recordShow(tableName,NULL,&conditionVector);
-		else
-		   cout<<tableName<<endl;
-			ap->recordShow(tableName, &attrSelected,&conditionVector);
+		if(attrSelected.size()==0) {
+            cout<<tableName<<endl;
+            ap->recordShow(tableName,NULL,&conditionVector);
+
+		}
+		else {
+            cout<<tableName<<endl;
+            ap->recordShow(tableName, &attrSelected,&conditionVector);
+		}
 		return 1;
 	}
 }

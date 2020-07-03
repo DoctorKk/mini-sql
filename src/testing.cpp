@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    BufferManager bm;
+    //BufferManager bm;
     RecordManager rm;
     rm.record_insert("teacher", "GIGI!");
     rm.record_insert("teacher", "test!");

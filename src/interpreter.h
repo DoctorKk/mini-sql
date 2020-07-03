@@ -10,6 +10,9 @@
 #include <vector>
 #include "API.h"
 using namespace std;
+class SyntaxException {
+    int placeholder;
+};
 class Interpreter{
 public:
     API* ap;

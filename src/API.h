@@ -3,7 +3,7 @@
 
 #include "Attribute.h"
 #include "Condition.h"
-#include "Minisql.h"
+#include "minisql.h"
 #include "IndexInfo.h"
 #include "CatalogManager.h"
 #include <string>
