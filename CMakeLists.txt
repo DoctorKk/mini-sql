@@ -13,6 +13,8 @@ add_executable(mini_sql
         src/CatalogManager.h
         src/Condition.h
         src/Condition.cpp
+        src/interpreter.cpp
+        src/interpreter.h
         src/minisql.h
         src/RecordManager.h
         src/RecordManager.cpp

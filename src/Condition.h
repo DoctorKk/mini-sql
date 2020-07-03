@@ -7,6 +7,8 @@
  * @FilePath: \新建文件夹\Condition.h
  */ 
 
+#ifndef CONDITION_H
+#define CONDITION_H
 #include <string>
 #include <sstream>
 using namespace std;
@@ -31,3 +33,5 @@ public:
     bool ifRight(float content);
     bool ifRight(string content);
 };
+
+#endif

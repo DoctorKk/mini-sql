@@ -9,33 +9,8 @@
 #include <string>
 #include <string.h>
 #include <iostream>
+#include<fstream>
 using namespace std;
-
-class SyntaxException{};
-//Interpreter 
-int interpreter(string s); 
-//Create
-int EXEC_CREATE(string s,int *tmp,string word);
-//Create Table
-int EXEC_CREATE_TABLE(string s,int *tmp,string word);
-//Create Index
-int EXEC_CREATE_INDEX(string s,int *tmp,string word);
-//Drop 
-int EXEC_DROP(string s,int *tmp,string word);
-//Drop Table
-int EXEC_DROP_TABLE(string s,int *tmp,string word); 
-//Drop Index
-int EXEC_DROP_INDEX(string s,int *tmp,string word);
-//Select
-int EXEC_SELECT(string s,int *tmp,string word);
-//Insert
-int EXEC_INSERT(string s,int *tmp,string word);
-//Quit
-int EXEC_QUIT(string s,int *tmp,string word);
-//Execfile 
-int EXEC_EXECFILE(string s, int *tmp,string word);
-
-string getWord(string s, int *tmp);
 
 //get requests in;
 void Interpreter:: mainFunction()
@@ -78,7 +53,7 @@ int Interpreter::interpreter(string s)
 	    return EXEC_QUIT(s,tmp,word);
 	//execfile
 	else if (strcmp(word.c_str(), "execfile") == 0)
-	    return EXEC_EXECFILE(s,tmp,word);
+	    return EXEC_EXECFILE(s);
 	//illegal command
 	else
 	{
@@ -478,9 +453,15 @@ int Interpreter::EXEC_QUIT(string s,int *tmp,string word)
 //Execfile 
 int Interpreter::EXEC_EXECFILE(string s)
 {
-	fileName = getWord(s,tmp);
-	cout<<"try to open "<<fileName<<"..."<<endl;
-
+    string Path = "../exec/";
+    Path += s;
+	cout<<"try to open "<<s<<"..."<<endl;
+    ifstream in(Path);
+    string temp;
+    while (!in.eof()) {
+        getline(in, temp);
+        interpreter(temp);
+    }
 	return 2;
 }
 string Interpreter::getWord(string s, int *tmp)
