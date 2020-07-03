@@ -60,6 +60,134 @@ int RecordManager::record_insert(string tableName, char *record)
     return 1;
 }
 
+
+
+
+
+int RecordManager::record_showall(string tableName)
+{
+    File *temp = buffer.getFile(tableName.c_str());
+    Block *f = buffer.getFirstBlock(tableName.c_str());
+
+    int Num = 0;
+
+    if(temp == NULL){
+        cout<<"The table doesn't exist!"<<endl;
+        return -1;
+    }
+
+    while(1){
+        if (f == buffer.getLastBlock(tableName.c_str())){
+            Num += record_blockshow(tableName,f);
+            break;
+        }
+        else{
+            Num += record_blockshow(tableName,f);
+            f = buffer.getNextBlock(tableName.c_str(), f);
+        }
+    }
+
+}
+
+int RecordManager::record_blockshow(string tableName, Block *block)
+{
+    if(block==NULL){
+        return -1;
+    }
+    
+    int count = 0;
+    int begin = 0;
+    vector<Attribute> at;
+
+    catalog.attributeGet(tableName, &at);
+    int record_size;
+
+    char* recordbegin = block->data;
+
+    while(begin < block->blockSize){
+        count++;
+        record_size = 0;
+        while(recordbegin[record_size]!='\n'){
+            record_size++;
+        }
+
+        record_print(recordbegin, record_size, &at);
+        printf("\n");
+        while(block->data[begin]!='\n' && begin < block->blockSize){
+            begin++;
+        }
+        begin++;
+        recordbegin = block->data + begin;
+    }
+    return count;
+}
+
+void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector)
+{
+    int type;
+    string attributeName;
+    int typeSize = 0;
+    char content[255];
+
+    char *begin = recordBegin;
+        
+    for(int i = 0; i < attributeVector->size(); i++){
+        type = (*attributeVector)[i].type;
+        while(begin[typeSize]!='/'){
+            typeSize++;
+        }
+        typeSize++;   
+        /*
+        if(type==-1){
+            typeSize = sizeof(float);
+        }
+        else if(type==0){
+            typeSize = sizeof(int);
+        }
+        else{
+            typeSize = type + 1;
+        }
+        */
+
+        memset(content, 0, 255);
+
+        memcpy(content, begin, typeSize);
+
+        for (int j = 0; j < (*attributeNameVector).size(); j++){
+            
+            if (type == Attribute::TYPE_INT)
+            {
+                int tmp = *((int *)content); 
+                printf("%d ", tmp);
+            }
+            else if (type == Attribute::TYPE_FLOAT)
+            {
+                float tmp = *((float *)content); 
+                printf("%f ", tmp);
+            }
+            else
+            {
+                string tmp = content;
+                printf("%s ", tmp.c_str());
+            }
+            break;
+        }
+    }   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int RecordManager::record_showall(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector)
 {
     File *temp = buffer.getFile(tableName.c_str());
@@ -175,7 +303,8 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     vector<Attribute> at;
 
     catalog.attributeGet(tableName, &at);
-    int record_size = at.size();
+    int record_size = 0;
+
 
     char* recordbegin = block->data;
 
@@ -183,12 +312,18 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
 
         if (record_conditionfit(recordbegin, record_size, &at, conditionVector)){
             count++;
+            record_size = 0;
+            while(recordbegin[record_size]!='\n'){
+                record_size++;
+            }
             record_print(recordbegin, record_size, &at, attributeNameVector);
             printf("\n");
         }
-        while(block->data[begin]!='\n'){
+
+        while(block->data[begin]!='\n' && begin < block->blockSize){
             begin++;
         }
+
         begin++;
         recordbegin = block->data + begin;
     }
