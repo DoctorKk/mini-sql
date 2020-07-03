@@ -46,7 +46,8 @@ void Interpreter:: mainFunction()
     int fact = 1;
     while(fact != 587){
     	cout<<"PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT"<<endl;
-		while(text[text.size()-1]!=';')
+		text = "";
+	    while(text[text.size()-1]!=';')
 		{
 			getline(cin,temp);
             text = text + temp;
