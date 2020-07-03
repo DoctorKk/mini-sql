@@ -12,6 +12,8 @@
 using namespace std;
 
 class SyntaxException{};
+//Interpreter 
+int interpreter(string s); 
 //Create
 int EXEC_CREATE(string s,int *tmp,string word);
 //Create Table
@@ -35,6 +37,24 @@ int EXEC_EXECFILE(string s, int *tmp,string word);
 
 string getWord(string s, int *tmp);
 
+//get requests in;
+void Interpreter:: mainFunction()
+{
+	cout<<"WELCOME TO OUR MINISQL! ENJOY YOURSELF!"<<endl;
+    string text = "";
+    string temp = "";
+    int fact = 1;
+    while(fact != 587){
+    	cout<<"PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT"<<endl;
+		while(text[text.size()-1]!=';')
+		{
+			getline(cin,temp);
+            text = text + temp;
+	    }
+	    fact = interpreter(text);
+	}
+	cout<<"THANK YOU!"<<endl;
+}
 //Interpreter
 int Interpreter::interpreter(string s)
 {
