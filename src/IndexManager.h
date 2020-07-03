@@ -19,17 +19,16 @@
 #include "BPlusTree.cpp"
 #include "BufferManager.h"
 
-
-typedef map<string, BPlusTree<int> *> intMap;
-typedef map<string, BPlusTree<string> *> stringMap;
-typedef map<string, BPlusTree<float> *> floatMap;
-
 class API;
 
 class IndexManager
 {
 private:
     BufferManager buffer;
+
+    typedef map<string, BPlusTree<int> *> intMap;
+    typedef map<string, BPlusTree<string> *> stringMap;
+    typedef map<string, BPlusTree<float> *> floatMap;
 
     int static const TYPE_FLOAT = Attribute::TYPE_FLOAT;
     int static const TYPE_INT = Attribute::TYPE_INT;
@@ -38,14 +37,14 @@ private:
     stringMap indexStringMap;
     floatMap indexFloatMap;
 
-    void init_index(string tableName, BPlusTree<int> *tree);
-    void init_index(string tableName, BPlusTree<float> *tree);
-    void init_index(string tableName, BPlusTree<string> *tree, int type);
+    void init_index(string tableName, BPlusTree<int> *tree, int offset);
+    void init_index(string tableName, BPlusTree<float> *tree, int offset);
+    void init_index(string tableName, BPlusTree<string> *tree, int offset);
 
     
     // other values mean the size of the char.Eg, 4 means char(4);
 public:
-    void create_index(string tableName, int type);
+    void create_index(string tableName, int type, int offset);
 
     void drop_index(string tableName, int type);
 
