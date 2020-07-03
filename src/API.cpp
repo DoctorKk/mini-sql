@@ -160,7 +160,7 @@ int API::tableExist(string tableName)
 /* get all indexes of the table,input:table name,index vector */
 /* store index names in vector and return 10 */
 int API::indexNameListGet(string tableName, vector<string>* indexNameVector) {
-    if (!tableExist(tableName)) return;
+    if (!tableExist(tableName)) return 0;
 
     return cm->indexNameListGet(tableName, indexNameVector);
 }
