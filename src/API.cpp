@@ -130,7 +130,7 @@ void API::indexCreate(string indexName, string tableName, string attributeName)
         }
 
         //indexManager to create a index tress
-        im->create_index(indexName, indexType);
+        im->create_index(indexName,tableName,indexType,i);
 
         //recordManager insert already record to index
         //rm->indexRecordAllAlreadyInsert(tableName, indexName);          insert the index of a record of a table in a block？？ <<<<<<<<<<<<<<<<<<<<<<<<
