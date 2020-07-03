@@ -27,7 +27,7 @@ void Interpreter::mainFunction()
 			getline(cin, temp);
 			text = text + const_empty;
 			text = text + temp;
-		}while (text[text.size() - 1] != ';')
+		}while (text[text.size() - 1] != ';');
 
 		fact = interpreter(text);
 	}

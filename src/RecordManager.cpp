@@ -126,8 +126,8 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 {
     int type;
     string attributeName;
-    int typeSize = -2;
-    int preSize = 0;
+    int typeSize = 0;
+    int preSize = -1;
     char content[255];
 
     char *begin = recordBegin;
@@ -135,7 +135,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
     for(int i = 0; i < attributeVector->size(); i++){
         begin = recordBegin;
         type = (*attributeVector)[i].type;
-        typeSize += 2;
+        typeSize += 1;
         while(begin[typeSize]!='/'){
             typeSize++;
         }
