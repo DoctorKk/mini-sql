@@ -225,11 +225,8 @@ int RecordManager::record_deleteall(string tableName, vector<Condition> *conditi
     }
 
     int count = 0;
-
+    
     while(1){
-        if(block==NULL){
-            return -1;
-        }
 
         if (block == buffer.getLastBlock(tableName.c_str())){
             count += record_blockdelete(tableName, conditionVector, block);
