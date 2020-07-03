@@ -9,11 +9,15 @@ using namespace std;
 
 int main() {
     //BufferManager bm;
-    RecordManager rm;
-    rm.record_insert("teacher", "GIGI!");
+    //RecordManager rm;
+    //rm.record_insert("teacher", "GIGI!");
     //rm.record_insert("teacher", "test/sdf/sdfsd/af");
-    Interpreter ip;
-    Catalog cm;
-    ip.mainFunction();
+    //Interpreter ip;
+    //Catalog cm;
+    //ip.mainFunction();
     //rm.record_showall("teacher");
+    Catalog cm;
+    vector<Attribute> * at = new vector<Attribute>;
+    cm.attributeGet("teacher", at);
+
 }

@@ -82,6 +82,16 @@ void API::indexDrop(string indexName) {
 /* create index */
 void API::indexCreate(string indexName, string tableName, string attributeName)
 {
+    vector<Attribute>* at = new vector<Attribute>;
+    cm->attributeGet(tableName, at);
+    int size = (*at).size();
+    int i = 0;
+    for (; i < size; i++) {
+        if (attributeName==(*at)[i].name)
+            break;
+    }
+    im->create_index(indexName, tableName, (*at)[i].type, i);
+
     return;
     if (cm->findIndex(indexName) != "")
     {
