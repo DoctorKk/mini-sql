@@ -38,22 +38,27 @@ int Interpreter::interpreter(string s)
 	string word = getWord(s, tmp);
 	//create
 	if (strcmp(word.c_str(), "create") == 0)
-		return EXEC_CREATE(s,tmp,word);
+	    cout << "create" << endl;
+		//return EXEC_CREATE(s,tmp,word);
 	//drop
     else if (strcmp(word.c_str(), "drop") == 0)
-        return EXEC_DROP(s,tmp,word); 
+        cout << "drop" << endl;
+        //return EXEC_DROP(s,tmp,word);
     //select
 	else if(strcmp(word.c_str(), "select")==0)
-		return EXEC_SELECT(s,tmp,word);
+	    cout << "select" << endl;
+		//return EXEC_SELECT(s,tmp,word);
 	//insert
 	else if (strcmp(word.c_str(), "insert") == 0)
-		return EXEC_INSERT(s,tmp,word);
+        cout << "insert" << endl;
+    	//return EXEC_INSERT(s,tmp,word);
 	//quit
 	else if (strcmp(word.c_str(), "quit") == 0)
 	    return EXEC_QUIT(s,tmp,word);
 	//execfile
 	else if (strcmp(word.c_str(), "execfile") == 0)
-	    return EXEC_EXECFILE(s);
+	    cout << "exec" << endl;
+	    //return EXEC_EXECFILE(s);
 	//illegal command
 	else
 	{

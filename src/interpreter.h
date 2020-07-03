@@ -10,8 +10,12 @@
 #include <vector>
 #include "API.h"
 using namespace std;
-class SyntaxException {
-    int placeholder;
+class SyntaxException
+{
+public:
+    SyntaxException() {};
+    ~SyntaxException() {};
+    const char *ShowReason() const { return "SYNTAX ERROR!"; }
 };
 class Interpreter{
 public:

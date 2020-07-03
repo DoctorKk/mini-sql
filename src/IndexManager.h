@@ -19,16 +19,17 @@
 #include "BPlusTree.cpp"
 #include "BufferManager.h"
 
+
+typedef map<string, BPlusTree<int> *> intMap;
+typedef map<string, BPlusTree<string> *> stringMap;
+typedef map<string, BPlusTree<float> *> floatMap;
+
 class API;
 
 class IndexManager
 {
 private:
     BufferManager buffer;
-
-    typedef map<string, BPlusTree<int> *> intMap;
-    typedef map<string, BPlusTree<string> *> stringMap;
-    typedef map<string, BPlusTree<float> *> floatMap;
 
     int static const TYPE_FLOAT = Attribute::TYPE_FLOAT;
     int static const TYPE_INT = Attribute::TYPE_INT;

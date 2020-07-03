@@ -6,14 +6,13 @@
 #include "minisql.h"
 #include "IndexInfo.h"
 #include "CatalogManager.h"
+#include"RecordManager.h"
+#include"IndexManager.h"
 #include <string>
 #include <cstring>
 #include <vector>
 #include <stdio.h>
 
-class Catalog;
-class RecordManager;
-class IndexManager;
 
 class API {
 public:
@@ -29,10 +28,10 @@ public:
     void indexDrop(string indexName);
     void indexCreate(string indexName, string tableName, string attributeName);
 
-    void recordShow(string tableName, vector<string>* attributeNameVector = NULL);
-    void recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector);
+    void recordShow(string tableName, vector<string>* attributeNameVector = NULL){};
+    void recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector){};
 
-    void recordInsert(string tableName, vector<string>* recordContent);
+    void recordInsert(string tableName, vector<string>* recordContent){};
 
     void recordDelete(string tableName);
     void recordDelete(string tableName, vector<Condition>* conditionVector);
