@@ -9,6 +9,6 @@ using namespace std;
 int main() {
     BufferManager bm;
     RecordManager rm;
-    //rm.record_insert("teacher", "777shit88", 28);
-    bm.loadFile("teacher");
+    rm.record_insert("teacher", "baobao",28);
+    //rm.record_insert("teacher", "skdfja----s=-d", 28);
 }

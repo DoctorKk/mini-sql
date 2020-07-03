@@ -87,7 +87,7 @@ Block* BufferManager::getFirstBlock(const char* fileName) {
 		cerr << "File not found!" << endl;
 		return nullptr;
 	}
-	return ftemp -> firstBlock;
+	return getBlock(fileName, ftemp -> firstBlock);
 
 }
 
@@ -131,7 +131,7 @@ void BufferManager::initBlock(Block* block, const char* fileName) {
 	block -> time = 0;
 	block -> nextBlock = nullptr;
 	block -> blockSize = 0;
-	block -> data = new char[BLOCK_SIZE];
+	block -> data = new char[BLOCK_SIZE + 1];
 	return;
 }
 
@@ -142,10 +142,7 @@ Block* BufferManager::createBlock(const char* fileName) { // create a new block
 		return nullptr;
 	}		
 	Block* btemp = new Block;
-	Block* ptr = ftemp -> firstBlock; // the first block of the file
-	while (ptr -> nextBlock != nullptr) {
-		ptr = ptr -> nextBlock;
-	}
+	Block* ptr = getLastBlock(fileName);
 	ptr -> nextBlock = btemp;
 	initBlock(btemp, fileName);
 	return getBlock(fileName, btemp);
@@ -164,7 +161,7 @@ void BufferManager::appendFile(File* file) { // append the file at the end of th
 	return;
 
 }
-
+//============use strcpy here
 File* BufferManager::loadFile(const char* fileName) { // load the file from disk
     string Path = "../data/";
     string Path2(fileName);
@@ -176,10 +173,9 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	File* ftemp = new File();
     initFile(fileName, ftemp);
 	//appendFile(ftemp);
-	string total;
 	string temp;
-	int blockSize = 0;
-	int recordSize = 0;
+    string total;
+    int blockSize = 0;
 	Block* cur;
 	Block* pre;
 	bool flag = true; // to indicate if it is the first block
@@ -189,14 +185,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	int length = in.tellg();
 	in.seekg(0, in.beg);
 
-	// compute the recordSize
-	//Catalog ctemp;
-	//recordSize = ctemp.calculateLength_attribute(fileName);
-    getline(in, temp);
-    recordSize = temp.size();
-    in.seekg(0, ios::beg);
 
-	int recordNum = BLOCK_SIZE/recordSize; // compute the maximum number of records(remember to subtract the first one)
 	if (length==0) { // nothing in the file
 	    cur = new Block;
 	    initBlock(cur, fileName);
@@ -207,19 +196,23 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 
 	int totalNum = 0; // the size already taken
 	while (!in.eof()) {
-	    while (totalNum < recordNum) {
+	    total = new char[BLOCK_SIZE + 1];
+        while (blockSize < BLOCK_SIZE) {
 	        if (in.eof())
 	            break;
 	        getline(in, temp);
+	        if (blockSize + temp.size() > BLOCK_SIZE)
+	            break;
 	        totalNum++;
 			total.append(temp);
 			total.append("\n");
-			blockSize += recordSize;
+			blockSize += temp.size() + 1;
 	    }
 		cur = new Block;
 		initBlock(cur, fileName);
 		cur -> fileName = (char*)fileName;
-		cur -> data = (char*)total.c_str();
+		strcpy(cur -> data, (char*)total.c_str());
+        //cur -> data = (char*) total.c_str();
 		cur -> blockSize = blockSize;
 		if (flag) {
 			ftemp -> firstBlock = cur;
@@ -227,8 +220,8 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 		} else
 			pre -> nextBlock = cur;
 		pre = cur;
-		total.clear();
-		recordSize = 0;
+		//total.clear();
+		blockSize = 0;
 	}
 
 

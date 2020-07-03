@@ -8,7 +8,7 @@
 #define minisql_BufferManager_h
 #include"minisql.h"
 
-#define BUFFER_SIZE 40 // the maximum blocks the buffer can contain
+#define BUFFER_SIZE 80 // the maximum blocks the buffer can contain
 
 using namespace std;
 
