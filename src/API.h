@@ -31,7 +31,7 @@ public:
     void recordShow(string tableName, vector<string>* attributeNameVector = NULL);
     void recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector);
 
-    void recordInsert(string tableName, vector<string>* recordContent);
+    void recordInsert(string tableName, vector<string> recordContent);
 
     void recordDelete(string tableName);
     void recordDelete(string tableName, vector<Condition>* conditionVector);

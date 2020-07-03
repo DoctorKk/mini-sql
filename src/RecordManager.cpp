@@ -177,18 +177,6 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 int RecordManager::record_showall(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector)
 {
     File *temp = buffer.getFile(tableName.c_str());

@@ -130,7 +130,7 @@ void API::indexCreate(string indexName, string tableName, string attributeName)
         }
 
         //indexManager to create a index tress
-        im->create_index(indexName, indexType);
+        //im->create_index(indexName, indexType); this is a change
 
         //recordManager insert already record to index
         //rm->indexRecordAllAlreadyInsert(tableName, indexName);          insert the index of a record of a table in a block？？ <<<<<<<<<<<<<<<<<<<<<<<<
@@ -171,7 +171,7 @@ string API::primaryIndexNameGet(string tableName) {
 
 }
 
-void API::recordShow(string tableName, vector<string>* attributeNameVector = NULL){
+void API::recordShow(string tableName, vector<string>* attributeNameVector){
     if(rm->record_showall(tableName)==0){
         cout<<"Empty table!"<<endl;
     }
@@ -186,9 +186,13 @@ void API::recordShow(string tableName, vector<string>* attributeNameVector, vect
     return;
 }
 
-void API::recordInsert(string tableName, vector<string>* recordContent){
-    if(rm->record_insert(tableName, recordContent)==0){
-        cout<<"Table doesn't exist"<<endl;
+void API::recordInsert(string tableName, vector<string> recordContent){
+    int size = recordContent.size();
+    for (int i = 0; i < size; i++) {
+        if(rm->record_insert(tableName, (char*)recordContent[i].c_str())==0){
+            cout<<"Table doesn't exist"<<endl;
+        }
+
     }
     return;
 }

@@ -21,14 +21,14 @@ void Interpreter:: mainFunction()
     int fact = 1;
     while(fact != 587){
     	cout<<"PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT"<<endl;
-		text = "";
+		text = " ";
 	    while(text[text.size()-1]!=';')
 		{
 			getline(cin,temp);
             text = text + temp;
-	    }
-	    fact = interpreter(text);
-	}
+
+	}}
+    fact = interpreter(text);
 	cout<<"THANK YOU!"<<endl;
 }
 //Interpreter
@@ -449,7 +449,7 @@ int Interpreter::EXEC_INSERT(string s,int *tmp,string word)
 			cout<<"Syntax Error!"<<endl;
 			return 0;
 		}
-	ap->recordInsert(tableName,&valueVector);
+	ap->recordInsert(tableName,valueVector);
 	return 1;
 }
 //Quit
