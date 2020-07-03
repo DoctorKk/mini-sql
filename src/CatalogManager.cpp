@@ -79,6 +79,8 @@ int Catalog::createTable(string tableName, vector<Attribute>* attributeVector, s
         /* primary key */
         if (primaryKeyName != "")
             fprintf(fp, "%s||\n", primaryKeyName.c_str());
+        else 
+            fprintf(fp,"||\n");
 
         for (int i = 0; i < (*attributeVector).size(); i++) {
             string name = (*attributeVector)[i].getName();
