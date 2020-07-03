@@ -8,28 +8,28 @@
  */ 
 #include"IndexManager.h"
 
-void IndexManager::create_index(string tableName, int type, int offset)
+void IndexManager::create_index(string indexName, string tableName, int type, int offset)
 {
-    stringstream ss;
-    string temp;
-    ss >> temp;
+    //stringstream ss;
+    //string temp;
+    //ss >> temp;
     if (type == -1)
     {
         BPlusTree<float> *tree;
         init_index(tableName, tree, offset);
-        indexFloatMap.insert(floatMap::value_type(tableName+temp, tree));
+        indexFloatMap.insert(floatMap::value_type(indexName, tree));
     }
     else if (type == 0)
     {
         BPlusTree<int> *tree;
         init_index(tableName, tree, offset);
-        indexIntMap.insert(intMap::value_type(tableName+temp, tree));
+        indexIntMap.insert(intMap::value_type(indexName, tree));
     }
     else
     {
         BPlusTree<string> *tree;
         init_index(tableName, tree, offset);
-        indexStringMap.insert(stringMap::value_type(tableName+temp, tree));
+        indexStringMap.insert(stringMap::value_type(indexName, tree));
     }
 }
 
