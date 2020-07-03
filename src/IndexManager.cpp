@@ -8,25 +8,25 @@
  */ 
 #include"IndexManager.h"
 
-void IndexManager::create_index(string tableName, int type)
+void IndexManager::create_index(string tableName, int type, int offset)
 {
     if (type == -1)
     {
         BPlusTree<float> *tree;
-        init_index(tableName, tree);
-        indexFloatMap.insert(floatMap::value_type(tableName, tree));
+        init_index(tableName, tree, offset);
+        indexFloatMap.insert(floatMap::value_type(tableName+offset, tree));
     }
     else if (type == 0)
     {
         BPlusTree<int> *tree;
-        init_index(tableName, tree);
-        indexIntMap.insert(intMap::value_type(tableName, tree));
+        init_index(tableName, tree, offset);
+        indexIntMap.insert(intMap::value_type(tableName+offset, tree));
     }
     else
     {
         BPlusTree<string> *tree;
-        init_index(tableName, tree, 0);
-        indexStringMap.insert(stringMap::value_type(tableName, tree));
+        init_index(tableName, tree, offset);
+        indexStringMap.insert(stringMap::value_type(tableName+offset, tree));
     }
 }
 
@@ -76,7 +76,7 @@ void IndexManager::drop_index(string tableName, int type)
     }
 }
 
-int IndexManager::search_index(string tableName, float key)
+int search_index(string tableName, float key)
 {
     floatMap::iterator itFloat = indexFloatMap.find(tableName);
     if (itFloat == indexFloatMap.end())
@@ -90,7 +90,7 @@ int IndexManager::search_index(string tableName, float key)
     }
 }
 
-int IndexManager::search_index(string tableName, int key)
+int search_index(string tableName, int key)
 {
     intMap::iterator itInt = indexIntMap.find(tableName);
     if (itInt == indexIntMap.end())
@@ -104,7 +104,7 @@ int IndexManager::search_index(string tableName, int key)
     }
 }
 
-int IndexManager::search_index(string tableName, string key)
+int search_index(string tableName, string key)
 {
     stringMap::iterator itString = indexStringMap.find(tableName);
     if (itString == indexStringMap.end())
@@ -118,16 +118,23 @@ int IndexManager::search_index(string tableName, string key)
     }
 }
 
-void IndexManager::init_index(string tableName, BPlusTree<float> *tree)
+void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offset)
 {
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
-    char *indexBegin;
-
+    char *indexBegin = b->data;
+    int begin = 0;
     float value;
     int count = 0;
-    int recordSize;
+    int recordSize = 0;
+    
+    for(int i = 0;i<offset;i++){
+        while(b->data[begin]!='/'){
+            begin++;
+        }
+    }
+    begin++;
 
     while (1)
     {
@@ -135,53 +142,89 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree)
         {
             return;
         }
-        while (indexBegin - indexBegin < b->blockSize)
+        while ( begin < b->blockSize)
         {
             value = *(float *)indexBegin;
-            tree->Insert(make_pair(count++, value));
-            indexBegin += recordSize;
+            tree->Insert(pair(count++, value));
+            while(b->data[begin]!='\n'){
+                begin++;
+            }
+            begin++;
+            for(int i = 0;i<offset;i++){
+                while(b->data[begin]!='/' && begin<b->blockSize){
+                    begin++;
+                }
+            }
+            begin++;
+            indexBegin = b->data + begin;
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }
 }
 
-void IndexManager::init_index(string tableName, BPlusTree<int> *tree)
+void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset)
 {
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
-    char *indexBegin;
-
+    char *indexBegin = b->data;
+    int begin = 0;
     int value;
     int count = 0;
     int recordSize;
 
+    for(int i = 0;i<offset;i++){
+        while(b->data[begin]!='/'){
+            begin++;
+        }
+    }
+    begin++;
+
+
     while (1)
     {
         if (b == NULL)
         {
             return;
         }
-        while (indexBegin - indexBegin < b->blockSize)
+        while (begin < b->blockSize)
         {
             value = *(int *)indexBegin;
-            tree->Insert(make_pair(count++, value));
-            indexBegin += recordSize;
+            tree->Insert(pair(count++, value));
+            while(b->data[begin]!='\n'){
+                begin++;
+            }
+            begin++;
+            for(int i = 0;i<offset;i++){
+                while(b->data[begin]!='/' && begin<b->blockSize){
+                    begin++;
+                }
+            }
+            begin++;
+            indexBegin = b->data + begin;
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }
 }
 
-void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int type)
+void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int offset)
 {
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
-    char *indexBegin;
-
+    char *indexBegin = b->data;
+    int begin = 0;
     string value;
     int count = 0;
-    int recordSize;
+    int size = 0;
+
+    for(int i = 0;i<offset;i++){
+        while(b->data[begin]!='/'){
+            begin++;
+        }
+    }
+    begin++;
+
 
     while (1)
     {
@@ -190,9 +233,27 @@ void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int typ
             return;
         }
         while (indexBegin - indexBegin < b->blockSize)
-        {
-            memcpy(&value, indexBegin, type + 1);
-            tree->Insert(make_pair(count++, value));
+        {   
+            size = 0;
+            while(indexBegin[size]!='/'){
+                size++;
+            }
+            memccpy(&value, indexBegin, size + 1);
+            tree->Insert(pair(count++, value));
+
+            while(b->data[begin]!='\n'){
+                begin++;
+            }
+            begin++;
+            for(int i = 0;i<offset;i++){
+                while(b->data[begin]!='/' && begin<b->blockSize){
+                    begin++;
+                }
+            }
+            begin++;
+            indexBegin = b->data + begin;
+
+
             indexBegin += recordSize;
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
