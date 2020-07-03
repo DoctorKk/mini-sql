@@ -5,9 +5,7 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\RecordManager.h
- */
-#ifndef RECORDMANAGER_H
-#define RECORDMANAGER_H
+ */ 
 #include"Attribute.h"
 #include"Condition.h"
 #include"minisql.h"
@@ -34,7 +32,8 @@ public:
 
     //print all record of a table meet requirement
     int record_showall(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector);
-    
+    int record_showall(string tableName);
+
     //delete all record of a table meet requirement
     int record_deleteall(string tableName, vector<Condition> *conditionVector);
     
@@ -44,11 +43,15 @@ public:
 private:
     
     int record_blockshow(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector, Block* block);
+    int record_blockshow(string tableName, Block *block);
+
     int record_blockdelete(string tableName, vector<Condition> *conditionVector, Block* block);
     bool record_conditionfit(char *recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<Condition> *conditionVector);
     bool content_conditionfit(char *content, int type, Condition *condition);
+
     void record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<string> *attributeNameVector);
+    void record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector);
+
     void content_print(char *content, int type);
 };
 
-#endif
