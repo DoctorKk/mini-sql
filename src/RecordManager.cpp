@@ -120,7 +120,7 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
     {
         return -1;
     }
-    int count = 0;
+    int count = 0, i = 0;
 
     char *recordBegin = block->data;
     vector<Attribute> attributeVector;
@@ -139,7 +139,6 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
             count++;
 
             //api->recordIndexDelete(recordBegin, recordSize, &attributeVector, block->offsetNum);
-            int i = 0;
             
             for (i = 0; i + recordSize + begin < block->blockSize; i++)
             {
@@ -151,8 +150,12 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
         }
         else
         {
-            recordBegin += recordSize;
-            begin += recordSize;
+            while(block->data[begin]!='\n')
+            {
+                begin++;
+            }
+            begin++;
+            recordBegin = block->data + begin;
         }
     }
 
@@ -183,8 +186,11 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
             record_print(recordbegin, record_size, &at, attributeNameVector);
             printf("\n");
         }
-        recordbegin+=record_size;
-        begin += record_size;
+        while(block->data[begin]!='\n'){
+            begin++;
+        }
+        begin++;
+        recordbegin = block->data + begin;
     }
     return count;
 
@@ -194,13 +200,18 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 {
     int type;
     string attributeName;
-    int typeSize;
+    int typeSize = 0;
     char content[255];
 
     char *begin = recordBegin;
+        
     for(int i = 0; i < attributeVector->size(); i++){
         type = (*attributeVector)[i].type;
-        
+        while(begin[typeSize]!='/'){
+            typeSize++;
+        }
+        typeSize++;   
+        /*
         if(type==-1){
             typeSize = sizeof(float);
         }
@@ -210,6 +221,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
         else{
             typeSize = type + 1;
         }
+        */
 
         memset(content, 0, 255);
 
@@ -217,6 +229,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         for (int j = 0; j < (*attributeNameVector).size(); j++){
             if ((*attributeNameVector)[j] == (*attributeVector)[i].name){
+
                 if (type == Attribute::TYPE_INT)
                 {
                     int tmp = *((int *)content); 
