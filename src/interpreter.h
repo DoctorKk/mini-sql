@@ -13,8 +13,9 @@ using namespace std;
 class Interpreter{
 public:
     API* ap;
-	string fileName ;
-	int interpreter(string s);	
+    string fileName;
+    void  mainFunction();
+    int interpreter(string s);	
     int EXEC_CREATE(string s,int *tmp,string word);
     //Create Table
     int EXEC_CREATE_TABLE(string s,int *tmp,string word);
