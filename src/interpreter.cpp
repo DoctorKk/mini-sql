@@ -57,8 +57,7 @@ int Interpreter::interpreter(string s)
 		return EXEC_QUIT(s, tmp, word);
 	//execfile
 	else if (strcmp(word.c_str(), "execfile") == 0)
-		cout << "exec" << endl;
-	//return EXEC_EXECFILE(s);
+	    return EXEC_EXECFILE(s);
 //illegal command
 	else
 	{

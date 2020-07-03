@@ -165,19 +165,19 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
             {
                 //int tmp = *((int *)content);
                 //printf("%d ", tmp);
-                cout << content << flush;
+                cout << content << " " << flush;
             }
             else if (type == Attribute::TYPE_FLOAT)
             {
                 //float tmp = *((float *)content);
                 //printf("%f ", tmp);
-                cout << content << flush;
+                cout << content << " " << flush;
             }
             else
             {
                 //string tmp = content;
                 //printf("%s ", tmp.c_str());
-                cout << content << flush;
+                cout << content << " " << flush;
             }
             break;
         }
