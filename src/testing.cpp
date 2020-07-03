@@ -16,6 +16,6 @@ int main() {
     Interpreter ip;
     Catalog cm;
     RecordManager rm;
-    ip.mainFunction();
-    //rm.record_showall("teacher");
+    //ip.mainFunction();
+    rm.record_showall("teacher");
 }
