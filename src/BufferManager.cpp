@@ -179,6 +179,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	Block* cur;
 	Block* pre;
 	bool flag = true; // to indicate if it is the first block
+	bool flag2 = true;
 
 	// compute the length of the file
 	in.seekg(0, in.end);
@@ -203,8 +204,12 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	        if (blockSize + temp.size() > BLOCK_SIZE)
 	            break;
 	        totalNum++;
+	        if (!flag2) {
+	            total.append("\n");
+	        } else {
+	            flag2 = false;
+	        }
 			total.append(temp);
-			total.append("\n");
 			blockSize += temp.size() + 1;
 	    }
 		cur = new Block;

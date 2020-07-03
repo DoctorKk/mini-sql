@@ -19,7 +19,13 @@ public:
     RecordManager* rm;
     Catalog* cm;
     IndexManager* im;
-    API() {}
+    BufferManager* bm;
+    API() {
+        rm = new RecordManager;
+        cm = new Catalog;
+        im = new IndexManager;
+        bm = new BufferManager;
+    }
     ~API() {}
 
     void tableDrop(string tableName);

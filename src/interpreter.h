@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "API.h"
+#include "BufferManager.h"
 using namespace std;
 class SyntaxException
 {
@@ -44,7 +45,9 @@ public:
     int EXEC_EXECFILE(string s);
     string getWord(string s, int *tmp);
 	
-	Interpreter(){}
+	Interpreter(){
+	    ap = new API;
+	}
 	~Interpreter(){}
 };
 

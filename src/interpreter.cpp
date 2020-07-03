@@ -22,15 +22,15 @@ void Interpreter:: mainFunction()
     int fact = 1;
     while(fact != 587){
     	cout<<"PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT"<<endl;
-		text = " ";
+		text = "";
 	    while(text[text.size()-1]!=';')
 		{
 			getline(cin,temp);
             text = text + const_empty;
             text = text + temp;
+            fact = interpreter(text);
 
-	}}
-    fact = interpreter(text);
+	    }}
 	cout<<"THANK YOU!"<<endl;
 }
 //Interpreter
@@ -51,8 +51,7 @@ int Interpreter::interpreter(string s)
 		//return EXEC_SELECT(s,tmp,word);
 	//insert
 	else if (strcmp(word.c_str(), "insert") == 0)
-        cout << "insert" << endl;
-    	//return EXEC_INSERT(s,tmp,word);
+    	return EXEC_INSERT(s,tmp,word);
 	//quit
 	else if (strcmp(word.c_str(), "quit") == 0)
 	    return EXEC_QUIT(s,tmp,word);
@@ -441,7 +440,7 @@ int Interpreter::EXEC_INSERT(string s,int *tmp,string word)
 		while (!word.empty() && strcmp(word.c_str(),")") != 0)
 		{
 			valueVector.push_back(word);
-			valueVector.push_back("\n"); // changed here >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+			valueVector.push_back("/"); // changed here >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 			word = getWord(s,tmp);
 			if (strcmp(word.c_str(),",") == 0)  // bug here
     			word = getWord(s,tmp);

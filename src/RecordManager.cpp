@@ -56,7 +56,7 @@ int RecordManager::record_insert(string tableName, char *record)
     buffer.setDirty(f);
     memcpy(f->data+strlen(f->data), record, recordSize);
     f->blockSize = strlen(f -> data);
-    //buffer.writeBlocktoDisk(f);
+    buffer.writeFiletoDisk(temp);
     return 1;
 }
 
@@ -126,17 +126,21 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 {
     int type;
     string attributeName;
-    int typeSize = 0;
+    int typeSize = -2;
+    int preSize = 0;
     char content[255];
 
     char *begin = recordBegin;
         
     for(int i = 0; i < attributeVector->size(); i++){
+        begin = recordBegin;
         type = (*attributeVector)[i].type;
+        typeSize += 2;
         while(begin[typeSize]!='/'){
             typeSize++;
         }
-        typeSize++;   
+        typeSize -= preSize;
+        //typeSize++;
         /*
         if(type==-1){
             typeSize = sizeof(float);
@@ -151,25 +155,29 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         memset(content, 0, 255);
 
+        begin += preSize;
         memcpy(content, begin, typeSize);
-
+        preSize = typeSize;
         //changed here
         for (int j = 0; j < (*attributeVector).size(); j++){
             
             if (type == Attribute::TYPE_INT)
             {
-                int tmp = *((int *)content); 
-                printf("%d ", tmp);
+                //int tmp = *((int *)content);
+                //printf("%d ", tmp);
+                cout << content << flush;
             }
             else if (type == Attribute::TYPE_FLOAT)
             {
-                float tmp = *((float *)content); 
-                printf("%f ", tmp);
+                //float tmp = *((float *)content);
+                //printf("%f ", tmp);
+                cout << content << flush;
             }
             else
             {
-                string tmp = content;
-                printf("%s ", tmp.c_str());
+                //string tmp = content;
+                //printf("%s ", tmp.c_str());
+                cout << content << flush;
             }
             break;
         }

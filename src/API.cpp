@@ -187,12 +187,17 @@ void API::recordShow(string tableName, vector<string>* attributeNameVector, vect
 }
 
 void API::recordInsert(string tableName, vector<string> recordContent){
+    string content;
     int size = recordContent.size();
-    for (int i = 0; i < size; i++) {
-        if(rm->record_insert(tableName, (char*)recordContent[i].c_str())==0){
-            cout<<"Table doesn't exist"<<endl;
-        }
+    for (int i = 0; i < size-1; i++) {
+        content += recordContent[i];
+        //content.append("/");
+    }
+    char* temp = new char[content.size()];
+    temp = (char*) content.c_str();
 
+    if(rm->record_insert(tableName, temp)==0){
+        cout<<"Table doesn't exist"<<endl;
     }
     return;
 }

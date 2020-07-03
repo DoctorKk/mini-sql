@@ -9,13 +9,11 @@ using namespace std;
 
 int main() {
     //BufferManager bm;
-    //RecordManager rm;
+    RecordManager rm;
     //rm.record_insert("teacher", "GIGI!");
-    //rm.record_insert("teacher", "test!");
-    //rm.record_insert("teacher", "skdfja----s=-d", 28);
+    //rm.record_insert("teacher", "test/sdf/sdfsd/af");
     Interpreter ip;
     Catalog cm;
-    RecordManager rm;
-    //ip.mainFunction();
-    rm.record_showall("teacher");
+    ip.mainFunction();
+    //rm.record_showall("teacher");
 }
