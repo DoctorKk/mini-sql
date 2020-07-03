@@ -16,8 +16,9 @@ using namespace std;
 void Interpreter:: mainFunction()
 {
 	cout<<"WELCOME TO OUR MINISQL! ENJOY YOURSELF!"<<endl;
-    string text = "";
+    string text = " ";
     string temp = "";
+    string const_empty = " ";
     int fact = 1;
     while(fact != 587){
     	cout<<"PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT"<<endl;
@@ -25,6 +26,7 @@ void Interpreter:: mainFunction()
 	    while(text[text.size()-1]!=';')
 		{
 			getline(cin,temp);
+            text = text + const_empty;
             text = text + temp;
 
 	}}
@@ -476,7 +478,7 @@ string Interpreter::getWord(string s, int *tmp)
 	string word;
 	int idx1,idx2;
 
-	while ((s[*tmp] == ' ' || s[*tmp] == 10  || s[*tmp] == '\t') && s[*tmp] != 0)
+	while ((s[*tmp] == ' '|| s[*tmp] == '\'' || s[*tmp] == 10  || s[*tmp] == '\t') && s[*tmp] != 0)
 	{
 		(*tmp)++;
 	}
@@ -510,7 +512,7 @@ string Interpreter::getWord(string s, int *tmp)
 	}
 	else
 	{
-		while (s[*tmp] != ' '&&s[*tmp] != '(' && s[*tmp] != 10 && s[*tmp] != 0 && s[*tmp] != ')' && s[*tmp] != ',')
+		while (s[*tmp] != ' '&&s[*tmp]!='\''&&s[*tmp] != '(' && s[*tmp] != 10 && s[*tmp] != 0 && s[*tmp] != ')' && s[*tmp] != ',')
 			(*tmp)++;
 		idx2 = *tmp;
 		if (idx1 != idx2)
