@@ -50,7 +50,7 @@ int RecordManager::record_insert(string tableName, char *record, int recordSize)
     }
 
     buffer.setDirty(f);
-    memcpy(f->data, record, recordSize);
+    memcpy(f->data+strlen(f->data), record, recordSize);
     //buffer.writeBlocktoDisk(f);
     return 1;
 }
