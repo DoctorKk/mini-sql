@@ -44,7 +44,7 @@ private:
     
     // other values mean the size of the char.Eg, 4 means char(4);
 public:
-    void create_index(string tableName, int type, int offset);
+    void create_index(string indexName, string tableName, int type, int offset);
 
     void drop_index(string tableName, int type);
 
