@@ -441,6 +441,7 @@ int Interpreter::EXEC_INSERT(string s,int *tmp,string word)
 		while (!word.empty() && strcmp(word.c_str(),")") != 0)
 		{
 			valueVector.push_back(word);
+			valueVector.push_back("\n"); // changed here >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 			word = getWord(s,tmp);
 			if (strcmp(word.c_str(),",") == 0)  // bug here
     			word = getWord(s,tmp);
