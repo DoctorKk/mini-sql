@@ -170,3 +170,31 @@ int API::indexNameListGet(string tableName, vector<string>* indexNameVector) {
 string API::primaryIndexNameGet(string tableName) {
 
 }
+
+void API::recordShow(string tableName, vector<string>* attributeNameVector = NULL){
+    if(rm->record_showall(tableName)==0){
+        cout<<"Empty table!"<<endl;
+    }
+    return;
+}
+
+
+void API::recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector){
+    if(rm->record_showall(tableName, attributeNameVector, conditionVector)==0){
+        cout<<"No records meet the needs."<<endl;
+    }
+    return;
+}
+
+void API::recordInsert(string tableName, vector<string>* recordContent){
+    if(rm->record_insert(tableName, recordContent)==0){
+        cout<<"Table doesn't exist"<<endl;
+    }
+    return;
+}
+
+void API::recordDelete(string tableName, vector<Condition>* conditionVector){
+    int num = rm->record_deleteall(tableName, conditionVector);
+    if(num>=0) cout<<"Delete "<<num<<" records."<<endl;
+    return;
+}
