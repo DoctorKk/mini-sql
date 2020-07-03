@@ -50,6 +50,7 @@ void API::tableCreate(string tableName, vector<Attribute>* attributeVector, stri
 /* drop index */
 /* @param: indexName */
 void API::indexDrop(string indexName) {
+    return;
     if (cm->findIndex(indexName) != "") {
         cout << "There is no index " << indexName << endl;
         return;
@@ -81,6 +82,7 @@ void API::indexDrop(string indexName) {
 /* create index */
 void API::indexCreate(string indexName, string tableName, string attributeName)
 {
+    return;
     if (cm->findIndex(indexName) != "")
     {
         cout << "There is index " << indexName << " already" << endl;

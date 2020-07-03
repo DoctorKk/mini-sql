@@ -34,16 +34,15 @@ void Interpreter:: mainFunction()
 //Interpreter
 int Interpreter::interpreter(string s)
 {
-	int *tmp = 0;
+    int shit = 0;
+	int *tmp = &shit;
 	string word = getWord(s, tmp);
 	//create
 	if (strcmp(word.c_str(), "create") == 0)
-	    cout << "create" << endl;
-		//return EXEC_CREATE(s,tmp,word);
+		return EXEC_CREATE(s,tmp,word);
 	//drop
     else if (strcmp(word.c_str(), "drop") == 0)
-        cout << "drop" << endl;
-        //return EXEC_DROP(s,tmp,word);
+        return EXEC_DROP(s,tmp,word);
     //select
 	else if(strcmp(word.c_str(), "select")==0)
 	    cout << "select" << endl;
