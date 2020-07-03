@@ -28,7 +28,7 @@ public:
     int index_drop(string indexName);
     int index_create(string indexName);
 
-    int record_insert(string tableName, char *record, int recordSize);
+    int record_insert(string tableName, char *record);
 
     //print all record of a table meet requirement
     int record_showall(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector);

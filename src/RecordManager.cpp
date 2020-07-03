@@ -36,8 +36,12 @@ int RecordManager::table_drop(string tableName)
 }
 */
 
-int RecordManager::record_insert(string tableName, char *record, int recordSize)
+int RecordManager::record_insert(string tableName, char *record)
 {
+    string stemp(record);
+    stemp.append("\n");
+    record = (char*) stemp.c_str();
+    int recordSize = strlen(record);
     File *temp = buffer.getFile(tableName.c_str());
 
     if(temp==NULL){
@@ -45,12 +49,13 @@ int RecordManager::record_insert(string tableName, char *record, int recordSize)
     }
 
     Block* f = buffer.getLastBlock(tableName.c_str());
-    if (f->blockSize + recordSize > BLOCK_SIZE){
+    if (f->blockSize + recordSize > BLOCK_SIZE - 1){
         f = buffer.createBlock(tableName.c_str());
     }
 
     buffer.setDirty(f);
     memcpy(f->data+strlen(f->data), record, recordSize);
+    f->blockSize = strlen(f -> data);
     //buffer.writeBlocktoDisk(f);
     return 1;
 }

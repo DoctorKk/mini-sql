@@ -251,10 +251,14 @@ void BufferManager::writeAlltoDisk() { // write everything to disk
 }
 
 void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
+    string Path = "../data/";
+    Path += file -> fileName;
+    ofstream out(Path, ios::trunc);
+    out.close();
 	Block* btemp = file -> firstBlock;
 	while (btemp) {
-		if (btemp -> dirty) // if it is dirty
-			writeBlocktoDisk(btemp);
+		//if (btemp -> dirty) // if it is dirty
+		writeBlocktoDisk(btemp);
 		btemp = btemp -> nextBlock;
 	}
 	return;
