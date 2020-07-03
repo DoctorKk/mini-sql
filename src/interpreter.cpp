@@ -15,23 +15,23 @@ using namespace std;
 //get requests in;
 void Interpreter::mainFunction()
 {
-	cout<<"WELCOME TO OUR MINISQL! ENJOY YOURSELF!"<<endl;
-    string text = " ";
-    string temp = "";
-    string const_empty = " ";
-    int fact = 1;
-    while(fact != 587){
-    	cout<<"PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT"<<endl;
+	cout << "WELCOME TO OUR MINISQL! ENJOY YOURSELF!" << endl;
+	string text = "";
+	string temp = "";
+	string const_empty = " ";
+	int fact = 1;
+	while (fact != 587) {
+		cout << "PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT" << endl;
 		text = "";
-	    while(text[text.size()-1]!=';')
-		{
-			getline(cin,temp);
-            text = text + const_empty;
-            text = text + temp;
-            fact = interpreter(text);
+		do{
+			getline(cin, temp);
+			text = text + const_empty;
+			text = text + temp;
+		}while (text[text.size() - 1] != ';')
 
-	    }}
-	cout<<"THANK YOU!"<<endl;
+		fact = interpreter(text);
+	}
+	cout << "THANK YOU!" << endl;
 }
 //Interpreter
 int Interpreter::interpreter(string s)
