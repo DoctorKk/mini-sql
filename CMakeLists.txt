@@ -19,4 +19,7 @@ add_executable(mini_sql
         src/RecordManager.h
         src/RecordManager.cpp
         src/testing.cpp
+        src/IndexManager.cpp
+        src/IndexManager.h
+
         )
