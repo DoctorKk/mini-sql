@@ -153,7 +153,8 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         memcpy(content, begin, typeSize);
 
-        for (int j = 0; j < (*attributeNameVector).size(); j++){
+        //changed here
+        for (int j = 0; j < (*attributeVector).size(); j++){
             
             if (type == Attribute::TYPE_INT)
             {

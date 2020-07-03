@@ -5,7 +5,9 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\RecordManager.h
- */ 
+ */
+#ifndef RECORDMANAGER_H
+#define RECORDMANAGER_H
 #include"Attribute.h"
 #include"Condition.h"
 #include"minisql.h"
@@ -55,3 +57,4 @@ private:
     void content_print(char *content, int type);
 };
 
+#endif

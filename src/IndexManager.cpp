@@ -10,23 +10,26 @@
 
 void IndexManager::create_index(string tableName, int type, int offset)
 {
+    stringstream ss;
+    string temp;
+    ss >> temp;
     if (type == -1)
     {
         BPlusTree<float> *tree;
         init_index(tableName, tree, offset);
-        indexFloatMap.insert(floatMap::value_type(tableName+offset, tree));
+        indexFloatMap.insert(floatMap::value_type(tableName+temp, tree));
     }
     else if (type == 0)
     {
         BPlusTree<int> *tree;
         init_index(tableName, tree, offset);
-        indexIntMap.insert(intMap::value_type(tableName+offset, tree));
+        indexIntMap.insert(intMap::value_type(tableName+temp, tree));
     }
     else
     {
         BPlusTree<string> *tree;
         init_index(tableName, tree, offset);
-        indexStringMap.insert(stringMap::value_type(tableName+offset, tree));
+        indexStringMap.insert(stringMap::value_type(tableName+temp, tree));
     }
 }
 
@@ -76,7 +79,7 @@ void IndexManager::drop_index(string tableName, int type)
     }
 }
 
-int search_index(string tableName, float key)
+int IndexManager::search_index(string tableName, float key)
 {
     floatMap::iterator itFloat = indexFloatMap.find(tableName);
     if (itFloat == indexFloatMap.end())
@@ -90,7 +93,7 @@ int search_index(string tableName, float key)
     }
 }
 
-int search_index(string tableName, int key)
+int IndexManager::search_index(string tableName, int key)
 {
     intMap::iterator itInt = indexIntMap.find(tableName);
     if (itInt == indexIntMap.end())
@@ -104,7 +107,7 @@ int search_index(string tableName, int key)
     }
 }
 
-int search_index(string tableName, string key)
+int IndexManager::search_index(string tableName, string key)
 {
     stringMap::iterator itString = indexStringMap.find(tableName);
     if (itString == indexStringMap.end())
@@ -145,7 +148,7 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offs
         while ( begin < b->blockSize)
         {
             value = *(float *)indexBegin;
-            tree->Insert(pair(count++, value));
+            tree->Insert(make_pair(count++, value));
             while(b->data[begin]!='\n'){
                 begin++;
             }
@@ -190,7 +193,7 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
         while (begin < b->blockSize)
         {
             value = *(int *)indexBegin;
-            tree->Insert(pair(count++, value));
+            tree->Insert(make_pair(count++, value));
             while(b->data[begin]!='\n'){
                 begin++;
             }
@@ -238,8 +241,8 @@ void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int off
             while(indexBegin[size]!='/'){
                 size++;
             }
-            memccpy(&value, indexBegin, size + 1);
-            tree->Insert(pair(count++, value));
+            memcpy(&value, indexBegin, size + 1);
+            tree->Insert(make_pair(count++, value));
 
             while(b->data[begin]!='\n'){
                 begin++;
@@ -252,9 +255,6 @@ void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int off
             }
             begin++;
             indexBegin = b->data + begin;
-
-
-            indexBegin += recordSize;
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }

@@ -14,5 +14,8 @@ int main() {
     //rm.record_insert("teacher", "test!");
     //rm.record_insert("teacher", "skdfja----s=-d", 28);
     Interpreter ip;
-    ip.mainFunction();
+    Catalog cm;
+    RecordManager rm;
+    //ip.mainFunction();
+    rm.record_showall("teacher");
 }
