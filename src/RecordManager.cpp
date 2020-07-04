@@ -159,7 +159,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
     split(t1,temp,&T);
     
 
-    for (int i = 0; i < attributeVector->size(); i++)
+    for (int i = 0; i < attributeVector->size()-1; i++)
     {
         //typeSize++;
         //begin = recordBegin;
@@ -189,7 +189,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
         //memcpy(content, t[i].c_str(), typeSize);
         //preSize = typeSize;
         //changed here
-        for (int j = 0; j < (*attributeVector).size()-1; j++){
+        for (int j = 0; j < (*attributeVector).size(); j++){
             
             if (type == Attribute::TYPE_INT)
             {
@@ -376,7 +376,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
     split(t1,temp,&T);
 
-    for(int i = 0; i < attributeVector->size(); i++){
+    for(int i = 0; i < attributeVector->size()-1; i++){
         //typeSize = begin.find_first_of("/",typeSize);;
         type = (*attributeVector)[i].type;
         //typeSize++;
@@ -425,7 +425,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
             }
         }
     }
-
+    cout<<T[0]<<flush;
 
     
 }
