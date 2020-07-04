@@ -8,6 +8,22 @@
  */ 
 #include"IndexManager.h"
 
+void split(std::string &s, std::string &delim, std::vector<std::string> *ret)
+{
+    size_t last = 0;
+    size_t index = s.find_first_of(delim, last);
+    while (index != string::npos)
+    {
+        ret->push_back(s.substr(last, index - last));
+        last = index + 1;
+        index = s.find_first_of(delim, last);
+    }
+    if (index - last > 0)
+    {
+        ret->push_back(s.substr(last, index - last));
+    }
+}
+
 void IndexManager::create_index(string indexName, string tableName, int type, int offset)
 {
     //stringstream ss;
@@ -172,6 +188,61 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
+
+    string temp1="/",temp2="\n";
+    string begin;
+
+
+    while(1){
+        if(b==NULL) return;
+    begin = b->data;
+
+    vector<string> records(0), at(0);
+
+    split(begin,temp1,&records);
+    int count = 0, num = 0;
+    if(offset!=attributesum-1 && offset!=0){
+        for(int i = offset;i<records.size();i = i+offset-1) {
+            at[count++] = records[i];
+        }
+    }
+    else if(offset==attributesum-1){
+        for(int i = offset;i<records.size();i = i+offset-1) {
+            num = 0;
+            while(records[i][num]!='\n'){
+                at[count][num] = records[i][num];
+                num++;
+            }
+            count++;
+
+            //at[count++] = records[i];
+        }
+    }
+    else{
+        for(int i = offset;i<records.size();i = i+offset-1) {
+            num = 0;
+            while(records[i][num]!='\n'){
+                //at[count][num] = records[i][num];
+                num++;
+            }
+            for(int j = num+1;j<records[i].length();j++) {
+                at[count][j - num - 1] = records[i][j];
+            }
+            count++;
+
+            //at[count++] = records[i];
+        }
+    }
+
+    count = 0;
+
+        for(int i = 0;i<at.size();i++) {
+            tree->Insert(make_pair(count++, stoi(at[i])));
+        }
+        b = buffer.getNextBlock(tableName.c_str(), b);
+    }
+
+    /*
     char *indexBegin = b->data;
     string content(indexBegin);
     int end = 0;
@@ -215,6 +286,7 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }
+     */
 }
 
 void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int offset)
