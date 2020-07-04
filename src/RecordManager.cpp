@@ -150,16 +150,15 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
     
     string temp("/");
 
-    vector<string> t(attributeVector->size());
+    vector<string> t(0),T(0);
 
     split(begin, temp, &t);
 
-    for(int i =0;;i++){
-        if(t[attributeVector->size()-1][i]=='\n'){
-            t[attributeVector->size()-1][i] ='\0';
-            break;
-        }
-    } 
+    string t1 = t[attributeVector->size()-1];
+    temp = "\n";
+    split(t1,temp,&T);
+    
+
     for (int i = 0; i < attributeVector->size(); i++)
     {
         //typeSize++;
@@ -184,34 +183,35 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
         }
         */
 
-        memset(content, 0, 255);
+        //memset(content, 0, 255);
 
-        begin += (typeSize+1);
-        memcpy(content, t[i].c_str(), t[i].length());
+        //begin += (typeSize+1);
+        //memcpy(content, t[i].c_str(), typeSize);
         //preSize = typeSize;
         //changed here
-        for (int j = 0; j < (*attributeVector).size(); j++){
+        for (int j = 0; j < (*attributeVector).size()-1; j++){
             
             if (type == Attribute::TYPE_INT)
             {
                 //int tmp = *((int *)content);
                 //printf("%d ", tmp);
-                cout << content << " " << flush;
+                cout << t[i] << " " << flush;
             }
             else if (type == Attribute::TYPE_FLOAT)
             {
                 //float tmp = *((float *)content);
                 //printf("%f ", tmp);
-                cout << content << " " << flush;
+                cout << t[i] << " " << flush;
             }
             else
             {
                 //string tmp = content;
                 //printf("%s ", tmp.c_str());
-                cout << content << " " << flush;
+                cout << t[i] << " " << flush;
             }
             break;
         }
+        cout<<T[0]<<" "<<flush;
     }
 }
 
@@ -362,22 +362,20 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
     string attributeName;
     int typeSize = 0;
     char content[255];
+    
     string begin = recordBegin;
 
     string temp("/");
 
-    vector<string> t(attributeVector->size());
+    vector<string> t(0), T(0);
 
     split(begin, temp, &t);
 
-    for (int i = 0;; i++)
-    {
-        if (t[attributeVector->size()-1][i] == '\n')
-        {
-            t[attributeVector->size()-1][i] = '\0';
-            break;
-        }
-    }
+    string t1 = t[attributeVector->size()-1];
+    temp = "\n";
+
+    split(t1,temp,&T);
+
     for(int i = 0; i < attributeVector->size(); i++){
         //typeSize = begin.find_first_of("/",typeSize);;
         type = (*attributeVector)[i].type;
@@ -427,6 +425,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
             }
         }
     }
+
 
     
 }
