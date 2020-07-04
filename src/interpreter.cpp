@@ -141,7 +141,7 @@ int Interpreter::EXEC_CREATE_TABLE(string s, int *tmp, string word)
 				word = getWord(s, tmp);
 				if (strcmp(word.c_str(), ")"))
 				{
-					cout << "Syntax Error: unknown data type" << endl;
+					cout << "Syntax Error: unknown data type: "<<word << endl;
 					return 0;
 				}
 			}
@@ -461,7 +461,6 @@ int Interpreter::EXEC_QUIT(string s, int *tmp, string word)
 	return 587;
 }
 //Execfile 
-
 int Interpreter::EXEC_EXECFILE(string s，int *tmp, string word)
 {
   string Path = "../exec/";
