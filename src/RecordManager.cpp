@@ -336,17 +336,18 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 {
     int type;
     string attributeName;
-    int typeSize = 0;
+    int typeSize = -1;
     char content[255];
 
     char *begin = recordBegin;
         
     for(int i = 0; i < attributeVector->size(); i++){
         type = (*attributeVector)[i].type;
-        while(begin[typeSize]!='/'){
+        typeSize++;
+        while(begin[typeSize]!='/' && begin[typeSize]!='\n'){
             typeSize++;
         }
-        typeSize++;   
+        //typeSize++;   
         /*
         if(type==-1){
             typeSize = sizeof(float);
@@ -362,7 +363,9 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
         memset(content, 0, 255);
 
         memcpy(content, begin, typeSize);
-
+        
+        begin = begin+typeSize+1;
+        
         for (int j = 0; j < (*attributeNameVector).size(); j++){
             if ((*attributeNameVector)[j] == (*attributeVector)[i].name){
 
