@@ -490,6 +490,7 @@ int Interpreter::EXEC_EXECFILE(string s, int *tmp, string word)
 
 
 }
+
 string Interpreter::getWord(string s, int *tmp)
 {
 	string word;
