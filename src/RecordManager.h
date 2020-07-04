@@ -48,11 +48,11 @@ private:
     int record_blockshow(string tableName, Block *block);
 
     int record_blockdelete(string tableName, vector<Condition> *conditionVector, Block* block);
-    bool record_conditionfit(char *recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<Condition> *conditionVector);
-    bool content_conditionfit(char *content, int type, Condition *condition);
+    bool record_conditionfit(string recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<Condition> *conditionVector);
+    bool content_conditionfit(string content, int type, Condition *condition);
 
-    void record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<string> *attributeNameVector);
-    void record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector);
+    void record_print(string recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<string> *attributeNameVector);
+    void record_print(string recordBegin, int recordSize, vector<Attribute> *attributeVector);
 
     void content_print(char *content, int type);
 };
