@@ -56,7 +56,7 @@ int Interpreter::interpreter(string s)
 		return EXEC_QUIT(s, tmp, word);
 	//execfile
 	else if (strcmp(word.c_str(), "execfile") == 0)
-	    return EXEC_EXECFILE(s);
+	    return EXEC_EXECFILE(s, tmp, word);
 //illegal command
 	else
 	{
@@ -461,7 +461,7 @@ int Interpreter::EXEC_QUIT(string s, int *tmp, string word)
 	return 587;
 }
 //Execfile 
-int Interpreter::EXEC_EXECFILE(string s，int *tmp,string word)
+int Interpreter::EXEC_EXECFILE(string s, int *tmp, string word)
 {
 	string Path = "../exec/";
 	word = getWord(s, tmp);

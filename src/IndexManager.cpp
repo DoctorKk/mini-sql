@@ -15,20 +15,20 @@ void IndexManager::create_index(string indexName, string tableName, int type, in
     //ss >> temp;
     if (type == -1)
     {
-        BPlusTree<float> *tree;
+        BPlusTree<float> *tree = new BPlusTree<float>;
         init_index(tableName, tree, offset);
         //==========before inserting check if it already exists
         indexFloatMap.insert(floatMap::value_type(indexName, tree));
     }
     else if (type == 0)
     {
-        BPlusTree<int> *tree;
+        BPlusTree<int> *tree = new BPlusTree<int>;
         init_index(tableName, tree, offset);
         indexIntMap.insert(intMap::value_type(indexName, tree));
     }
     else
     {
-        BPlusTree<string> *tree;
+        BPlusTree<string> *tree = new BPlusTree<string>;
         init_index(tableName, tree, offset);
         indexStringMap.insert(stringMap::value_type(indexName, tree));
     }
@@ -197,6 +197,7 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
         while (end < b->blockSize)
         {
             temp = content.substr(pre, end);
+            pre = end;
             value = stoi(temp);
             //value = *(int *)indexBegin;
             tree->Insert(make_pair(count++, value));
@@ -211,7 +212,6 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
             }
             end++;
             //indexBegin = b->data + end;
-            pre = end++;
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }
