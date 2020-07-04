@@ -211,8 +211,9 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
             }
             break;
         }
-        cout<<T[0]<<" "<<flush;
+        
     }
+    cout<<T[0]<<" "<<flush;
 }
 
 
