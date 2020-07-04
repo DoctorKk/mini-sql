@@ -467,6 +467,10 @@ int Interpreter::EXEC_EXECFILE(string s)
 	Path += s;
 	cout << "try to open " << s << "..." << endl;
 	ifstream in(Path);
+	if (!in) {
+	    cerr << "executable file not found" << endl;
+	    return 2;
+	}
 	string temp;
 	while (!in.eof()) {
 		getline(in, temp);

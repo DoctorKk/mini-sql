@@ -12,12 +12,12 @@ int main() {
     //RecordManager rm;
     //rm.record_insert("teacher", "GIGI!");
     //rm.record_insert("teacher", "test/sdf/sdfsd/af");
-    //Interpreter ip;
+    Interpreter ip;
     //Catalog cm;
-    //ip.mainFunction();
+    ip.mainFunction();
     //rm.record_showall("teacher");
-    Catalog cm;
-    vector<Attribute> * at = new vector<Attribute>;
-    cm.attributeGet("teacher", at);
+    //Catalog cm;
+    //vector<Attribute> * at = new vector<Attribute>;
+    //cm.attributeGet("teacher", at);
 
 }

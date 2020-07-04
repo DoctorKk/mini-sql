@@ -5,19 +5,11 @@
 using namespace std;
 
 int main() {
-<<<<<<< Updated upstream
-		ifstream in("teacher");
-		if (!in)
-				cout << "shit" << endl;
-		string temp;
-		while (!in.eof()) {
-				getline(in, temp);
-				cout << temp << flush;
-		}
-=======
-		ofstream out("teacher", ios::out);
-		string place("/", 10);
-		char* temp = (char* )place.c_str();
-		out << temp << endl;		
->>>>>>> Stashed changes
+		string test = "124321";
+		stringstream fuck;
+		fuck << test;
+		int shit;
+		fuck >> shit;
+		cout << shit << endl;
+
 }

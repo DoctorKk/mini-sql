@@ -6,13 +6,7 @@
 #define MAXNUM_DATA (ORDER_V * 2)    /* 叶子结点中最多数据个数，为2v */
 
 
-/* 结点类型 */
-enum NODE_TYPE
-{
-    NODE_TYPE_ROOT     = 1,    // 根结点
-    NODE_TYPE_INTERNAL = 2,    // 内部结点
-    NODE_TYPE_LEAF     = 3,    // 叶子结点
-};
+
 
 #define NULL 0
 #define INVALID 0
@@ -22,7 +16,13 @@ enum NODE_TYPE
 #include<iostream>
 #include<string>
 
-using namespace std;
+using namespace std;/* 结点类型 */
+enum NODE_TYPE
+{
+    NODE_TYPE_ROOT     = 1,    // 根结点
+    NODE_TYPE_INTERNAL = 2,    // 内部结点
+    NODE_TYPE_LEAF     = 3,    // 叶子结点
+};
 
 /* 结点数据结构，为内部结点和叶子结点的父类 */
 template <class KEY_TYPE>

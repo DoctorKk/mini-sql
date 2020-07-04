@@ -103,7 +103,7 @@ void API::indexCreate(string indexName, string tableName, string attributeName)
 
     vector<Attribute> attributeVector;
     cm->attributeGet(tableName, &attributeVector);
-    int i;
+    //int i;
     int type = 0;
     for (i = 0; i < attributeVector.size(); i++)
     {

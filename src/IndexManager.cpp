@@ -17,6 +17,7 @@ void IndexManager::create_index(string indexName, string tableName, int type, in
     {
         BPlusTree<float> *tree;
         init_index(tableName, tree, offset);
+        //==========before inserting check if it already exists
         indexFloatMap.insert(floatMap::value_type(indexName, tree));
     }
     else if (type == 0)
@@ -33,6 +34,7 @@ void IndexManager::create_index(string indexName, string tableName, int type, in
     }
 }
 
+//===========also need change here: since a table can have different indexes
 void IndexManager::drop_index(string tableName, int type)
 {
     if (type == -1)
@@ -132,7 +134,7 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offs
     int count = 0;
     int recordSize = 0;
     
-    for(int i = 0;i<offset;i++){
+    for(int i = 0;i<=offset;i++){
         while(b->data[begin]!='/'){
             begin++;
         }
@@ -171,17 +173,19 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
     char *indexBegin = b->data;
-    int begin = 0;
+    string content(indexBegin);
+    int end = 0;
+    int pre = 0;
     int value;
     int count = 0;
-    int recordSize;
+    string temp;
 
-    for(int i = 0;i<offset;i++){
-        while(b->data[begin]!='/'){
-            begin++;
+    for(int i = 0;i<=offset;i++){
+        while(b->data[end]!='/'){
+            end++;
         }
     }
-    begin++;
+    //end++;
 
 
     while (1)
@@ -190,21 +194,24 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
         {
             return;
         }
-        while (begin < b->blockSize)
+        while (end < b->blockSize)
         {
-            value = *(int *)indexBegin;
+            temp = content.substr(pre, end);
+            value = stoi(temp);
+            //value = *(int *)indexBegin;
             tree->Insert(make_pair(count++, value));
-            while(b->data[begin]!='\n'){
-                begin++;
+            while(b->data[end]!='\n'){
+                end++;
             }
-            begin++;
-            for(int i = 0;i<offset;i++){
-                while(b->data[begin]!='/' && begin<b->blockSize){
-                    begin++;
+            end++;
+            for(int i = 0;i<=offset;i++){
+                while(b->data[end]!='/' && end<b->blockSize){
+                    end++;
                 }
             }
-            begin++;
-            indexBegin = b->data + begin;
+            end++;
+            //indexBegin = b->data + end;
+            pre = end++;
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }
