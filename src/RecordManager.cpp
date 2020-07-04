@@ -187,7 +187,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
         memset(content, 0, 255);
 
         begin += (typeSize+1);
-        memcpy(content, t[i].c_str(), typeSize);
+        memcpy(content, t[i].c_str(), t[i].length());
         //preSize = typeSize;
         //changed here
         for (int j = 0; j < (*attributeVector).size(); j++){
@@ -400,7 +400,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         memset(content, 0, 255);
 
-        memcpy(content, t[i].c_str(), typeSize);
+        memcpy(content, t[i].c_str(), t[i].length());
         
         //begin = begin+typeSize+1;
         
