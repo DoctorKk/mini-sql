@@ -45,6 +45,7 @@ public:
     int revokeIndexOnAttribute(string tableName, string AttributeName, string indexName);
     int indexNameListGet(string tableName, vector<string>* indexNameVector);    //all indexes of one table
     int getIndexType(string indexName);
+    string getPrimaryKeyName(string tableName);
 
     //get length
     int calculateLength_table(string tableName);
