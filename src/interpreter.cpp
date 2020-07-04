@@ -461,15 +461,16 @@ int Interpreter::EXEC_QUIT(string s, int *tmp, string word)
 	return 587;
 }
 //Execfile 
-int Interpreter::EXEC_EXECFILE(string s)
+int Interpreter::EXEC_EXECFILE(string s，int *tmp,string word)
 {
 	string Path = "../exec/";
-	Path += s;
-	cout << "try to open " << s << "..." << endl;
+	word = getWord(s, tmp);
+	Path += word;
+	cout << "try to open " << word << "..." << endl;
 	ifstream in(Path);
 	if (!in) {
-	    cerr << "executable file not found" << endl;
-	    return 2;
+		cerr << "executable file not found" << endl;
+		return 2;
 	}
 	string temp;
 	while (!in.eof()) {
