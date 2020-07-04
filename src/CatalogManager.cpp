@@ -77,7 +77,7 @@ int Catalog::createTable(string tableName, vector<Attribute>* attributeVector, s
         int record = 0;
         fprintf(fp, "%d|", record);
 
-        cout << "check " << primaryKeyName << endl;
+        //cout << "check " << primaryKeyName << endl;
 
         /* primary key */
         if (primaryKeyName != "")
