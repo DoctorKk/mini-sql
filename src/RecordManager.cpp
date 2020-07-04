@@ -155,8 +155,8 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
     split(begin, temp, &t);
 
     for(int i =0;;i++){
-        if(t[attributeVector->size()][i]=='\n'){
-            t[attributeVector->size()][i] ='\0';
+        if(t[attributeVector->size()-1][i]=='\n'){
+            t[attributeVector->size()-1][i] ='\0';
             break;
         }
     } 
@@ -372,9 +372,9 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
     for (int i = 0;; i++)
     {
-        if (t[attributeVector->size()][i] == '\n')
+        if (t[attributeVector->size()-1][i] == '\n')
         {
-            t[attributeVector->size()][i] = '\0';
+            t[attributeVector->size()-1][i] = '\0';
             break;
         }
     }
