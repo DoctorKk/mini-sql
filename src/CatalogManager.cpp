@@ -686,3 +686,32 @@ int char2int(char type[], int len) {
     num *= flag;
     return num;
 }
+
+/* if table doesn't exist */
+/* return "Error" */
+string Catalog::getPrimaryKeyName(string tableName) {
+    FILE* fp;
+    string post = ".txt";
+    tableName += post;
+
+    fp = fopen(tableName.c_str(), "r");
+    if (fp == NULL)
+        return "Error";
+
+    char buff[BUF_SIZE] = { 0 };
+    char tem_name[BUF_SIZE] = { 0 };
+    int len_buff,count;
+    int type = -1;
+
+    if (fgets(buff, BUF_SIZE, fp) != NULL) {
+        len_buff = strlen(buff);
+        int k = 4,j;
+        if (buff[len_buff-1] != '\n') {
+            k = 3;
+        }
+        for (j = len_buff - k; buff[j] != '|';j--) { }
+        strncpy(tem_name, buff + j+1,len_buff-j-k);
+    }
+    string primaryKey(tem_name);
+    return primaryKey;
+}
