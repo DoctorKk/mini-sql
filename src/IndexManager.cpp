@@ -176,6 +176,26 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
     string content(indexBegin);
     int end = 0;
     int pre = 0;
+    int value = 0;
+    string temp;
+    while (1) {
+        if (b == NULL)
+            return;
+        else {
+            int i = 0;
+            for (; i <= offset; i++) {
+                temp = content.substr(pre, end);
+                value = stoi(temp);
+                end = content.find("/", pre);
+                pre = end+1;
+            }
+        }
+    }
+
+
+
+
+    /*
     int value;
     int count = 0;
     string temp;
@@ -215,6 +235,7 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
         }
         b = buffer.getNextBlock(tableName.c_str(), b);
     }
+     */
 }
 
 void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int offset)

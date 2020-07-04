@@ -41,8 +41,8 @@ void API::tableCreate(string tableName, vector<Attribute>* attributeVector, stri
     if (primaryKeyName != "")
     {
         //get a primary key
-        string indexName = primaryIndexNameGet(tableName);
-        indexCreate(indexName, tableName, primaryKeyName);
+        //string indexName = primaryIndexNameGet(tableName);
+        //indexCreate(indexName, tableName, primaryKeyName);
     }
 }
 
@@ -93,64 +93,7 @@ void API::indexCreate(string indexName, string tableName, string attributeName)
     im->create_index(indexName, tableName, (*at)[i].type, i);
 
     return;
-    if (cm->findIndex(indexName) != "")
-    {
-        cout << "There is index " << indexName << " already" << endl;
-        return;
-    }
 
-    if (!tableExist(tableName)) return;
-
-    vector<Attribute> attributeVector;
-    cm->attributeGet(tableName, &attributeVector);
-    //int i;
-    int type = 0;
-    for (i = 0; i < attributeVector.size(); i++)
-    {
-        if (attributeName == attributeVector[i].name)
-        {
-            if (!attributeVector[i].ifUnique)
-            {
-                cout << "the attribute is not unique" << endl;
-                return;
-            }
-            type = attributeVector[i].type;
-            break;
-        }
-    }
-
-    if (i == attributeVector.size())
-    {
-        cout << "there is not this attribute in the table" << endl;
-        return;
-    }
-
-    //RecordManager to create a index file
-    if (rm->index_create(indexName))
-    {
-        //CatalogManager to add a index information
-        cm->addIndex(indexName, tableName, attributeName, type);
-
-        //get type of index
-        int indexType = cm->getIndexType(indexName);
-        if (indexType == -1)
-        {
-            cout << "error" << endl;
-            return;
-        }
-
-        //indexManager to create a index tress
-        im->create_index(indexName,tableName,indexType,i);
-
-        //recordManager insert already record to index
-        //rm->indexRecordAllAlreadyInsert(tableName, indexName);          insert the index of a record of a table in a block？？ <<<<<<<<<<<<<<<<<<<<<<<<
-
-        cout << "Create index " << indexName << " successfully" << endl;
-    }
-    else
-    {
-        cout << "Create index " << indexName << " fail" << endl;
-    }
 }
 
 /* check if table exist,input: table name */
@@ -178,7 +121,7 @@ int API::indexNameListGet(string tableName, vector<string>* indexNameVector) {
 }
 
 string API::primaryIndexNameGet(string tableName) {
-
+    cm->getPrimaryKeyName(tableName);
 }
 
 void API::recordShow(string tableName, vector<string>* attributeNameVector){
