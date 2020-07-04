@@ -42,7 +42,7 @@ public:
     //Quit
     int EXEC_QUIT(string s,int *tmp,string word);
     //Execfile 
-    int EXEC_EXECFILE(string s);
+    int EXEC_EXECFILE(string s，int *tmp,string word);
     string getWord(string s, int *tmp);
 	
 	Interpreter(){
