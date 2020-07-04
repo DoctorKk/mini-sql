@@ -124,22 +124,29 @@ int RecordManager::record_blockshow(string tableName, Block *block)
 
 void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector)
 {
+    
     int type;
     string attributeName;
-    int typeSize = 0;
+    int typeSize = -1;
     int preSize = -1;
     char content[255];
 
     char *begin = recordBegin;
         
     for(int i = 0; i < attributeVector->size(); i++){
-        begin = recordBegin;
-        type = (*attributeVector)[i].type;
-        typeSize += 1;
-        while(begin[typeSize]!='/'){
+        typeSize++;
+        while (begin[typeSize] != '/' && begin[typeSize] != '\n')
+        {
             typeSize++;
         }
-        typeSize -= preSize;
+        //typeSize++;
+        //begin = recordBegin;
+        type = (*attributeVector)[i].type;
+        //typeSize += 1;
+        //while(begin[typeSize]!='/'){
+        //    typeSize++;
+        //}
+        //typeSize -= preSize;
         //typeSize++;
         /*
         if(type==-1){
@@ -155,9 +162,9 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         memset(content, 0, 255);
 
-        begin += preSize;
+        begin += (typeSize+1);
         memcpy(content, begin, typeSize);
-        preSize = typeSize;
+        //preSize = typeSize;
         //changed here
         for (int j = 0; j < (*attributeVector).size(); j++){
             
@@ -181,7 +188,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
             }
             break;
         }
-    }   
+    }    
 }
 
 
