@@ -52,7 +52,7 @@ int Catalog::dropTable(string tableName) {
 /* 3.create table, input: table name, attributes and primary key */
 /* if table already exists, return -3 */
 /* else, create a new file, write the information and return 3 */
-int Catalog::createTable(string tableName, vector<Attribute>* attributeVector, string primaryKeyName = "") {
+int Catalog::createTable(string tableName, vector<Attribute>* attributeVector, string primaryKeyName ) {
     Catalog tem;
     int find = tem.findTable(tableName);
     if (find == 1) {
@@ -77,17 +77,20 @@ int Catalog::createTable(string tableName, vector<Attribute>* attributeVector, s
         int record = 0;
         fprintf(fp, "%d|", record);
 
+        cout << "check " << primaryKeyName << endl;
+
         /* primary key */
         if (primaryKeyName != "")
             fprintf(fp, "%s||\n", primaryKeyName.c_str());
-        else 
-            fprintf(fp,"||\n");
+        else
+            fprintf(fp, "||\n");
 
         for (int i = 0; i < (*attributeVector).size(); i++) {
             string name = (*attributeVector)[i].getName();
             int type = (*attributeVector)[i].getType();
             bool unique = (*attributeVector)[i].getUnique();
             string index = (*attributeVector)[i].getIndex();
+            //cout << "hhh" << name << " " << type << " " << unique << " " << index << endl;
             fprintf(fp, "%s|%d|%d|%s||\n", name.c_str(), type, unique, index.c_str());
         }
         fclose(fp);
