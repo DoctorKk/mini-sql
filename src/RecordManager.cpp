@@ -1,7 +1,7 @@
 /*
  * @Author: 小文
  * @Date: 2020-06-21 15:26:33
- * @LastEditTime: 2020-06-30 19:10:11
+ * @LastEditTime: 2020-07-04 12:13:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \新建文件夹\RecordManger.cpp
@@ -35,6 +35,22 @@ int RecordManager::table_drop(string tableName)
     return 0;
 }
 */
+
+void split(std::string &s, std::string &delim, std::vector<std::string> *ret)
+{
+    size_t last = 0;
+    size_t index = s.find_first_of(delim, last);
+    while (index != string::npos)
+    {
+        ret->push_back(s.substr(last, index - last));
+        last = index + 1;
+        index = s.find_first_of(delim, last);
+    }
+    if (index - last > 0)
+    {
+        ret->push_back(s.substr(last, index - last));
+    }
+}
 
 int RecordManager::record_insert(string tableName, char *record)
 {
@@ -124,24 +140,32 @@ int RecordManager::record_blockshow(string tableName, Block *block)
 
 void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attribute> *attributeVector)
 {
-    
     int type;
     string attributeName;
     int typeSize = -1;
     int preSize = -1;
     char content[255];
 
-    char *begin = recordBegin;
-        
-    for(int i = 0; i < attributeVector->size(); i++){
-        typeSize = 0;
-        while (begin[typeSize] != '/' && begin[typeSize] != '\n')
-        {
-            typeSize++;
+    string begin = recordBegin;
+    
+    string temp("/");
+
+    vector<string> t(attributeVector->size());
+
+    split(begin, temp, &t);
+
+    for(int i =0;;i++){
+        if(t[attributeVector->size()][i]=='\n'){
+            t[attributeVector->size()][i] ='\0';
+            break;
         }
+    } 
+    for (int i = 0; i < attributeVector->size(); i++)
+    {
         //typeSize++;
         //begin = recordBegin;
         type = (*attributeVector)[i].type;
+        
         //typeSize += 1;
         //while(begin[typeSize]!='/'){
         //    typeSize++;
@@ -163,7 +187,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
         memset(content, 0, 255);
 
         begin += (typeSize+1);
-        memcpy(content, begin, typeSize);
+        memcpy(content, t[i].c_str(), typeSize);
         //preSize = typeSize;
         //changed here
         for (int j = 0; j < (*attributeVector).size(); j++){
@@ -188,7 +212,7 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
             }
             break;
         }
-    }    
+    }
 }
 
 
@@ -336,17 +360,31 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 {
     int type;
     string attributeName;
-    int typeSize = -1;
+    int typeSize = 0;
     char content[255];
+    string begin = recordBegin;
 
-    char *begin = recordBegin;
-        
-    for(int i = 0; i < attributeVector->size(); i++){
-        type = (*attributeVector)[i].type;
-        typeSize = 0;
-        while(begin[typeSize]!='/' && begin[typeSize]!='\n'){
-            typeSize++;
+    string temp("/");
+
+    vector<string> t(attributeVector->size());
+
+    split(begin, temp, &t);
+
+    for (int i = 0;; i++)
+    {
+        if (t[attributeVector->size()][i] == '\n')
+        {
+            t[attributeVector->size()][i] = '\0';
+            break;
         }
+    }
+    for(int i = 0; i < attributeVector->size(); i++){
+        //typeSize = begin.find_first_of("/",typeSize);;
+        type = (*attributeVector)[i].type;
+        //typeSize++;
+        //while(begin[typeSize]!='/'){
+        //    typeSize++;
+        //}
         //typeSize++;   
         /*
         if(type==-1){
@@ -362,9 +400,9 @@ void RecordManager::record_print(char *recordBegin, int recordSize, vector<Attri
 
         memset(content, 0, 255);
 
-        memcpy(content, begin, typeSize);
+        memcpy(content, t[i].c_str(), typeSize);
         
-        begin = begin+typeSize+1;
+        //begin = begin+typeSize+1;
         
         for (int j = 0; j < (*attributeNameVector).size(); j++){
             if ((*attributeNameVector)[j] == (*attributeVector)[i].name){
