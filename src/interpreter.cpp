@@ -22,7 +22,7 @@ void Interpreter::mainFunction()
 	int fact = 1;
 	while (fact != 587) {
 		cout << "PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT" << endl;
-		text = "";
+		text = " ";
 		do{
 			getline(cin, temp);
 			text = text + const_empty;
@@ -495,7 +495,7 @@ string Interpreter::getWord(string s, int *tmp)
 {
 	string word;
 	int idx1, idx2;
-	while ((s[*tmp] == ' '|| s[*tmp] == '\r'|| s[*tmp] == '\'' || s[*tmp] == 10 || s[*tmp] == '\t') && s[*tmp] != 0 && s[*tmp] != ';')
+	while ((s[*tmp] == ' '|| s[*tmp] == '\'' || s[*tmp] == 10 || s[*tmp] == '\t') && s[*tmp] != 0 && s[*tmp] != ';')
 	{
 		(*tmp)++;
 	}
@@ -535,7 +535,7 @@ string Interpreter::getWord(string s, int *tmp)
 	}
 	else
 	{
-		while (s[*tmp] != ' '&& s[*tmp]!='\r' &&s[*tmp] != '\''&&s[*tmp] != '(' && s[*tmp] != 10 && s[*tmp] != 0 && s[*tmp] != ')' && s[*tmp] != ',' && s[*tmp]!=';')
+		while (s[*tmp] != ' '&&s[*tmp] != '\''&&s[*tmp] != '(' && s[*tmp] != 10 && s[*tmp] != 0 && s[*tmp] != ')' && s[*tmp] != ',' && s[*tmp]!=';')
 			(*tmp)++;
 		idx2 = *tmp;
 		if (idx1 != idx2)
