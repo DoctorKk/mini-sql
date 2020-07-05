@@ -22,7 +22,7 @@ void Interpreter::mainFunction()
 	int fact = 1;
 	while (fact != 587) {
 		cout << "PLEASE ENTER YOUR SETENCE!WILL LOOP BEFORE YOU QUIT" << endl;
-		text = "";
+		text = " ";
 		do{
 			getline(cin, temp);
 			text = text + const_empty;
