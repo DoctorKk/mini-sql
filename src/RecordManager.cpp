@@ -149,16 +149,16 @@ void RecordManager::record_print(string recordBegin, int recordSize, vector<Attr
     
     string temp("/");
 
-    vector<string> t(0),T(0);
+    vector<string> t(0);
 
     split(begin, temp, &t);
 
     string t1 = t[attributeVector->size()-1];
-    temp = "\n";
-    split(t1,temp,&T);
+    //temp = "\n";
+    //split(t1,temp,&T);
     
 
-    for (int i = 0; i < attributeVector->size()-1; i++)
+    for (int i = 0; i < attributeVector->size(); i++)
     {
         //typeSize++;
         //begin = recordBegin;
@@ -208,7 +208,7 @@ void RecordManager::record_print(string recordBegin, int recordSize, vector<Attr
         //}
         
     }
-    cout<<T[0]<<" "<<flush;
+    //cout<<T[0]<<" "<<flush;
     //cout<<"over"<<endl;
     t.clear();
 }
