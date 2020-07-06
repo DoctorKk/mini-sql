@@ -19,12 +19,10 @@ public:
     RecordManager* rm;
     Catalog* cm;
     IndexManager* im;
-    BufferManager* bm;
     API() {
         rm = new RecordManager;
         cm = new Catalog;
         im = new IndexManager;
-        bm = new BufferManager;
     }
     ~API() {}
 

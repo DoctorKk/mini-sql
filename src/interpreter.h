@@ -48,7 +48,9 @@ public:
 	Interpreter(){
 	    ap = new API;
 	}
-	~Interpreter(){}
+	~Interpreter(){
+	    delete ap;
+	}
 };
 
 #endif

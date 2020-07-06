@@ -8,19 +8,20 @@
 using namespace std;
 
 int main() {
-    //BufferManager bm;
-    //RecordManager rm;
-    //rm.record_insert("teacher", "GIGI!");
-    //rm.record_insert("teacher", "test/sdf/sdfsd/af");
     Interpreter ip;
-    //Catalog cm;
     ip.mainFunction();
-    //rm.record_showall("teacher");
-    //Catalog cm;
-    //vector<Attribute> * at = new vector<Attribute>;
-    //cm.attributeGet("teacher", at);
-    //BufferManager bm;
-    //File * temp = bm.loadFile("student2");
-    //cout << "stop" << endl;
+    /*
+    string record = "test/test/test\nthis/is/a/test";
+    string temp = "\n";
+    vector<string>* test = new vector<string>;
+    split(record, temp, test);
+    for (auto i: *test) {
+        cout << i << endl;
+    }
+    */
 
+    //IndexManager im;
+    //BPlusTree<int> * btree = new BPlusTree<int>;
+    //im.init_index("teacher", btree, 0);
+    //cout << btree -> Search(32498) << endl;
 }

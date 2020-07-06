@@ -47,7 +47,7 @@ File* BufferManager::getFile(const char* fileName) {
 }
 
 Block* BufferManager::getBlock(const char* fileName, Block* block) {
-	for (int i = 0; i < blockNum; i++) { // if it is in the memory
+	/*for (int i = 0; i < blockNum; i++) { // if it is in the memory
 		if (block == Memory[i]) {
 			for (int j = 0; j < blockNum; j++) {
 				Memory[j] -> time += 1; // increase the time
@@ -79,6 +79,8 @@ Block* BufferManager::getBlock(const char* fileName, Block* block) {
 
 	}
 	return btemp;
+	 */
+	return block;
 }
 
 Block* BufferManager::getFirstBlock(const char* fileName) {
@@ -120,12 +122,14 @@ void BufferManager::initFile(const char* fileName, File* file) { // initialize t
 	file -> nextFile = nullptr;
 	file -> firstBlock = nullptr;
 	file -> type = 0;
-	file -> fileName = (char*)fileName;
+	file -> fileName = new char[strlen(fileName)+1];
+	strcpy(file->fileName, fileName);
 	return;
 }
 
 void BufferManager::initBlock(Block* block, const char* fileName) {
-	block -> fileName = (char*)fileName;
+	block -> fileName = new char[strlen(fileName)+1];
+	strcpy(block->fileName, fileName);
 	block -> dirty = 0;
 	block -> pin = 0;
 	block -> time = 0;

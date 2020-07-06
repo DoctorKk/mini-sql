@@ -24,7 +24,7 @@ class API;
 
 class IndexManager
 {
-private:
+public:
     BufferManager buffer;
     Catalog cm;
 

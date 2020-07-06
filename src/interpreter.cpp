@@ -354,10 +354,10 @@ int  Interpreter::EXEC_SELECT(string s, int *tmp, string word)
 	if (word.empty())	// without condition
 	{
 		if (attrSelected.size() == 0) {
-			ap->recordShow(tableName);
+			ap->recordShow(tableName, nullptr, nullptr);
 		}
 		else
-			ap->recordShow(tableName, &attrSelected);
+			ap->recordShow(tableName, &attrSelected, nullptr);
 		return 1;
 	}
 	else if (strcmp(word.c_str(), "where") == 0)
@@ -481,6 +481,7 @@ int Interpreter::EXEC_EXECFILE(string s, int *tmp, string word)
         text = "";
         do {
             getline(in, temp);
+            temp.erase(temp.size()-1);
             text = text + const_empty;
             text = text + temp;
         } while (text[text.size() - 1] != ';');

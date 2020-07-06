@@ -8,21 +8,7 @@
  */ 
 #include"IndexManager.h"
 
-void split(std::string &s, std::string &delim, std::vector<std::string> *ret)
-{
-    size_t last = 0;
-    size_t index = s.find_first_of(delim, last);
-    while (index != string::npos)
-    {
-        ret->push_back(s.substr(last, index - last));
-        last = index + 1;
-        index = s.find_first_of(delim, last);
-    }
-    if (index - last > 0)
-    {
-        ret->push_back(s.substr(last, index - last));
-    }
-}
+extern void split(std::string &s, std::string &delim, std::vector<std::string> *ret);
 
 
 void IndexManager::create_index(string indexName, string tableName, int type, int offset)
@@ -184,27 +170,42 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offs
     }
 }
 
-void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset)
-{
+void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset) {
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
 
-    string temp1="/",temp2="\n";
+    string temp1 = "/", temp2 = "\n";
     string begin;
+    int value;
+    int count = 0;
 
 
-    while(1){
-        if(b==NULL) return;
-    begin = b->data;
+    while (1) {
+        if (b == NULL) return;
+        begin = b->data;
 
-    vector<string> records(0), at(0);
+        vector<string> records(0), at(0);
 
-    vector<Attribute>* atemp = new vector<Attribute>;
-    cm.attributeGet(tableName, atemp);
-    int attributesum = atemp -> size();
+        vector<Attribute> *atemp = new vector<Attribute>;
+        cm.attributeGet(tableName, atemp);
+        int attributesum = atemp->size();
 
-    split(begin,temp1,&records);
+        split(begin, temp2, &records);
+
+        for (auto item: records) {
+            vector<string> temp(0);
+            split(item, temp1, &temp);
+            value = stoi(temp[offset]);
+            tree -> Insert(make_pair(count++, value));
+
+            temp.clear();
+        }
+        b = b -> nextBlock;
+
+    }
+}
+    /*
     int count = 0, num = 0;
     if(offset!=attributesum-1 && offset!=0){
         for(int i = offset;i<records.size();i = i+offset-1) {
@@ -267,52 +268,8 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
             }
         }
     }
-
-
-
-
-    /*
-    int value;
-    int count = 0;
-    string temp;
-
-    for(int i = 0;i<=offset;i++){
-        while(b->data[end]!='/'){
-            end++;
-        }
-    }
-    //end++;
-
-
-    while (1)
-    {
-        if (b == NULL)
-        {
-            return;
-        }
-        while (end < b->blockSize)
-        {
-            temp = content.substr(pre, end);
-            pre = end;
-            value = stoi(temp);
-            //value = *(int *)indexBegin;
-            tree->Insert(make_pair(count++, value));
-            while(b->data[end]!='\n'){
-                end++;
-            }
-            end++;
-            for(int i = 0;i<=offset;i++){
-                while(b->data[end]!='/' && end<b->blockSize){
-                    end++;
-                }
-            }
-            end++;
-            //indexBegin = b->data + end;
-        }
-        b = buffer.getNextBlock(tableName.c_str(), b);
-    }
      */
-}
+
 
 void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int offset)
 {

@@ -57,4 +57,5 @@ private:
     void content_print(char *content, int type);
 };
 
+void split(std::string &s, std::string &delim, std::vector<std::string> *ret);
 #endif
