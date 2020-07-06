@@ -35,7 +35,24 @@ int RecordManager::table_drop(string tableName)
     return 0;
 }
 */
-extern void split(std::string &s, std::string &delim, std::vector<std::string> *ret);
+
+void split(std::string &s, std::string &delim, std::vector<std::string> *ret)
+{
+    size_t last = 0;
+    size_t index = s.find_first_of(delim, last);
+    while (index != string::npos)
+    {
+        ret->push_back(s.substr(last, index - last));
+        last = index + 1;
+        index = s.find_first_of(delim, last);
+    }
+    if (index - last > 0)
+    {
+        ret->push_back(s.substr(last, index - last));
+    }
+
+}
+
 int RecordManager::record_insert(string tableName, char *record)
 {
     string stemp(record);
@@ -56,7 +73,6 @@ int RecordManager::record_insert(string tableName, char *record)
     buffer.setDirty(f);
     memcpy(f->data+strlen(f->data), record, recordSize);
     f->blockSize = strlen(f -> data);
-    f -> recordNum += 1;
     buffer.writeFiletoDisk(temp);
     return 1;
 }
@@ -64,13 +80,13 @@ int RecordManager::record_insert(string tableName, char *record)
 
 
 
-
+/*
 int RecordManager::record_showall(string tableName)
 {
     File *temp = buffer.getFile(tableName.c_str());
     Block *f = buffer.getFirstBlock(tableName.c_str());
 
-    //cout<<"test"<<endl;
+    cout<<"test"<<endl;
 
     int Num = 0;
 
@@ -89,10 +105,12 @@ int RecordManager::record_showall(string tableName)
             f = buffer.getNextBlock(tableName.c_str(), f);
         }
     }
+    return Num;
 }
 
 int RecordManager::record_blockshow(string tableName, Block *block)
 {
+    cout<<block->data<<endl;
     if(block==NULL){
         return -1;
     }
@@ -105,7 +123,8 @@ int RecordManager::record_blockshow(string tableName, Block *block)
     catalog.attributeGet(tableName, &at);
     int record_size;
 
-    vector<string> records(0);
+    vector<string> records;
+    records.reserve(11);
     string temp = "\n";
 
     split(recordbegin, temp, &records);
@@ -117,23 +136,7 @@ int RecordManager::record_blockshow(string tableName, Block *block)
         count++;
     }
 
-    /*
-    while(begin < block->blockSize){
-        count++;
-        record_size = 0;
-        while(recordbegin[record_size]!='\n'){
-            record_size++;
-        }
 
-        record_print(recordbegin, record_size, &at);
-        printf("\n");
-        while(block->data[begin]!='\n' && begin < block->blockSize){
-            begin++;
-        }
-        begin++;
-        recordbegin = block->data + begin;
-    }
-     */
     return count;
 }
 
@@ -155,42 +158,14 @@ void RecordManager::record_print(string recordBegin, int recordSize, vector<Attr
     split(begin, temp, &t);
 
     string t1 = t[attributeVector->size()-1];
-    //temp = "\n";
-    //split(t1,temp,&T);
+    temp = "\n";
+    split(t1,temp,&T);
     
 
-    for (int i = 0; i < attributeVector->size(); i++)
+    for (int i = 0; i < attributeVector->size()-1; i++)
     {
-        //typeSize++;
-        //begin = recordBegin;
+
         type = (*attributeVector)[i].type;
-        
-        //typeSize += 1;
-        //while(begin[typeSize]!='/'){
-        //    typeSize++;
-        //}
-        //typeSize -= preSize;
-        //typeSize++;
-        /*
-        if(type==-1){
-            typeSize = sizeof(float);
-        }
-        else if(type==0){
-            typeSize = sizeof(int);
-        }
-        else{
-            typeSize = type + 1;
-        }
-        */
-
-        //memset(content, 0, 255);
-
-        //begin += (typeSize+1);
-        //memcpy(content, t[i].c_str(), typeSize);
-        //preSize = typeSize;
-        //changed here
-        //for (int j = 0; j < (*attributeVector).size(); j++){
-            //if ((*attributeNameVector)[j] == (*attributeVector)[i].name) {
                 if (type == Attribute::TYPE_INT) {
                     //int tmp = *((int *)content);
                     //printf("%d ", tmp);
@@ -209,12 +184,11 @@ void RecordManager::record_print(string recordBegin, int recordSize, vector<Attr
         //}
         
     }
-    //cout<<T[0]<<" "<<flush;
+    cout<<T[0]<<" "<<flush;
     //cout<<"over"<<endl;
-    t.clear();
 }
 
-
+*/
 int RecordManager::record_showall(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector)
 {
     File *temp = buffer.getFile(tableName.c_str());
@@ -237,7 +211,6 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
         else{
 
             Num += record_blockshow(tableName, attributeNameVector, conditionVector, f);
-
             f = buffer.getNextBlock(tableName.c_str(), f);
         }
     }
@@ -333,7 +306,8 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     catalog.attributeGet(tableName, &at);
     int record_size = 0;
 
-    vector<string> records(0);
+    vector<string> records;
+    at.reserve(11);
 
     string recordbegin = block->data;
     string temp = "\n";
@@ -342,114 +316,51 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
 
     for(int i = 0; i < records.size();i++){
         if (record_conditionfit(records[i], record_size, &at, conditionVector)) {
-
             count++;
-
             record_print(records[i], record_size, &at, attributeNameVector);
-            //record_print(recordbegin, record_size, &at, attributeNameVector);
-            printf("\n");
         }
     }
+
+    //delete &records;
+    records.clear();
+    vector<string>().swap(records);
     return count;
 
-
-
-
-    /*
-    while(begin < block->blockSize){
-
-        if (record_conditionfit(recordbegin, record_size, &at, conditionVector)){
-            count++;
-            record_size = 0;
-            while(recordbegin[record_size]!='\n'){
-                record_size++;
-            }
-            record_print(recordbegin, record_size, &at, attributeNameVector);
-            printf("\n");
-        }
-
-        while(block->data[begin]!='\n' && begin < block->blockSize){
-            begin++;
-        }
-
-        begin++;
-        recordbegin = block->data + begin;
-    }
-    return count;
-*/
 }
 
 void RecordManager::record_print(string recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<string> *attributeNameVector)
 {
-    int type;
     string attributeName;
-    int typeSize = 0;
-    char content[255];
     
     string begin = recordBegin;
 
     string temp("/");
 
-    vector<string> t(0), T(0);
+    vector<string> t;
+    t.reserve(attributeVector->size()+1);
 
     split(begin, temp, &t);
 
     string t1 = t[attributeVector->size()-1];
-    temp = "\n";
 
-    split(t1,temp,&T);
-    t[attributeVector->size()-1] = T[0];
     for(int i = 0; i < attributeVector->size(); i++){
-        //typeSize = begin.find_first_of("/",typeSize);;
-        type = (*attributeVector)[i].type;
-        //typeSize++;
-        //while(begin[typeSize]!='/'){
-        //    typeSize++;
-        //}
-        //typeSize++;   
-        /*
-        if(type==-1){
-            typeSize = sizeof(float);
-        }
-        else if(type==0){
-            typeSize = sizeof(int);
-        }
-        else{
-            typeSize = type + 1;
-        }
-        */
 
-        memset(content, 0, 255);
-
-        memcpy(content, t[i].c_str(), t[i].length());
-        
-        //begin = begin+typeSize+1;
         
         for (int j = 0; j < (*attributeNameVector).size(); j++){
             if ((*attributeNameVector)[j] == (*attributeVector)[i].name){
 
-                if (type == Attribute::TYPE_INT)
-                {
-                    int tmp = *((int *)content);
-                    printf("%d ", tmp);
-                }
-                else if (type == Attribute::TYPE_FLOAT)
-                {
-                    float tmp = *((float *)content);
-                    printf("%f ", tmp);
-                }
-                else
-                {
-                    string tmp = content;
-                    printf("%s ", tmp.c_str());
-                }
-
+                cout<<t[i]<<" "<<flush;
                 break;
             }
         }
     }
     //cout<<T[0]<<flush;
+    //delete &t;
+    t.clear();
+    vector<string>().swap(t);
+    cout<<endl;
 
+    return;
     
 }
 
@@ -464,85 +375,31 @@ bool RecordManager::record_conditionfit(string recordBegin, int recordSize, vect
 
     string contentBegin = recordBegin;
     string temp("/");
-    vector<string> contents(0),t(0);
+    vector<string> contents;
+    contents.reserve(attributeVector->size()+1);
     split(contentBegin, temp, &contents);
-    temp = "\n";
-    split(contents[attributeVector->size()-1],temp,&t);
-    contents[attributeVector->size()-1] = t[0];
-
 
     for (int i = 0; i < attributeVector->size(); i++)
     {
         content = contents[i];
-        //cout<<(*conditionVector).size()<<endl;
+
         for (int j = 0; j < (*conditionVector).size(); j++)
         {
-            //cout<<(*conditionVector)[j].attributeName<<"=="<<(*attributeVector)[i].name<<endl;
+
             if ((*conditionVector)[j].attributeName == (*attributeVector)[i].name)
             {
-                //cout<<"judge:"<<content<<endl;
-                //if this attribute need to deal about the condition
+
                 if (!content_conditionfit(content, type, &(*conditionVector)[j]))
                 {
 
-                    //if this record is not fit the conditon
                     return false;
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        type = (*attributeVector)[i].type;
-        attributeName = (*attributeVector)[i].name;
-
-        if (type == -1)
-        {
-            typeSize = sizeof(float);
-        }
-        else if (type == 0)
-        {
-            typeSize = sizeof(int);
-        }
-        else
-        {
-            typeSize = type + 1;
-        }
-
-        //init content (when content is string , we can get a string easily)
-        memset(content, 0, 255);
-        memcpy(content, contentBegin, typeSize);
-        for (int j = 0; j < (*conditionVector).size(); j++)
-        {
-            if ((*conditionVector)[j].attributeName == attributeName)
-            {
-                //if this attribute need to deal about the condition
-                if (!content_conditionfit(content, type, &(*conditionVector)[j]))
-                {
-                    //if this record is not fit the conditon
-                    return false;
-                }
-            }
-        }
-
-        contentBegin += typeSize;
-        */
     }
+    //delete &contents;
+    contents.clear();
+    vector<string>().swap(contents);
     return true;
 }
 
@@ -570,19 +427,15 @@ void RecordManager::content_print(char * content, int type)
 
 bool RecordManager::content_conditionfit(string content, int type, Condition *condition)
 {
-    if(content==condition->value)   return true;
-    else return false;
-
     if (type == 0)
     {
-        //if the content is a int
-        int tmp = *((int *)content.c_str()); //get content value by point
+        int tmp = atoi(content.c_str()); //get content value by point
         return condition->ifRight(tmp);
     }
     else if (type == -1)
     {
         //if the content is a float
-        float tmp = *((float *)content.c_str()); //get content value by point
+        float tmp = atof(content.c_str()); //get content value by point
         return condition->ifRight(tmp);
     }
     else
