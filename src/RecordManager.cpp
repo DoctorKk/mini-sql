@@ -69,7 +69,7 @@ int RecordManager::record_showall(string tableName)
     File *temp = buffer.getFile(tableName.c_str());
     Block *f = buffer.getFirstBlock(tableName.c_str());
 
-    cout<<"test"<<endl;
+    //cout<<"test"<<endl;
 
     int Num = 0;
 
