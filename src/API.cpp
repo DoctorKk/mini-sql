@@ -124,15 +124,30 @@ string API::primaryIndexNameGet(string tableName) {
     cm->getPrimaryKeyName(tableName);
 }
 
+/*
 void API::recordShow(string tableName, vector<string>* attributeNameVector){
     if(rm->record_showall(tableName)==0){
         cout<<"Empty table!"<<endl;
     }
     return;
 }
-
+*/
 
 void API::recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector){
+    if(attributeNameVector==NULL){
+        vector<Attribute> temp;
+        vector<string> at;
+        cm->attributeGet(tableName,&temp);
+        for(int i = 0;i<temp.size();i++){
+            at.push_back(temp[i].getName());
+            cout<<at[i]<<endl;
+        }
+        if(rm->record_showall(tableName, &at, conditionVector)==0){
+            cout<<"No records meet the needs."<<endl;
+        }
+        return;
+    }
+    
     if(rm->record_showall(tableName, attributeNameVector, conditionVector)==0){
         cout<<"No records meet the needs."<<endl;
     }
