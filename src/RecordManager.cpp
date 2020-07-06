@@ -35,23 +35,7 @@ int RecordManager::table_drop(string tableName)
     return 0;
 }
 */
-
-void split(std::string &s, std::string &delim, std::vector<std::string> *ret)
-{
-    size_t last = 0;
-    size_t index = s.find_first_of(delim, last);
-    while (index != string::npos)
-    {
-        ret->push_back(s.substr(last, index - last));
-        last = index + 1;
-        index = s.find_first_of(delim, last);
-    }
-    if (index - last > 0)
-    {
-        ret->push_back(s.substr(last, index - last));
-    }
-}
-
+extern void split(std::string &s, std::string &delim, std::vector<std::string> *ret);
 int RecordManager::record_insert(string tableName, char *record)
 {
     string stemp(record);
@@ -226,6 +210,7 @@ void RecordManager::record_print(string recordBegin, int recordSize, vector<Attr
     }
     cout<<T[0]<<" "<<flush;
     //cout<<"over"<<endl;
+    t.clear();
 }
 
 

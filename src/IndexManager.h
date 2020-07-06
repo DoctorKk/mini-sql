@@ -18,6 +18,7 @@
 #include "Attribute.h"
 #include "BPlusTree.cpp"
 #include "BufferManager.h"
+#include"CatalogManager.h"
 
 class API;
 
@@ -25,6 +26,7 @@ class IndexManager
 {
 private:
     BufferManager buffer;
+    Catalog cm;
 
     typedef map<string, BPlusTree<int> *> intMap;
     typedef map<string, BPlusTree<string> *> stringMap;

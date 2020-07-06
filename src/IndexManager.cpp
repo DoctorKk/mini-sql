@@ -24,6 +24,7 @@ void split(std::string &s, std::string &delim, std::vector<std::string> *ret)
     }
 }
 
+
 void IndexManager::create_index(string indexName, string tableName, int type, int offset)
 {
     //stringstream ss;
@@ -198,6 +199,10 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
     begin = b->data;
 
     vector<string> records(0), at(0);
+
+    vector<Attribute>* atemp = new vector<Attribute>;
+    cm.attributeGet(tableName, atemp);
+    int attributesum = atemp -> size();
 
     split(begin,temp1,&records);
     int count = 0, num = 0;
