@@ -198,10 +198,10 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	while (!in.eof()) {
 	    total = new char[BLOCK_SIZE + 1];
         while (blockSize < BLOCK_SIZE) {
-	        if (in.eof())
-	            break;
 	        getline(in, temp);
-	        if (blockSize + temp.size() > BLOCK_SIZE)
+			if (in.eof())
+				break;
+			if (blockSize + temp.size() > BLOCK_SIZE)
 	            break;
 	        totalNum++;
 	        if (!flag2) {
