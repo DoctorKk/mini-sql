@@ -218,6 +218,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 		strcpy(cur -> data, (char*)total.c_str());
         //cur -> data = (char*) total.c_str();
 		cur -> blockSize = blockSize;
+		cur -> recordNum = totalNum;
 		if (flag) {
 			ftemp -> firstBlock = cur;
 			flag = false;

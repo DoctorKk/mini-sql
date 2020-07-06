@@ -56,6 +56,7 @@ int RecordManager::record_insert(string tableName, char *record)
     buffer.setDirty(f);
     memcpy(f->data+strlen(f->data), record, recordSize);
     f->blockSize = strlen(f -> data);
+    f -> recordNum += 1;
     buffer.writeFiletoDisk(temp);
     return 1;
 }

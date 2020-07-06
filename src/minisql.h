@@ -23,6 +23,7 @@ struct Block {
 	bool pin; // the lock: 0 -> locked; 1 -> unlocked
 	int time; // LRU
 	int blockSize; // the size of the block
+	int recordNum;
 	Block* nextBlock; // next block
 	char* data; // the data contained in the block
 	
