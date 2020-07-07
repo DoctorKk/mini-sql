@@ -144,8 +144,6 @@ void API::recordShow(string tableName, vector<string>* attributeNameVector, vect
     }
     cout<<endl;
 
-    cout<<(*conditionVector)[0].attributeName<<" "<<(*conditionVector)[0].value<<endl;
-
     if(attributeNameVector==NULL){
         if(rm->record_showall(tableName, &at, conditionVector)==0){
             cout<<"No records meet the needs."<<endl;
