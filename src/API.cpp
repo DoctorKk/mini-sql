@@ -134,24 +134,32 @@ void API::recordShow(string tableName, vector<string>* attributeNameVector){
 */
 
 void API::recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector){
+    vector<Attribute> temp;
+    vector<string> at;
+    at.reserve(10);
+    cm->attributeGet(tableName,&temp);
+    for(int i = 0;i<temp.size();i++){
+        at.push_back(temp[i].getName());
+        cout<<at[i]<<" ";
+    }
+    cout<<endl;
+
+    cout<<(*conditionVector)[0].attributeName<<" "<<(*conditionVector)[0].value<<endl;
+
     if(attributeNameVector==NULL){
-        vector<Attribute> temp;
-        vector<string> at;
-        cm->attributeGet(tableName,&temp);
-        for(int i = 0;i<temp.size();i++){
-            at.push_back(temp[i].getName());
-            cout<<at[i]<<endl;
-            //temp.clear();
-        }
         if(rm->record_showall(tableName, &at, conditionVector)==0){
             cout<<"No records meet the needs."<<endl;
         }
+        //cout<<"done"<<endl;
         return;
     }
-    
-    if(rm->record_showall(tableName, attributeNameVector, conditionVector)==0){
+    else if(rm->record_showall(tableName, attributeNameVector, conditionVector)==0){
         cout<<"No records meet the needs."<<endl;
     }
+    temp.clear();
+    vector<Attribute>().swap(temp);
+    at.clear();
+    vector<string>().swap(at);
     return;
 }
 
