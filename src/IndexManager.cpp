@@ -28,69 +28,71 @@ void IndexManager::create_index(string indexName, string tableName, int type, in
     if (type == -1)
     {
         BPlusTree<float> *tree = new BPlusTree<float>;
-        init_index(tableName, tree, offset);
+        init_index(tableName, indexName, tree, offset);
         indexFloatMap.insert(floatMap::value_type(indexName, tree));
     }
     else if (type == 0)
     {
         BPlusTree<int> *tree = new BPlusTree<int>;
-        init_index(tableName, tree, offset);
+        init_index(tableName, indexName, tree, offset);
         indexIntMap.insert(intMap::value_type(indexName, tree));
     }
     else
     {
         BPlusTree<string> *tree = new BPlusTree<string>;
-        init_index(tableName, tree, offset);
+        init_index(tableName, indexName, tree, offset);
         indexStringMap.insert(stringMap::value_type(indexName, tree));
     }
     cout << "Index " << indexName << " created successfully!" << endl;
 }
 
 //===========also need change here: since a table can have different indexes
-void IndexManager::drop_index(string tableName, int type)
+void IndexManager::drop_index(string indexName)
 {
-    if (type == -1)
+    bool flag = false;
     {
-        floatMap::iterator itFloat = indexFloatMap.find(tableName);
+        floatMap::iterator itFloat = indexFloatMap.find(indexName);
         if (itFloat == indexFloatMap.end())
         {
-            cout << "Error:in drop index, no index " << tableName << " exits" << endl;
-            return;
         }
         else
         {
             delete itFloat->second;
             indexFloatMap.erase(itFloat);
+            flag = true;
         }
     }
-    else if (type == 0)
     {
-        intMap::iterator itInt = indexIntMap.find(tableName);
+        intMap::iterator itInt = indexIntMap.find(indexName);
         if (itInt == indexIntMap.end())
         {
-            cout << "Error:in drop index, no index " << tableName << " exits" << endl;
-            return;
+            //cout << "Error:in drop index, no index " << indexName << " exits" << endl;
         }
         else
         {
             delete itInt->second;
             indexIntMap.erase(itInt);
+            flag = true;
         }
     }
-    else
     {
-        stringMap::iterator itString = indexStringMap.find(tableName);
+        stringMap::iterator itString = indexStringMap.find(indexName);
         if (itString == indexStringMap.end())
         {
-            cout << "Error:in drop index, no index " << tableName << " exits" << endl;
-            return;
+            //cout << "Error:in drop index, no index " << indexName << " exits" << endl;
         }
         else
         {
             delete itString->second;
             indexStringMap.erase(itString);
+            flag = true;
         }
     }
+    if (!flag) {
+        cout << "Error:in drop index, no index " << indexName << " exits" << endl;
+        return;
+    }
+    cout << "Index " << indexName << " dropped successfully!" << endl;
 }
 
 int IndexManager::search_index(string tableName, float key)
@@ -135,7 +137,7 @@ int IndexManager::search_index(string tableName, string key)
     }
 }
 
-void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offset)
+void IndexManager::init_index(string tableName, string indexName, BPlusTree<float> *tree, int offset)
 {
     File *f = buffer.getFile(tableName.c_str());
 
@@ -146,16 +148,16 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offs
     float value;
     int count = 0;
 
+    vector<Attribute> *atemp = new vector<Attribute>;
+    cm.attributeGet(tableName, atemp);
+    int attributesum = atemp->size();
 
     while (1) {
-        if (b == NULL) return;
+        if (b == NULL) break;
         begin = b->data;
 
         vector<string> records(0), at(0);
 
-        vector<Attribute> *atemp = new vector<Attribute>;
-        cm.attributeGet(tableName, atemp);
-        int attributesum = atemp->size();
 
         split(begin, temp2, &records);
 
@@ -170,9 +172,10 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offs
         b = b -> nextBlock;
 
     }
+    indexPool.insert(make_pair(tableName+(*atemp)[offset].name, indexName));
 }
 
-void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset) {
+void IndexManager::init_index(string tableName, string indexName, BPlusTree<int> *tree, int offset) {
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
@@ -181,17 +184,17 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
     string begin;
     int value;
     int count = 0;
+    vector<Attribute> *atemp = new vector<Attribute>;
+    cm.attributeGet(tableName, atemp);
+    int attributesum = atemp->size();
 
 
     while (1) {
-        if (b == NULL) return;
+        if (b == NULL) break;
         begin = b->data;
 
         vector<string> records(0), at(0);
 
-        vector<Attribute> *atemp = new vector<Attribute>;
-        cm.attributeGet(tableName, atemp);
-        int attributesum = atemp->size();
 
         split(begin, temp2, &records);
 
@@ -204,76 +207,13 @@ void IndexManager::init_index(string tableName, BPlusTree<int> *tree, int offset
             temp.clear();
         }
         b = b -> nextBlock;
-
     }
+    indexPool.insert(make_pair(tableName+(*atemp)[offset].name, indexName));
+
 }
-    /*
-    int count = 0, num = 0;
-    if(offset!=attributesum-1 && offset!=0){
-        for(int i = offset;i<records.size();i = i+offset-1) {
-            at[count++] = records[i];
-        }
-    }
-    else if(offset==attributesum-1){
-        for(int i = offset;i<records.size();i = i+offset-1) {
-            num = 0;
-            while(records[i][num]!='\n'){
-                at[count][num] = records[i][num];
-                num++;
-            }
-            count++;
-
-            //at[count++] = records[i];
-        }
-    }
-    else{
-        for(int i = offset;i<records.size();i = i+offset-1) {
-            num = 0;
-            while(records[i][num]!='\n'){
-                //at[count][num] = records[i][num];
-                num++;
-            }
-            for(int j = num+1;j<records[i].length();j++) {
-                at[count][j - num - 1] = records[i][j];
-            }
-            count++;
-
-            //at[count++] = records[i];
-        }
-    }
-
-    count = 0;
-
-        for(int i = 0;i<at.size();i++) {
-            tree->Insert(make_pair(count++, stoi(at[i])));
-        }
-        b = buffer.getNextBlock(tableName.c_str(), b);
-    }
-
-    /*
-    char *indexBegin = b->data;
-    string content(indexBegin);
-    int end = 0;
-    int pre = 0;
-    int value = 0;
-    string temp;
-    while (1) {
-        if (b == NULL)
-            return;
-        else {
-            int i = 0;
-            for (; i <= offset; i++) {
-                temp = content.substr(pre, end);
-                value = stoi(temp);
-                end = content.find("/", pre);
-                pre = end+1;
-            }
-        }
-    }
-     */
 
 
-void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int offset)
+void IndexManager::init_index(string tableName, string indexName, BPlusTree<string> *tree, int offset)
 {
     File *f = buffer.getFile(tableName.c_str());
 
@@ -282,17 +222,16 @@ void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int off
     string temp1 = "/", temp2 = "\n";
     string begin;
     int count = 0;
+    vector<Attribute> *atemp = new vector<Attribute>;
+    cm.attributeGet(tableName, atemp);
+    int attributesum = atemp->size();
 
 
     while (1) {
-        if (b == NULL) return;
+        if (b == NULL) break;
         begin = b->data;
 
         vector<string> records(0), at(0);
-
-        vector<Attribute> *atemp = new vector<Attribute>;
-        cm.attributeGet(tableName, atemp);
-        int attributesum = atemp->size();
 
         split(begin, temp2, &records);
 
@@ -306,4 +245,5 @@ void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int off
         b = b -> nextBlock;
 
     }
+    indexPool.insert(make_pair(tableName+(*atemp)[offset].name, indexName));
 }

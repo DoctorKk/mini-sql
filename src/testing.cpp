@@ -8,8 +8,8 @@
 using namespace std;
 
 int main() {
-    Interpreter ip;
-    ip.mainFunction();
+    //Interpreter ip;
+    //ip.mainFunction();
     /*
     string record = "test/test/test\nthis/is/a/test";
     string temp = "\n";
@@ -24,4 +24,6 @@ int main() {
     //BPlusTree<int> * btree = new BPlusTree<int>;
     //im.init_index("teacher", btree, 0);
     //cout << btree -> Search(32498) << endl;
+    BufferManager bm;
+    File* temp = bm.loadFile("student2");
 }

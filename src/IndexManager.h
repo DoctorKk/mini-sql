@@ -38,10 +38,11 @@ public:
     intMap indexIntMap;
     stringMap indexStringMap;
     floatMap indexFloatMap;
+    map<string, string> indexPool;
 
-    void init_index(string tableName, BPlusTree<int> *tree, int offset);
-    void init_index(string tableName, BPlusTree<float> *tree, int offset);
-    void init_index(string tableName, BPlusTree<string> *tree, int offset);
+    void init_index(string tableName, string indexName,  BPlusTree<int> *tree, int offset);
+    void init_index(string tableName, string indexName, BPlusTree<float> *tree, int offset);
+    void init_index(string tableName, string indexName, BPlusTree<string> *tree, int offset);
     bool check_index(string indexName);
 
     
@@ -49,7 +50,7 @@ public:
 public:
     void create_index(string indexName, string tableName, int type, int offset);
 
-    void drop_index(string tableName, int type);
+    void drop_index(string indexName);
 
     int search_index(string tableName, float key);
     int search_index(string tableName, int key);

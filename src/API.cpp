@@ -50,31 +50,8 @@ void API::tableCreate(string tableName, vector<Attribute>* attributeVector, stri
 /* drop index */
 /* @param: indexName */
 void API::indexDrop(string indexName) {
+    im -> drop_index(indexName);
     return;
-    if (cm->findIndex(indexName) != "") {
-        cout << "There is no index " << indexName << endl;
-        return;
-    }
-
-    //delete a index file
-    if (rm->index_drop(indexName))
-    {
-
-        //get type of index
-        int indexType = cm->getIndexType(indexName);
-        if (indexType == -1)
-        {
-            cout << "error" << endl;
-            return;
-        }
-
-        //delete a index information
-        cm->dropIndex(indexName);
-
-        //delete a index tree
-        im->drop_index(indexName, indexType);            // 需要"INDEX_FILE_"+indexName吗？ <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        cout << "Drop index " << indexName << " successfully" << endl;
-    }
 
 }
 
