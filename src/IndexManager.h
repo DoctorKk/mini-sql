@@ -42,6 +42,7 @@ public:
     void init_index(string tableName, BPlusTree<int> *tree, int offset);
     void init_index(string tableName, BPlusTree<float> *tree, int offset);
     void init_index(string tableName, BPlusTree<string> *tree, int offset);
+    bool check_index(string indexName);
 
     
     // other values mean the size of the char.Eg, 4 means char(4);

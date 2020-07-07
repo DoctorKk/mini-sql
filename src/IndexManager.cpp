@@ -11,16 +11,24 @@
 extern void split(std::string &s, std::string &delim, std::vector<std::string> *ret);
 
 
+
+bool IndexManager::check_index(string indexName) {
+    return (indexFloatMap.find(indexName) != indexFloatMap.end() || indexIntMap.find(indexName) != indexIntMap.end() || indexStringMap.find(indexName) != indexStringMap.end());
+}
+
 void IndexManager::create_index(string indexName, string tableName, int type, int offset)
 {
     //stringstream ss;
     //string temp;
     //ss >> temp;
+    if (check_index(indexName)) {
+        cout << "There is already a " << indexName << " !" << endl;
+        return;
+    }
     if (type == -1)
     {
         BPlusTree<float> *tree = new BPlusTree<float>;
         init_index(tableName, tree, offset);
-        //==========before inserting check if it already exists
         indexFloatMap.insert(floatMap::value_type(indexName, tree));
     }
     else if (type == 0)
@@ -35,6 +43,7 @@ void IndexManager::create_index(string indexName, string tableName, int type, in
         init_index(tableName, tree, offset);
         indexStringMap.insert(stringMap::value_type(indexName, tree));
     }
+    cout << "Index " << indexName << " created successfully!" << endl;
 }
 
 //===========also need change here: since a table can have different indexes
@@ -131,42 +140,35 @@ void IndexManager::init_index(string tableName, BPlusTree<float> *tree, int offs
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
-    char *indexBegin = b->data;
-    int begin = 0;
+
+    string temp1 = "/", temp2 = "\n";
+    string begin;
     float value;
     int count = 0;
-    int recordSize = 0;
-    
-    for(int i = 0;i<=offset;i++){
-        while(b->data[begin]!='/'){
-            begin++;
-        }
-    }
-    begin++;
 
-    while (1)
-    {
-        if (b == NULL)
-        {
-            return;
+
+    while (1) {
+        if (b == NULL) return;
+        begin = b->data;
+
+        vector<string> records(0), at(0);
+
+        vector<Attribute> *atemp = new vector<Attribute>;
+        cm.attributeGet(tableName, atemp);
+        int attributesum = atemp->size();
+
+        split(begin, temp2, &records);
+
+        for (auto item: records) {
+            vector<string> temp(0);
+            split(item, temp1, &temp);
+            value = stof(temp[offset]);
+            tree -> Insert(make_pair(count++, value));
+
+            temp.clear();
         }
-        while ( begin < b->blockSize)
-        {
-            value = *(float *)indexBegin;
-            tree->Insert(make_pair(count++, value));
-            while(b->data[begin]!='\n'){
-                begin++;
-            }
-            begin++;
-            for(int i = 0;i<offset;i++){
-                while(b->data[begin]!='/' && begin<b->blockSize){
-                    begin++;
-                }
-            }
-            begin++;
-            indexBegin = b->data + begin;
-        }
-        b = buffer.getNextBlock(tableName.c_str(), b);
+        b = b -> nextBlock;
+
     }
 }
 
@@ -276,47 +278,32 @@ void IndexManager::init_index(string tableName, BPlusTree<string> *tree, int off
     File *f = buffer.getFile(tableName.c_str());
 
     Block *b = buffer.getFirstBlock(tableName.c_str());
-    char *indexBegin = b->data;
-    int begin = 0;
-    string value;
+
+    string temp1 = "/", temp2 = "\n";
+    string begin;
     int count = 0;
-    int size = 0;
 
-    for(int i = 0;i<offset;i++){
-        while(b->data[begin]!='/'){
-            begin++;
+
+    while (1) {
+        if (b == NULL) return;
+        begin = b->data;
+
+        vector<string> records(0), at(0);
+
+        vector<Attribute> *atemp = new vector<Attribute>;
+        cm.attributeGet(tableName, atemp);
+        int attributesum = atemp->size();
+
+        split(begin, temp2, &records);
+
+        for (auto item: records) {
+            vector<string> temp(0);
+            split(item, temp1, &temp);
+            tree -> Insert(make_pair(count++, temp[offset]));
+
+            temp.clear();
         }
-    }
-    begin++;
+        b = b -> nextBlock;
 
-
-    while (1)
-    {
-        if (b == NULL)
-        {
-            return;
-        }
-        while (indexBegin - indexBegin < b->blockSize)
-        {   
-            size = 0;
-            while(indexBegin[size]!='/'){
-                size++;
-            }
-            memcpy(&value, indexBegin, size + 1);
-            tree->Insert(make_pair(count++, value));
-
-            while(b->data[begin]!='\n'){
-                begin++;
-            }
-            begin++;
-            for(int i = 0;i<offset;i++){
-                while(b->data[begin]!='/' && begin<b->blockSize){
-                    begin++;
-                }
-            }
-            begin++;
-            indexBegin = b->data + begin;
-        }
-        b = buffer.getNextBlock(tableName.c_str(), b);
     }
 }
