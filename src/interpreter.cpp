@@ -366,6 +366,7 @@ int  Interpreter::EXEC_SELECT(string s, int *tmp, string word)
 		string value = "";
 		int operate = Condition::OPERATOR_EQUAL;
 		std::vector<Condition> conditionVector;
+		conditionVector.reserve(10);
 		word = getWord(s, tmp);		//col1
 		while (1) {
 			try {
