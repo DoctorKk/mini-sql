@@ -481,7 +481,7 @@ int Interpreter::EXEC_EXECFILE(string s, int *tmp, string word)
     while (fact != 587 && !in.eof()) {
         text = "";
         do {
-            getline(in, temp);
+            getline(in, temp,'\r');
             temp.erase(temp.size()-1);
             text = text + const_empty;
             text = text + temp;
