@@ -342,7 +342,7 @@ int RecordManager::record_indexshow(string tableName, vector<string> *attributeN
     vector<Attribute> at;
     catalog.attributeGet(tableName, &at);
     vector<string> records;
-    records.reserve(20);
+    records.reserve(50);
 
     string recordbegin = block->data;
     string temp = "\n";
@@ -376,6 +376,7 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     int record_size = 0;
 
     vector<string> records;
+    records.reserve(50);
     at.reserve(11);
 
     string recordbegin = block->data;
