@@ -61,7 +61,7 @@ int RecordManager::record_insert(string tableName, char *record)
     int recordSize = strlen(record);
     File *temp = buffer.getFile(tableName.c_str());
 
-    if(temp==NULL){
+    if(temp==nullptr){
         return 0;
     }
 
@@ -196,12 +196,12 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
 
     int Num = 0;
 
-    if(temp == NULL){
+    if(temp == nullptr){
         cout<<"The table doesn't exist!"<<endl;
         return -1;
     }
 
-    if(conditionVector!=NULL){
+    if(conditionVector!=nullptr){
         if( conditionVector->size() == 1 && (*conditionVector)[0].operate == 0){
             vector<Attribute> at;
             catalog.attributeGet(tableName, &at);
@@ -262,7 +262,7 @@ int RecordManager::record_deleteall(string tableName, vector<Condition> *conditi
     File *f = buffer.getFile(tableName.c_str());
     Block *block = buffer.getFirstBlock(tableName.c_str());
     
-    if(f==NULL){
+    if(f==nullptr){
         cout << "The table doesn't exist!" << endl;
         return -1;
     }
@@ -284,7 +284,7 @@ int RecordManager::record_deleteall(string tableName, vector<Condition> *conditi
 
 int RecordManager::record_blockdelete(string tableName, vector<Condition> *conditionVector, Block* block)
 {
-    if(block==NULL){
+    if(block==nullptr){
         return -1;
     }
 
@@ -334,7 +334,7 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
 
 
 int RecordManager::record_indexshow(string tableName, vector<string> *attributeNameVector, Block* block, int offset){
-    if(block==NULL){
+    if(block==nullptr){
         return -1;
     }
     int count = 0;
@@ -353,7 +353,7 @@ int RecordManager::record_indexshow(string tableName, vector<string> *attributeN
 
     while(offset > records.size() - 1){
         block = buffer.getNextBlock(tableName.c_str(), block);
-        if(block==NULL) return -1;
+        if(block==nullptr) return -1;
         offset = offset - records.size();
         recordbegin = block->data;
         records.clear();
@@ -366,7 +366,7 @@ int RecordManager::record_indexshow(string tableName, vector<string> *attributeN
 
 int RecordManager::record_blockshow(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector, Block *block)
 {
-    if(block==NULL){
+    if(block==nullptr){
         return -1;
     }
     
@@ -438,7 +438,7 @@ void RecordManager::record_print(string recordBegin, int recordSize, vector<Attr
 
 bool RecordManager::record_conditionfit(string recordBegin, int recordSize, vector<Attribute> *attributeVector, vector<Condition> *conditionVector)
 {
-    if (conditionVector==NULL){
+    if (conditionVector==nullptr){
         return true;
     }
     int type, typeSize;

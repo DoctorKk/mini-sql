@@ -510,7 +510,7 @@ int  Interpreter::EXEC_SELECT(string s, int *tmp, string word)
 		}
 		if (attrSelected.size() == 0) {
 			cout << tableName << endl;
-			ap->recordShow(tableName, NULL, &conditionVector);
+			ap->recordShow(tableName, nullptr, &conditionVector);
 
 		}
 		else {

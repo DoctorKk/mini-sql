@@ -153,7 +153,7 @@ void IndexManager::init_index(string tableName, string indexName, BPlusTree<floa
     int attributesum = atemp->size();
 
     while (1) {
-        if (b == NULL) break;
+        if (b == nullptr) break;
         begin = b->data;
 
         vector<string> records(0), at(0);
@@ -164,6 +164,8 @@ void IndexManager::init_index(string tableName, string indexName, BPlusTree<floa
         for (auto item: records) {
             vector<string> temp(0);
             split(item, temp1, &temp);
+            if (item.empty())
+                break;
             value = stof(temp[offset]);
             tree -> Insert(make_pair(count++, value));
 
@@ -190,7 +192,7 @@ void IndexManager::init_index(string tableName, string indexName, BPlusTree<int>
 
 
     while (1) {
-        if (b == NULL) break;
+        if (b == nullptr) break;
         begin = b->data;
 
         vector<string> records(0), at(0);
@@ -230,7 +232,7 @@ void IndexManager::init_index(string tableName, string indexName, BPlusTree<stri
 
 
     while (1) {
-        if (b == NULL) break;
+        if (b == nullptr) break;
         begin = b->data;
 
         vector<string> records(0), at(0);
@@ -240,6 +242,8 @@ void IndexManager::init_index(string tableName, string indexName, BPlusTree<stri
         for (auto item: records) {
             vector<string> temp(0);
             split(item, temp1, &temp);
+            if (item.empty())
+                break;
             tree -> Insert(make_pair(count++, temp[offset]));
 
             temp.clear();

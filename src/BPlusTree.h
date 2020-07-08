@@ -1,5 +1,5 @@
 
-#define ORDER_V 2    /* 为简单起见，把v固定为2，实际的B+树v值应该是可配的。这里的v是内部节点中键的最小值 */
+#define ORDER_V 100    /* 为简单起见，把v固定为2，实际的B+树v值应该是可配的。这里的v是内部节点中键的最小值 */
 
 #define MAXNUM_KEY (ORDER_V * 2)    /* 内部结点中最多键个数，为2v */
 #define MAXNUM_POINTER (MAXNUM_KEY + 1)    /* 内部结点中最多指向子树的指针个数，为2v */
