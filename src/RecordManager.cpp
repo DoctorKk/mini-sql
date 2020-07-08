@@ -284,49 +284,51 @@ int RecordManager::record_deleteall(string tableName, vector<Condition> *conditi
 
 int RecordManager::record_blockdelete(string tableName, vector<Condition> *conditionVector, Block* block)
 {
-    if (block == NULL)
-    {
+    if(block==NULL){
         return -1;
     }
-    int count = 0, i = 0;
 
-    char *recordBegin = block->data;
-    vector<Attribute> attributeVector;
-
-    catalog.attributeGet(tableName, &attributeVector);
-    
-    int recordSize = attributeVector.size();
+    int count = 0;
     int begin = 0;
-    
-    while (begin < block->blockSize)
-    {
-        //if the recordBegin point to a record
+    vector<Attribute> at;
 
-        if (record_conditionfit(recordBegin, recordSize, &attributeVector, conditionVector))
-        {
+    catalog.attributeGet(tableName, &at);
+    int record_size = 0;
+
+    vector<string> records;
+    records.reserve(500);
+    at.reserve(11);
+
+    string recordbegin = block->data;
+    string temp = "\n";
+
+    split(recordbegin, temp, & records);
+
+    for(int i = 0; i < records.size();i++){
+        if (record_conditionfit(records[i], record_size, &at, conditionVector)) {
             count++;
-
-            //api->recordIndexDelete(recordBegin, recordSize, &attributeVector, block->offsetNum);
-            
-            for (i = 0; i + recordSize + begin < block->blockSize; i++)
-            {
-                recordBegin[i] = recordBegin[i + recordSize];
-            }
-            memset(recordBegin + i, 0, recordSize);
-            block->blockSize = block->blockSize-recordSize;
-            buffer.setDirty(block);
-        }
-        else
-        {
-            while(block->data[begin]!='\n')
-            {
-                begin++;
-            }
-            begin++;
-            recordBegin = block->data + begin;
+            records.erase(records.begin() + i);
+            //record_print(records[i], record_size, &at, attributeNameVector);
         }
     }
 
+    if(count ==0){
+        return 0;
+    }
+
+    string T = records[0];
+    for(int i = 1; i < records.size(); i++){
+        T = T + "\n";
+        T = T + records[i];
+    }
+
+    block->data = new char[BLOCK_SIZE];
+
+    strcpy(block->data, T.c_str());
+    buffer.setDirty(block);
+    //delete &records;
+    records.clear();
+    vector<string>().swap(records);
     return count;
 }
 
