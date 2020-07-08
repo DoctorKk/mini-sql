@@ -20,9 +20,9 @@ int main() {
     }
     */
 
-    //IndexManager im;
-    //im.create_index("shit", "student2", 0, 0);
-    //cout << im.search_index("student2", "id", 333);
+    IndexManager im;
+    im.create_index("shit", "student2", 0, 0);
+    cout << im.search_index("student2", "id", 11);
     //BufferManager bm;
     //File* temp = bm.loadFile("student2");
 }

@@ -205,6 +205,8 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
             if (in.eof())
                 break;
 	        getline(in, temp);
+	        if (temp.empty())
+	            break;
 			if (blockSize + temp.size() > BLOCK_SIZE)
 	            break;
 	        totalNum++;
@@ -219,7 +221,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 		cur = new Block;
 		initBlock(cur, fileName);
 		flag2 = true;
-		cur -> fileName = (char*)fileName;
+		//strcpy(cur -> fileName, (char*)fileName);
 		strcpy(cur -> data, (char*)total.c_str());
         //cur -> data = (char*) total.c_str();
 		cur -> blockSize = blockSize;
