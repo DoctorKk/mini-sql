@@ -95,8 +95,15 @@ void IndexManager::drop_index(string indexName)
     cout << "Index " << indexName << " dropped successfully!" << endl;
 }
 
-int IndexManager::search_index(string tableName, float key)
+int IndexManager::search_index(string tableName, string attr, float key)
 {
+    if (indexPool.find(tableName+attr) == indexPool.end()) // when not found
+        return INT_MIN;
+    string indexName = indexPool[tableName+attr];
+    if (indexFloatMap.find(indexName)==indexFloatMap.end())
+        return INT_MIN;
+    return indexFloatMap[indexName] -> Search(key);
+    /*
     floatMap::iterator itFloat = indexFloatMap.find(tableName);
     if (itFloat == indexFloatMap.end())
     {
@@ -107,34 +114,27 @@ int IndexManager::search_index(string tableName, float key)
     {
         return itFloat->second->Search(key);
     }
+     */
 }
 
-int IndexManager::search_index(string tableName, int key)
+int IndexManager::search_index(string tableName, string attr, int key)
 {
-    intMap::iterator itInt = indexIntMap.find(tableName);
-    if (itInt == indexIntMap.end())
-    {
-        cout << "Error:in search index, no index " << tableName << " exits" << endl;
-        return -1;
-    }
-    else
-    {
-        return itInt->second->Search(key);
-    }
+    if (indexPool.find(tableName+attr) == indexPool.end()) // when not found
+        return INT_MIN;
+    string indexName = indexPool[tableName+attr];
+    if (indexIntMap.find(indexName)==indexIntMap.end())
+        return INT_MIN;
+    return indexIntMap[indexName] -> Search(key);
 }
 
-int IndexManager::search_index(string tableName, string key)
+int IndexManager::search_index(string tableName, string attr, string key)
 {
-    stringMap::iterator itString = indexStringMap.find(tableName);
-    if (itString == indexStringMap.end())
-    {
-        cout << "Error:in search index, no index " << tableName << " exits" << endl;
-        return -1;
-    }
-    else
-    {
-        return itString->second->Search(key);
-    }
+    if (indexPool.find(tableName+attr) == indexPool.end()) // when not found
+        return INT_MIN;
+    string indexName = indexPool[tableName+attr];
+    if (indexStringMap.find(indexName)==indexStringMap.end())
+        return INT_MIN;
+    return indexStringMap[indexName] -> Search(key);
 }
 
 void IndexManager::init_index(string tableName, string indexName, BPlusTree<float> *tree, int offset)
@@ -201,6 +201,8 @@ void IndexManager::init_index(string tableName, string indexName, BPlusTree<int>
         for (auto item: records) {
             vector<string> temp(0);
             split(item, temp1, &temp);
+            if (item.empty())
+                break;
             value = stoi(temp[offset]);
             tree -> Insert(make_pair(count++, value));
 

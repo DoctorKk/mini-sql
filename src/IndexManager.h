@@ -52,9 +52,9 @@ public:
 
     void drop_index(string indexName);
 
-    int search_index(string tableName, float key);
-    int search_index(string tableName, int key);
-    int search_index(string tableName, string key);
+    int search_index(string tableName, string attr, float key);
+    int search_index(string tableName, string attr, int key);
+    int search_index(string tableName, string attr, string key);
 };
 
 #endif /* defined(__Minisql__IndexManager__) */

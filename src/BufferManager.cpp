@@ -202,9 +202,9 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 	while (!in.eof()) {
 	    total = new char[BLOCK_SIZE + 1];
         while (blockSize < BLOCK_SIZE) {
+            if (in.eof())
+                break;
 	        getline(in, temp);
-			if (in.eof())
-				break;
 			if (blockSize + temp.size() > BLOCK_SIZE)
 	            break;
 	        totalNum++;
@@ -233,8 +233,8 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 		//total.clear();
 		blockSize = 0;
 	}
-
-
+    in.close();
+    //writeFiletoDisk(ftemp);
 	return ftemp;
 }
 
@@ -263,7 +263,7 @@ void BufferManager::writeAlltoDisk() { // write everything to disk
 void BufferManager::writeFiletoDisk(File* file) { // write a file to disk
     string Path = "../data/";
     Path += file -> fileName;
-    ofstream out(Path, ios::trunc);
+    ofstream out(Path, ios::out);
     out.close();
 	Block* btemp = file -> firstBlock;
 	while (btemp) {

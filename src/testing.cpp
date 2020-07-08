@@ -21,9 +21,8 @@ int main() {
     */
 
     //IndexManager im;
-    //BPlusTree<int> * btree = new BPlusTree<int>;
-    //im.init_index("teacher", btree, 0);
-    //cout << btree -> Search(32498) << endl;
-    BufferManager bm;
-    File* temp = bm.loadFile("student2");
+    //im.create_index("shit", "student2", 0, 0);
+    //cout << im.search_index("student2", "id", 333);
+    //BufferManager bm;
+    //File* temp = bm.loadFile("student2");
 }

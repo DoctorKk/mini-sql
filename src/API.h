@@ -24,7 +24,11 @@ public:
         cm = new Catalog;
         im = new IndexManager;
     }
-    ~API() {}
+    ~API() {
+        delete rm;
+        //delete cm;
+        //delete im;
+    }
 
     void tableDrop(string tableName);
     void tableCreate(string tableName, vector<Attribute>* attributeVector, string primaryKeyName, int primaryKeyLocation);

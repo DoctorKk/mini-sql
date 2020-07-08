@@ -22,6 +22,11 @@ class RecordManager
 {
 public:
     RecordManager() {}
+    ~RecordManager() {
+        buffer.writeAlltoDisk();
+        //delete & buffer;
+        //delete & catalog;
+    }
     BufferManager buffer;
     Catalog catalog;
     //int table_create(string tableName);
