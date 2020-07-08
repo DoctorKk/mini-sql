@@ -388,7 +388,7 @@ bool RecordManager::record_conditionfit(string recordBegin, int recordSize, vect
 
             if ((*conditionVector)[j].attributeName == (*attributeVector)[i].name)
             {
-
+                type = (*attributeVector)[i].type;
                 if (!content_conditionfit(content, type, &(*conditionVector)[j]))
                 {
 
