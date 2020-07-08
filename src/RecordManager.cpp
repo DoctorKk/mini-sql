@@ -201,17 +201,43 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
         return -1;
     }
 
-    if(conditionVector!=NULL){
-        if((*conditionVector)[0].operate == 0){
-            int index = im.search_index(tableName, (*conditionVector)[0].attributeName, (*conditionVector)[0].value);
-            cout<<"attr: "<<(*conditionVector)[0].attributeName<<" "<<(*conditionVector)[0].value<<endl;
-            cout<<index<<endl;
+   if(conditionVector!=NULL){
+        if( conditionVector->size() == 1 && (*conditionVector)[0].operate == 0){
+            vector<Attribute> at;
+            catalog.attributeGet(tableName, &at);
+            string t = (*conditionVector)[0].value;
+            int index = 1;
+            //cout<<"attr: "<<(*conditionVector)[0].attributeName<<" "<<(*conditionVector)[0].value<<endl;
+            for(int i = 0;i<at.size();i++){
+                //cout<<(*conditionVector)[0].attributeName<<" "<<at[i].getName()<<endl;
+                if((*conditionVector)[0].attributeName == at[i].getName()){
+                    //cout<<"Got you"<<endl;
+                    if(at[i].getType() == 0){
+                        int v = atoi(t.c_str());
+                        index = im.search_index(tableName, (*conditionVector)[0].attributeName, v);
+                    }
+                    else if(at[i].getType() == -1){
+                        float v = atof(t.c_str());
+                        //cout<<v;
+                        index = im.search_index(tableName, (*conditionVector)[0].attributeName, v);
+                    }
+                    else{
+                        index = im.search_index(tableName, (*conditionVector)[0].attributeName, (*conditionVector)[0].value);
+                    }
+                    break;
+                }
+            }
+
+            //int index = im.search_index(tableName, (*conditionVector)[0].attributeName, (*conditionVector)[0].value);
+
+            //cout<<index<<endl;
             if(index!=INT_MIN){
-                cout<<"Index"<<endl;
+                cout<<"Index: "<<index<<endl;
                 return record_indexshow(tableName, attributeNameVector, f, index);
             }
         }
     }
+
 
     while(1){
         if (f == buffer.getLastBlock(tableName.c_str())){
@@ -310,7 +336,7 @@ int RecordManager::record_indexshow(string tableName, vector<string> *attributeN
     }
     int count = 0;
 
-    cout<<"offset: "<<offset;
+    //cout<<"offset: "<<offset;
 
     vector<Attribute> at;
     catalog.attributeGet(tableName, &at);
