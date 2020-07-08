@@ -409,12 +409,12 @@ int Interpreter::EXEC_DELETE(string s, int *tmp, string word) {
         }
         if (attrSelected.size() == 0) {
             cout << tableName << endl;
-            ap->recordShow(tableName, NULL, &conditionVector);
+            ap->recordDelete(tableName,  &conditionVector);
 
         }
         else {
             cout << tableName << endl;
-            ap->recordShow(tableName, &attrSelected, &conditionVector);
+            ap->recordDelete(tableName,  &conditionVector);
         }
         return 1;
     }
