@@ -201,7 +201,7 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
         return -1;
     }
 
-   if(conditionVector!=NULL){
+    if(conditionVector!=NULL){
         if( conditionVector->size() == 1 && (*conditionVector)[0].operate == 0){
             vector<Attribute> at;
             catalog.attributeGet(tableName, &at);
@@ -218,7 +218,7 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
                     }
                     else if(at[i].getType() == -1){
                         float v = atof(t.c_str());
-                        //cout<<v;
+                        //cout<<v<<endl;
                         index = im.search_index(tableName, (*conditionVector)[0].attributeName, v);
                     }
                     else{
@@ -237,6 +237,7 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
             }
         }
     }
+
 
 
     while(1){
