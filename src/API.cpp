@@ -50,7 +50,7 @@ void API::tableCreate(string tableName, vector<Attribute>* attributeVector, stri
 /* drop index */
 /* @param: indexName */
 void API::indexDrop(string indexName) {
-    im -> drop_index(indexName);
+    rm -> im.drop_index(indexName);
     return;
 
 }
@@ -67,7 +67,7 @@ void API::indexCreate(string indexName, string tableName, string attributeName)
         if (attributeName==(*at)[i].name)
             break;
     }
-    im->create_index(indexName, tableName, (*at)[i].type, i);
+    rm->im.create_index(indexName, tableName, (*at)[i].type, i);
 
     return;
 
@@ -145,6 +145,7 @@ void API::recordInsert(string tableName, vector<string> recordContent){
         content += recordContent[i];
         //content.append("/");
     }
+    //content.insert(0, "\n");
     char* temp = new char[content.size()];
     temp = (char*) content.c_str();
 

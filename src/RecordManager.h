@@ -13,6 +13,7 @@
 #include"minisql.h"
 #include"BufferManager.h"
 #include"CatalogManager.h"
+#include"IndexManager.h"
 #include<string>
 #include<vector>
 
@@ -29,6 +30,7 @@ public:
     }
     BufferManager buffer;
     Catalog catalog;
+    IndexManager im;
     //int table_create(string tableName);
     //int table_drop(string tableName);
 

@@ -18,11 +18,11 @@ class API {
 public:
     RecordManager* rm;
     Catalog* cm;
-    IndexManager* im;
+    //IndexManager* im;
     API() {
         rm = new RecordManager;
         cm = new Catalog;
-        im = new IndexManager;
+        //im = new IndexManager;
     }
     ~API() {
         delete rm;
