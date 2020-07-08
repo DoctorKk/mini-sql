@@ -221,6 +221,7 @@ File* BufferManager::loadFile(const char* fileName) { // load the file from disk
 		cur = new Block;
 		initBlock(cur, fileName);
 		flag2 = true;
+		total.append("\n");
 		//strcpy(cur -> fileName, (char*)fileName);
 		strcpy(cur -> data, (char*)total.c_str());
         //cur -> data = (char*) total.c_str();
