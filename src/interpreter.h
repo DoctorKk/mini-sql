@@ -43,6 +43,7 @@ public:
     int EXEC_QUIT(string s,int *tmp,string word);
     //Execfile 
     int EXEC_EXECFILE(string s, int *tmp, string word);
+    int EXEC_DELETE(string s, int *tmp, string word);
     string getWord(string s, int *tmp);
 	
 	Interpreter(){

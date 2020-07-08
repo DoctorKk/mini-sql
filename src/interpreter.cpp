@@ -57,6 +57,8 @@ int Interpreter::interpreter(string s)
 	//execfile
 	else if (strcmp(word.c_str(), "execfile") == 0)
 	    return EXEC_EXECFILE(s, tmp, word);
+    else if (strcmp(word.c_str(), "delete") == 0)
+        return EXEC_DELETE(s, tmp, word);
 //illegal command
 	else
 	{
@@ -317,6 +319,106 @@ int Interpreter::EXEC_DROP_INDEX(string s, int *tmp, string word)
 		return 0;
 	}
 	return 1;
+}
+
+int Interpreter::EXEC_DELETE(string s, int *tmp, string word) {
+    vector<string> attrSelected;
+    string tableName = "";
+    word = getWord(s, tmp);
+    if (strcmp(word.c_str(), "*") != 0)	// only accept select *
+    {
+        while (strcmp(word.c_str(), "from") != 0)
+        {
+            attrSelected.push_back(word);
+            word = getWord(s, tmp);
+        }
+    }
+    else
+    {
+        word = getWord(s, tmp);
+    }
+    if (strcmp(word.c_str(), "from") != 0)
+    {
+        cout << "Error in syntax!" << endl;
+        return 0;
+    }
+    word = getWord(s, tmp);
+    if (!word.empty())
+        tableName = word;
+    else
+    {
+        cout << "Error in syntax!" << endl;
+        return 0;
+    }
+    // condition extricate
+    word = getWord(s, tmp);
+    if (word.empty())	// without condition
+    {
+        if (attrSelected.size() == 0) {
+            ap->recordShow(tableName, nullptr, nullptr);
+        }
+        else
+            ap->recordShow(tableName, &attrSelected, nullptr);
+        return 1;
+    }
+    else if (strcmp(word.c_str(), "where") == 0)
+    {
+        string attributeName = "";
+        string value = "";
+        int operate = Condition::OPERATOR_EQUAL;
+        std::vector<Condition> conditionVector;
+        conditionVector.reserve(10);
+        word = getWord(s, tmp);		//col1
+        while (1) {
+            try {
+                if (word.empty())
+                    throw SyntaxException();
+                attributeName = word;
+                word = getWord(s, tmp);
+                if (strcmp(word.c_str(), "<=") == 0)
+                    operate = Condition::OPERATOR_LESS_EQUAL;
+                else if (strcmp(word.c_str(), ">=") == 0)
+                    operate = Condition::OPERATOR_MORE_EQUAL;
+                else if (strcmp(word.c_str(), "<") == 0)
+                    operate = Condition::OPERATOR_LESS;
+                else if (strcmp(word.c_str(), ">") == 0)
+                    operate = Condition::OPERATOR_MORE;
+                else if (strcmp(word.c_str(), "=") == 0)
+                    operate = Condition::OPERATOR_EQUAL;
+                else if (strcmp(word.c_str(), "<>") == 0)
+                    operate = Condition::OPERATOR_NOT_EQUAL;
+                else
+                    throw SyntaxException();
+                word = getWord(s, tmp);
+                if (word.empty()) // no condition
+                    throw SyntaxException();
+                value = word;
+                Condition c(attributeName, value, operate);
+                conditionVector.push_back(c);
+                word = getWord(s, tmp);
+                if (word.empty()) // no condition
+                    break;
+                if (strcmp(word.c_str(), "and") != 0)
+                    throw SyntaxException();
+                word = getWord(s, tmp);
+            }
+            catch (SyntaxException&) {
+                cout << "Syntax Error!" << endl;
+                return 0;
+            }
+        }
+        if (attrSelected.size() == 0) {
+            cout << tableName << endl;
+            ap->recordShow(tableName, NULL, &conditionVector);
+
+        }
+        else {
+            cout << tableName << endl;
+            ap->recordShow(tableName, &attrSelected, &conditionVector);
+        }
+        return 1;
+    }
+
 }
 //select
 int  Interpreter::EXEC_SELECT(string s, int *tmp, string word)
