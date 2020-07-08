@@ -201,6 +201,18 @@ int RecordManager::record_showall(string tableName, vector<string> *attributeNam
         return -1;
     }
 
+    if(conditionVector!=NULL){
+        if((*conditionVector)[0].operate == 0){
+            int index = im.search_index(tableName, (*conditionVector)[0].attributeName, (*conditionVector)[0].value);
+            cout<<"attr: "<<(*conditionVector)[0].attributeName<<" "<<(*conditionVector)[0].value<<endl;
+            cout<<index<<endl;
+            if(index!=INT_MIN){
+                cout<<"Index"<<endl;
+                return record_indexshow(tableName, attributeNameVector, f, index);
+            }
+        }
+    }
+
     while(1){
         if (f == buffer.getLastBlock(tableName.c_str())){
 
@@ -292,6 +304,36 @@ int RecordManager::record_blockdelete(string tableName, vector<Condition> *condi
 }
 
 
+int RecordManager::record_indexshow(string tableName, vector<string> *attributeNameVector, Block* block, int offset){
+    if(block==NULL){
+        return -1;
+    }
+    int count = 0;
+
+    cout<<"offset: "<<offset;
+
+    vector<Attribute> at;
+    catalog.attributeGet(tableName, &at);
+    vector<string> records;
+    records.reserve(20);
+
+    string recordbegin = block->data;
+    string temp = "\n";
+
+    split(recordbegin, temp, & records);
+
+    while(offset > records.size() - 1){
+        block = buffer.getNextBlock(tableName.c_str(), block);
+        if(block==NULL) return -1;
+        offset = offset - records.size();
+        recordbegin = block->data;
+        records.clear();
+        split(recordbegin, temp, & records);
+    }
+    record_print(records[offset], records[offset].length(), &at, attributeNameVector);
+
+    return 1;
+}
 
 int RecordManager::record_blockshow(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector, Block *block)
 {
