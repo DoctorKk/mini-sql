@@ -48,7 +48,7 @@ public:
     //int indexRecordAllAlreadyInsert(string tableName, string indexName);
 
 private:
-    
+    int record_indexshow(string tableName, vector<string> *attributeNameVector, Block* block, int offset);
     int record_blockshow(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector, Block* block);
     //int record_blockshow(string tableName, Block *block);
 
