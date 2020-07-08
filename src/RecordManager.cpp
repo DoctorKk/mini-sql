@@ -376,7 +376,7 @@ int RecordManager::record_blockshow(string tableName, vector<string> *attributeN
     int record_size = 0;
 
     vector<string> records;
-    records.reserve(50);
+    records.reserve(2000);
     at.reserve(11);
 
     string recordbegin = block->data;
